@@ -126,11 +126,11 @@ export function generateCompanyRoleReviewsPageMetadata(
 ): Metadata {
   return {
     title: `${company.name} ${role} Reviews & Work Environment`,
-    description: `Explore reviews from ${role}s working at ${company.name}. Learn about role-specific work-life balance and growth.`,
+    description: `Explore ${stats.count} reviews from ${role}s working at ${company.name}. Learn about role-specific work-life balance and growth.`,
     alternates: { canonical: `${BASE_URL}/reviews/${company.slug}/${encodeURIComponent(role)}` },
     openGraph: {
       title: `${company.name} ${role} Reviews | TalentDash`,
-      description: `Explore reviews from ${role}s working at ${company.name}.`,
+      description: `Explore ${stats.count} reviews from ${role}s working at ${company.name}.`,
       url: `${BASE_URL}/reviews/${company.slug}/${encodeURIComponent(role)}`,
       siteName: 'TalentDash',
       type: 'website',
@@ -163,11 +163,11 @@ export function generateCompanyInterviewsPageMetadata(
 ): Metadata {
   return {
     title: `${company.name} Interview Questions & Difficulty`,
-    description: `Read interview difficulty, typical rounds count, questions asked, and candidate outcome rates at ${company.name}.`,
+    description: `Read interview difficulty, typical rounds count, questions asked, and candidate outcome rates across ${stats.count} interviews at ${company.name}.`,
     alternates: { canonical: `${BASE_URL}/interviews/${company.slug}` },
     openGraph: {
       title: `${company.name} Interviews | TalentDash`,
-      description: `Read interview difficulty, typical rounds count, questions asked, and candidate outcome rates at ${company.name}.`,
+      description: `Read interview difficulty, typical rounds count, questions asked, and candidate outcome rates across ${stats.count} interviews at ${company.name}.`,
       url: `${BASE_URL}/interviews/${company.slug}`,
       siteName: 'TalentDash',
       type: 'website',
@@ -183,11 +183,11 @@ export function generateCompanyRoleInterviewsPageMetadata(
 ): Metadata {
   return {
     title: `${company.name} ${role} Interview Questions`,
-    description: `Learn about the interview process, rounds, questions, and difficulty for a ${role} role at ${company.name}.`,
+    description: `Learn about the interview process, rounds, questions, and difficulty for a ${role} role at ${company.name} based on ${stats.count} candidate experiences.`,
     alternates: { canonical: `${BASE_URL}/interviews/${company.slug}/${encodeURIComponent(role)}` },
     openGraph: {
       title: `${company.name} ${role} Interviews | TalentDash`,
-      description: `Learn about the interview process, rounds, questions, and difficulty for a ${role} role at ${company.name}.`,
+      description: `Learn about the interview process, rounds, questions, and difficulty for a ${role} role at ${company.name} based on ${stats.count} candidate experiences.`,
       url: `${BASE_URL}/interviews/${company.slug}/${encodeURIComponent(role)}`,
       siteName: 'TalentDash',
       type: 'website',

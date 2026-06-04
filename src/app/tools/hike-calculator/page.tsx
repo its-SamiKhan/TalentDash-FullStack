@@ -2,12 +2,15 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { HikeCalculator } from './HikeCalculator';
 import Link from 'next/link';
+import { generateToolPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Salary Hike & Promotion Calculator | TalentDash',
-  description:
-    'Evaluate proposed job offers side-by-side against your current compensation. Calculate percentages, absolute increases, and monthly take-home increments.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return generateToolPageMetadata(
+    'hike-calculator',
+    'Salary Hike & Promotion Calculator',
+    'Evaluate proposed job offers side-by-side against your current compensation. Calculate percentages, absolute increases, and monthly take-home increments.'
+  );
+}
 
 export default function HikeCalculatorPage() {
   return (

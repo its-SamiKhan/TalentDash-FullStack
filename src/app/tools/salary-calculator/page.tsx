@@ -2,12 +2,15 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { SalaryCalculator } from './SalaryCalculator';
 import Link from 'next/link';
+import { generateToolPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Salary & Take-Home Pay Calculator | TalentDash',
-  description:
-    'Calculate your yearly total compensation mix and estimate progressive monthly income taxes and take-home pay for Indian and global tech roles.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return generateToolPageMetadata(
+    'salary-calculator',
+    'Salary & Take-Home Pay Calculator',
+    'Calculate your yearly total compensation mix and estimate progressive monthly income taxes and take-home pay for Indian and global tech roles.'
+  );
+}
 
 export default function SalaryCalculatorPage() {
   return (

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getCompanyBySlug, getAllCompanySlugs } from '@/services/company.service';
 import { getCompanyInterviewStats, getInterviews } from '@/services/interview.service';
 import { CompanyInterviewsPageClient } from './CompanyInterviewsPageClient';
+import { generateCompanyInterviewsPageMetadata } from '@/lib/seo';
 
 export const revalidate = 3600; // Cache for 1 hour
 
@@ -19,10 +20,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: 'Company Interviews',
     };
   }
-  return {
-    title: `${companyData.company.name} Interview Questions & Difficulty`,
-    description: `Read interview difficulty, typical rounds count, questions asked, and candidate outcome rates at ${companyData.company.name}.`,
-  };
+  const stats = await getCompanyInterviewStats(companyData.company.id);
+  return generateCompanyInterviewsPageMetadata(companyData.company, stats);
 }
 
 

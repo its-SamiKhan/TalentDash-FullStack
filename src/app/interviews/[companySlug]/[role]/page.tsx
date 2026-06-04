@@ -5,6 +5,7 @@ import { getCompanyBySlug, getAllCompanySlugs } from '@/services/company.service
 import { getCompanyInterviewStats, getInterviews } from '@/services/interview.service';
 import { getDistinctValues } from '@/services/salary.service';
 import { CompanyInterviewsPageClient } from '../CompanyInterviewsPageClient';
+import { generateCompanyRoleInterviewsPageMetadata } from '@/lib/seo';
 
 export const revalidate = 3600; // Cache for 1 hour
 
@@ -21,10 +22,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${decodedRole} Interviews`,
     };
   }
-  return {
-    title: `${companyData.company.name} ${decodedRole} Interview Questions & Difficulty`,
-    description: `Explore interview difficulty, rounds count, questions asked, and outcomes for ${decodedRole} roles at ${companyData.company.name}.`,
-  };
+  const stats = await getCompanyInterviewStats(companyData.company.id);
+  return generateCompanyRoleInterviewsPageMetadata(companyData.company, decodedRole, stats);
 }
 
 

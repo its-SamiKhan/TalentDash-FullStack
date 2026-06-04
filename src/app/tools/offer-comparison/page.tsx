@@ -3,14 +3,17 @@ import type { Metadata } from 'next';
 import { OfferComparison } from './OfferComparison';
 import { getAllCompanies } from '@/services/company.service';
 import Link from 'next/link';
+import { generateToolPageMetadata } from '@/lib/seo';
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: 'Side-by-Side Offer Comparison Tool | TalentDash',
-  description:
-    'Compare two tech job offers side-by-side. Input base, bonus, and stock options in different currencies and compare in a normalized target currency.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return generateToolPageMetadata(
+    'offer-comparison',
+    'Side-by-Side Offer Comparison Tool',
+    'Compare two tech job offers side-by-side. Input base, bonus, and stock options in different currencies and compare in a normalized target currency.'
+  );
+}
 
 export default async function OfferComparisonPage() {
   const companiesList = await getAllCompanies();

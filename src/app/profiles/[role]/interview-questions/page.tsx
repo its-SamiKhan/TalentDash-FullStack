@@ -6,6 +6,7 @@ import { getInterviewQuestions } from '@/services/interview.service';
 import { CompanyLogo, Button } from '@/components/ui';
 import { formatDate } from '@/lib/formatters';
 import Link from 'next/link';
+import { generateRoleInterviewQuestionsPageMetadata } from '@/lib/seo';
 
 export const revalidate = 3600; // Cache for 1 hour
 
@@ -16,10 +17,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { role } = await params;
   const decodedRole = decodeURIComponent(role);
-  return {
-    title: `${decodedRole} Interview Questions & Topics | TalentDash`,
-    description: `Read technical and behavioral interview questions asked for ${decodedRole} candidates across top tech companies.`,
-  };
+  return generateRoleInterviewQuestionsPageMetadata(decodedRole);
 }
 
 

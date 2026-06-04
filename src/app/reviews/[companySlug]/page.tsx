@@ -1,13 +1,27 @@
 import React, { Suspense } from 'react';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getCompanyBySlug, getAllCompanySlugs } from '@/services/company.service';
 import { getCompanyReviewStats, getReviews } from '@/services/review.service';
 import { CompanyReviewsPageClient } from './CompanyReviewsPageClient';
+import { generateCompanyReviewsPageMetadata } from '@/lib/seo';
 
 export const revalidate = 3600; // Cache for 1 hour
 
 interface PageProps {
   params: Promise<{ companySlug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { companySlug } = await params;
+  const companyData = await getCompanyBySlug(companySlug);
+  if (!companyData) {
+    return {
+      title: 'Company Reviews',
+    };
+  }
+  const stats = await getCompanyReviewStats(companyData.company.id);
+  return generateCompanyReviewsPageMetadata(companyData.company, stats);
 }
 
 export async function generateStaticParams() {

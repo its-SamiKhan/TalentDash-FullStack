@@ -1,12 +1,11 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { generateToolsPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Developer Career Tools & Calculators | TalentDash',
-  description:
-    'Free tools for tech professionals: calculate tax & take-home pay, hike increments, ESOP vesting valuations, and compare side-by-side offer packages.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return generateToolsPageMetadata();
+}
 
 export default function ToolsHubPage() {
   const tools = [

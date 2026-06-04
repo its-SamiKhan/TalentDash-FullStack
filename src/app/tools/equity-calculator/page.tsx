@@ -2,12 +2,15 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { EquityCalculator } from './EquityCalculator';
 import Link from 'next/link';
+import { generateToolPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'ESOP & Equity Vesting Calculator | TalentDash',
-  description:
-    'Calculate the vesting schedule of your stock options (ESOPs) or RSUs. Project exit values and evaluate potential net worth from startup equity.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return generateToolPageMetadata(
+    'equity-calculator',
+    'ESOP & Equity Vesting Calculator',
+    'Calculate the vesting schedule of your stock options (ESOPs) or RSUs. Project exit values and evaluate potential net worth from startup equity.'
+  );
+}
 
 export default function EquityCalculatorPage() {
   return (
