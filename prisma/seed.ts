@@ -499,6 +499,7 @@ async function main() {
   await prisma.salary.deleteMany({});
   await prisma.review.deleteMany({});
   await prisma.interview.deleteMany({});
+  await prisma.communityComment.deleteMany({});
   await prisma.communityPost.deleteMany({});
   await prisma.workplaceScore.deleteMany({});
   await prisma.company.deleteMany({});
@@ -604,6 +605,92 @@ async function main() {
   }
 
   console.log(`Seeded ${interviewCount} interview records.`);
+
+  // Create community posts and comments
+  let postCount = 0;
+  let commentCount = 0;
+  const rawCommunityPostsData = [
+    {
+      companySlug: 'google',
+      topic: null,
+      title: 'Google L5 Promo Timeline?',
+      body: 'How long does it typically take to go from L4 to L5 in Bengaluru? I have been L4 for 2.5 years, strong ratings, but manager keeps saying slots are limited. Should I look to jump?',
+      comments: [
+        'L4 to L5 is notoriously slow now. Usually takes 3-4 years minimum under standard review guidelines.',
+        'Suggest interviewing elsewhere. External hire is the only way to get L5 comp quickly.',
+        'Same situation here. 3 years as L4. Just got promoted last cycle, but required leading multiple cross-functional projects.'
+      ]
+    },
+    {
+      companySlug: 'amazon',
+      topic: null,
+      title: 'Worse WLB: AWS vs Retail?',
+      body: 'Looking to transfer internally within Amazon India. Is the work-life balance and on-call rotation better in AWS or Retail? Currently in a retail pod and on-call is killer.',
+      comments: [
+        'AWS is typically worse. Ops load is heavy and page frequency is very high.',
+        'Depends entirely on the team, but Retail generally has less high-severity system-down pages than AWS S3/EC2 core infrastructure.'
+      ]
+    },
+    {
+      companySlug: null,
+      topic: 'layoffs',
+      title: 'Tech Hiring Market Outlook 2026',
+      body: 'Are we seeing a recovery in SDE-II/SDE-III hiring in Bengaluru? Zepto, Razorpay, Meesho seem to be hiring, but MAANG headcount feels stagnant.',
+      comments: [
+        'MAANG headcount is definitely frozen or replacement-only. VC-backed startups are hiring but they bargain hard on comp.',
+        'Seeing a lot of contract-to-hire positions, but full-time roles with high stock components are scarce.',
+        'Zepto is hiring like crazy, but WLB is extremely tough. Be ready for 12hr days.'
+      ]
+    },
+    {
+      companySlug: null,
+      topic: 'compensation',
+      title: 'Meesho SDE-III Compensation Bracket',
+      body: 'What is the current standard base salary and equity range for Meesho SDE-III in Bangalore? Got an offer with 45L base + 8L ESOPs per year. Is this inline or low?',
+      comments: [
+        'That base is solid. Meesho does not have variables, so 45L cash base is clean.',
+        'ESOPs value is subjective, but standard cash component is very good. You should accept.',
+        'Can confirm 42-48L base is standard for SDE-III at Meesho.'
+      ]
+    },
+    {
+      companySlug: null,
+      topic: 'interview-prep',
+      title: 'Flipkart Machine Coding Round Practice',
+      body: 'How do you prepare for Flipkart machine coding rounds? Is it mostly writing design patterns, in-memory queue/parking lot systems? Any tips on language choices?',
+      comments: [
+        'Use Java or C++ because strict OOP and threading models are easier to represent cleanly.',
+        'Focus on concurrency, lock mechanisms, and driver/executor test scripts. Code must run and show results in terminal.',
+        'Practice building a fully working system in 90 minutes. Separating entities, services, and interfaces is key.'
+      ]
+    }
+  ];
+
+  for (const pData of rawCommunityPostsData) {
+    const companyId = pData.companySlug ? companySlugToIdMap[pData.companySlug] : null;
+
+    const post = await prisma.communityPost.create({
+      data: {
+        companyId,
+        topic: pData.topic,
+        title: pData.title,
+        body: pData.body,
+      },
+    });
+
+    for (const commentBody of pData.comments) {
+      await prisma.communityComment.create({
+        data: {
+          postId: post.id,
+          body: commentBody,
+        },
+      });
+      commentCount++;
+    }
+    postCount++;
+  }
+
+  console.log(`Seeded ${postCount} community posts with ${commentCount} replies.`);
   console.log('Seed completed successfully.');
 }
 

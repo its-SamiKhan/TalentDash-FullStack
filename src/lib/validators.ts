@@ -333,4 +333,99 @@ export function validateInterviewPayload(body: unknown): ValidationResult {
   };
 }
 
+/**
+ * Validate a community post payload.
+ */
+export function validateCommunityPostPayload(body: unknown): ValidationResult {
+  const errors: string[] = [];
+
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return { valid: false, errors: ['Request body must be a JSON object'] };
+  }
+
+  const data = body as Record<string, unknown>;
+
+  const requiredFields = ['title', 'body'];
+  for (const field of requiredFields) {
+    if (data[field] === undefined || data[field] === null || data[field] === '') {
+      errors.push(`${field} is required`);
+    }
+  }
+  if (errors.length > 0) return { valid: false, errors };
+
+  if (typeof data.title !== 'string') {
+    errors.push('title must be a string');
+  }
+  if (typeof data.body !== 'string') {
+    errors.push('body must be a string');
+  }
+  if (data.company !== undefined && data.company !== null && typeof data.company !== 'string') {
+    errors.push('company must be a string');
+  }
+  if (data.topic !== undefined && data.topic !== null && typeof data.topic !== 'string') {
+    errors.push('topic must be a string');
+  }
+  if (errors.length > 0) return { valid: false, errors };
+
+  const title = data.title as string;
+  const postBody = data.body as string;
+
+  if (title.trim().length < 5) {
+    errors.push('title must be at least 5 characters long');
+  }
+  if (postBody.trim().length < 20) {
+    errors.push('body must be at least 20 characters long');
+  }
+
+  if (!data.company && !data.topic) {
+    errors.push('Either company or topic is required to categorize the post');
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+    data: errors.length === 0 ? data : undefined,
+  };
+}
+
+/**
+ * Validate a community comment payload.
+ */
+export function validateCommunityCommentPayload(body: unknown): ValidationResult {
+  const errors: string[] = [];
+
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return { valid: false, errors: ['Request body must be a JSON object'] };
+  }
+
+  const data = body as Record<string, unknown>;
+
+  const requiredFields = ['postId', 'body'];
+  for (const field of requiredFields) {
+    if (data[field] === undefined || data[field] === null || data[field] === '') {
+      errors.push(`${field} is required`);
+    }
+  }
+  if (errors.length > 0) return { valid: false, errors };
+
+  if (typeof data.postId !== 'string') {
+    errors.push('postId must be a string');
+  }
+  if (typeof data.body !== 'string') {
+    errors.push('body must be a string');
+  }
+  if (errors.length > 0) return { valid: false, errors };
+
+  const commentBody = data.body as string;
+  if (commentBody.trim().length < 5) {
+    errors.push('body must be at least 5 characters long');
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+    data: errors.length === 0 ? data : undefined,
+  };
+}
+
 

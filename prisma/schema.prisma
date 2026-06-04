@@ -138,8 +138,20 @@ model CommunityPost {
   title     String
   body      String
   createdAt DateTime @default(now()) @map("created_at")
+  comments  CommunityComment[]
 
   @@map("community_posts")
+}
+
+model CommunityComment {
+  id        String        @id @default(cuid())
+  postId    String        @map("post_id")
+  post      CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  body      String
+  createdAt DateTime      @default(now()) @map("created_at")
+
+  @@index([postId])
+  @@map("community_comments")
 }
 
 model WorkplaceScore {

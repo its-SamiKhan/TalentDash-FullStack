@@ -30,6 +30,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  const companyCommunityUrls = companies.map((c) => ({
+    url: `${BASE_URL}/community/${c.slug}`,
+    lastModified: c.updatedAt,
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
+
+  const topicSlugs = ['careers', 'layoffs', 'compensation', 'interview-prep', 'tech-talk'];
+  const topicUrls = topicSlugs.map((topic) => ({
+    url: `${BASE_URL}/community/${topic}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }));
+
   return [
     {
       url: BASE_URL,
@@ -51,6 +66,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${BASE_URL}/interviews`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/community`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.8,
@@ -94,6 +115,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...companyUrls,
     ...companyReviewsUrls,
     ...companyInterviewsUrls,
+    ...companyCommunityUrls,
+    ...topicUrls,
   ];
 }
 

@@ -244,4 +244,44 @@ export interface CompanyInterviewStats {
   count: number;
 }
 
+// ─── Community / Forum Types ────────────────────────────
+
+export interface CommunityPostForDisplay {
+  id: string;
+  companyId: string | null;
+  companyName: string | null;
+  companySlug: string | null;
+  companyLogoUrl: string | null;
+  topic: string | null;
+  title: string;
+  body: string;
+  createdAt: string;
+  commentCount: number;
+}
+
+export interface CommunityCommentForDisplay {
+  id: string;
+  postId: string;
+  body: string;
+  createdAt: string;
+}
+
+export interface CommunityPostFilters {
+  company?: string;
+  topic?: string;
+  query?: string;
+}
+
+export interface CommunityPostIngestPayload {
+  company?: string;
+  topic?: string;
+  title: string;
+  body: string;
+}
+
+export interface CommunityCommentIngestPayload {
+  postId: string;
+  body: string;
+}
+
 

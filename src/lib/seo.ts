@@ -303,6 +303,64 @@ export function buildOrganizationJsonLd(company: {
   return jsonLd;
 }
 
+export function generateCommunityHubMetadata(): Metadata {
+  return {
+    title: 'Anonymous Tech Community & Discussion Forum | TalentDash',
+    description:
+      'Join anonymous professional discussions on salaries, career advice, interview prep, layoffs, and work environment across tech companies.',
+    alternates: { canonical: `${BASE_URL}/community` },
+    openGraph: {
+      title: 'Anonymous Tech Community & Discussion Forum | TalentDash',
+      description:
+        'Join anonymous professional discussions on salaries, career advice, and work environment.',
+      url: `${BASE_URL}/community`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
+export function generateCommunityBoardMetadata(
+  boardName: string,
+  description: string,
+  slug: string
+): Metadata {
+  return {
+    title: `${boardName} | TalentDash Community`,
+    description,
+    alternates: { canonical: `${BASE_URL}/community/${slug}` },
+    openGraph: {
+      title: `${boardName} | TalentDash Community`,
+      description,
+      url: `${BASE_URL}/community/${slug}`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
+export function generateCommunityThreadMetadata(
+  title: string,
+  bodySnippet: string,
+  id: string
+): Metadata {
+  return {
+    title: `${title} | TalentDash Community`,
+    description: bodySnippet,
+    alternates: { canonical: `${BASE_URL}/community/post/${id}` },
+    openGraph: {
+      title: `${title} | TalentDash Community`,
+      description: bodySnippet,
+      url: `${BASE_URL}/community/post/${id}`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
 /**
  * Render JSON-LD to a safe string for dangerouslySetInnerHTML.
  * Prevents XSS by escaping < characters.
