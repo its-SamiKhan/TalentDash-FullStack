@@ -97,11 +97,24 @@ erDiagram
         string body
         datetime createdAt
     }
+    WorkplaceScore {
+        string id PK
+        string companyId FK
+        float compensationFairness
+        float careerGrowth
+        float workLifeBalance
+        float diversityInclusion
+        float leadershipQuality
+        float cultureScore
+        float wfhScore
+        float overallScore
+    }
     Company ||--o{ Salary : "has many"
     Company ||--o{ Review : "has many"
     Company ||--o{ Interview : "has many"
     Company ||--o{ CommunityPost : "has many (optional)"
     CommunityPost ||--o{ CommunityComment : "has many"
+    Company ||--o{ WorkplaceScore : "has one"
 ```
 
 ### Rendering & Caching Flow (Next.js 16 App Router)
@@ -158,7 +171,7 @@ All design tokens are defined in `src/app/globals.css` using Tailwind v4 theme c
 
 ## 5. Platform Structure (Product Areas)
 
-The platform currently implements 7 fully functional product areas (with future stubs for the remaining 1):
+The platform currently implements 8 fully functional product areas:
 
 1. **Salaries** (✅ Completed): Dynamic search, sorting, and pagination list at `/salaries`.
 2. **Companies** (✅ Completed): SEO-optimized company profiles at `/companies/[slug]`.
@@ -167,7 +180,7 @@ The platform currently implements 7 fully functional product areas (with future 
 5. **Interviews** (✅ Completed): Interview preparation dashboard with difficulty ratings, typical rounds counts, outcome rate statistics (offer/rejection/ghosted), questions asked, and dynamic submission modal at `/interviews`. Role-specific questions profiles under `/profiles/[role]/interview-questions`.
 6. **Tools** (✅ Completed): Interactive career calculators (salary, hike, equity/ESOP) and side-by-side offer comparison tools at `/tools`.
 7. **Community** (✅ Completed): Anonymous professional discussion forums featuring company boards, topic feeds, and comment threads at `/community`.
-8. **Workplace Index** (Future Stub): Performance ratings across key workplace markers.
+8. **Workplace Index** (✅ Completed): Composite Michelin-style rating and rankings dashboard for tech employers at `/workplace-index`.
 
 ---
 
@@ -258,6 +271,23 @@ type CommunityCommentRecord = {
 };
 ```
 
+### Workplace Score Record
+
+```typescript
+type WorkplaceScoreRecord = {
+  id: string;
+  companyId: string;
+  compensationFairness: number | null;
+  careerGrowth: number | null;
+  workLifeBalance: number | null;
+  diversityInclusion: number | null;
+  leadershipQuality: number | null;
+  cultureScore: number | null;
+  wfhScore: number | null;
+  overallScore: number | null;
+};
+```
+
 ---
 
 ## 7. Rendering & Caching Strategy
@@ -268,6 +298,8 @@ To balance fast loading speeds (LCP < 2s) and database query costs, the platform
 - **Salaries Page (`/salaries`)**: Dynamic server-side rendering combined with client-side query string synchronization to support infinite filter variations.
 - **Reviews & Interviews Hubs**: Dynamic SSR with caching configured as `s-maxage=300, stale-while-revalidate=3600`.
 - **Community Forums (`/community`, `/community/[slug]`, `/community/post/[id]`)**: Dynamic SSR routes (caching: `s-maxage=60, stale-while-revalidate=600`) for real-time discussion updates and thread replies.
+- **Workplace Index (`/workplace-index`, `/workplace-index/rankings`)**: Static rendering with cache regeneration hourly (`revalidate = 3600`) for high performance.
+- **Workplace Industry Indices (`/workplace-index/[industry]`)**: Static Site Generation (SSG) with path compilation via `generateStaticParams()` to optimize SEO indexing for target industries.
 - **Company Specific Pages (`/companies/[slug]`, `/reviews/[companySlug]`, `/interviews/[companySlug]`)**: Static Site Generation (SSG) using `generateStaticParams()` to pre-render pages. Fallback is set to compile new companies dynamically. Purged and revalidated on cache paths whenever new data is ingested.
 
 ---

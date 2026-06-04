@@ -163,6 +163,8 @@ model WorkplaceScore {
   workLifeBalance       Float?  @map("work_life_balance")
   diversityInclusion    Float?  @map("diversity_inclusion")
   leadershipQuality     Float?  @map("leadership_quality")
+  cultureScore          Float?  @map("culture_score")
+  wfhScore              Float?  @map("wfh_score")
   overallScore          Float?  @map("overall_score")
 
   @@map("workplace_scores")

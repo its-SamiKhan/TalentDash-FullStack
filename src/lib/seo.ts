@@ -361,6 +361,61 @@ export function generateCommunityThreadMetadata(
   };
 }
 
+export function generateWorkplaceHubMetadata(): Metadata {
+  return {
+    title: 'Workplace Index — Michelin-Style Tech Employer Ratings',
+    description:
+      'Compare tech companies on culture, compensation fairness, growth opportunities, diversity and inclusion, and WFH policy. Ranks Google, Meta, NVIDIA, and more.',
+    alternates: { canonical: `${BASE_URL}/workplace-index` },
+    openGraph: {
+      title: 'The Workplace Index | TalentDash',
+      description:
+        'Michelin-style composite rating system for top tech employers based on culture, compensation, growth, and flexibility.',
+      url: `${BASE_URL}/workplace-index`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
+export function generateWorkplaceRankingsMetadata(): Metadata {
+  return {
+    title: 'Top Tech Company Rankings — Workplace Index Table',
+    description:
+      'Sortable side-by-side workplace ratings table. Compare company cultures, work-life balance, WFH support, and growth metrics.',
+    alternates: { canonical: `${BASE_URL}/workplace-index/rankings` },
+    openGraph: {
+      title: 'Employer Rankings Table | TalentDash',
+      description:
+        'Complete listings and category sort keys for the Michelin-style Workplace Index.',
+      url: `${BASE_URL}/workplace-index/rankings`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
+export function generateWorkplaceIndustryMetadata(industryName: string): Metadata {
+  const slug = industryName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  return {
+    title: `Best ${industryName} Companies to Work For | Workplace Index`,
+    description:
+      `Rankings of the top-rated ${industryName.toLowerCase()} employers. Compare culture, WFH policy, and growth metrics.`,
+    alternates: { canonical: `${BASE_URL}/workplace-index/${slug}` },
+    openGraph: {
+      title: `${industryName} Workplace Rankings | TalentDash`,
+      description:
+        `Michelin ratings for the best tech employers in the ${industryName.toLowerCase()} sector.`,
+      url: `${BASE_URL}/workplace-index/${slug}`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
 /**
  * Render JSON-LD to a safe string for dangerouslySetInnerHTML.
  * Prevents XSS by escaping < characters.
@@ -368,3 +423,4 @@ export function generateCommunityThreadMetadata(
 export function renderJsonLd(data: object): string {
   return JSON.stringify(data).replace(/</g, '\\u003c');
 }
+

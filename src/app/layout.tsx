@@ -63,6 +63,12 @@ export default function RootLayout({
                   Community
                 </Link>
                 <Link
+                  href="/workplace-index"
+                  className="text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
+                >
+                  Workplace Index
+                </Link>
+                <Link
                   href="/tools"
                   className="text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
                 >
@@ -106,6 +112,12 @@ export default function RootLayout({
                 className="md:hidden text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
               >
                 Community
+              </Link>
+              <Link
+                href="/workplace-index"
+                className="md:hidden text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
+              >
+                Workplace Index
               </Link>
               <Link
                 href="/reviews"
@@ -156,6 +168,9 @@ export default function RootLayout({
                 </Link>
                 <Link href="/community" className="text-xs text-[#717171] hover:text-[#484848]">
                   Community
+                </Link>
+                <Link href="/workplace-index" className="text-xs text-[#717171] hover:text-[#484848]">
+                  Workplace Index
                 </Link>
                 <Link href="/tools" className="text-xs text-[#717171] hover:text-[#484848]">
                   Career Tools

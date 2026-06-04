@@ -45,6 +45,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
+  // Fetch distinct industries with workplace scores
+  const rankedCompanies = await prisma.company.findMany({
+    where: { workplaceScores: { some: {} } },
+    select: { industry: true, updatedAt: true },
+  });
+
+  const industrySlugs = Array.from(
+    new Set(
+      rankedCompanies
+        .map((c) => c.industry)
+        .filter((ind): ind is string => !!ind)
+    )
+  );
+
+  const industryUrls = industrySlugs.map((industry) => {
+    const slug = industry.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    return {
+      url: `${BASE_URL}/workplace-index/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    };
+  });
+
   return [
     {
       url: BASE_URL,
@@ -72,6 +96,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${BASE_URL}/community`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/workplace-index`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/workplace-index/rankings`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.8,
@@ -117,6 +153,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...companyInterviewsUrls,
     ...companyCommunityUrls,
     ...topicUrls,
+    ...industryUrls,
   ];
 }
+
 

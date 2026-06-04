@@ -284,4 +284,24 @@ export interface CommunityCommentIngestPayload {
   body: string;
 }
 
+// ─── Workplace Index Types ──────────────────────────────
+
+export interface WorkplaceScoreForDisplay {
+  id: string;
+  companyId: string;
+  companyName: string;
+  companySlug: string;
+  companyLogoUrl: string | null;
+  companyIndustry: string | null;
+  compensationFairness: number | null;
+  careerGrowth: number | null;
+  workLifeBalance: number | null;
+  diversityInclusion: number | null;
+  leadershipQuality: number | null;
+  cultureScore: number | null;
+  wfhScore: number | null;
+  overallScore: number | null;
+}
+
+
 
