@@ -30,9 +30,6 @@ export default function RootLayout({
                 <span className="text-xl font-bold tracking-tight text-[#222222]">
                   Talent<span className="text-[#FF5A5F]">Dash</span>
                 </span>
-                <span className="hidden rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700 sm:inline-block">
-                  MVP
-                </span>
               </Link>
               <nav className="hidden md:flex items-center gap-6">
                 <Link
