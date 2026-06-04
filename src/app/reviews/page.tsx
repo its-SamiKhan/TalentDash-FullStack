@@ -3,6 +3,11 @@ import { getReviews } from '@/services/review.service';
 import { getDistinctValues } from '@/services/salary.service';
 import { getAllCompanies } from '@/services/company.service';
 import { ReviewsPageClient } from './ReviewsPageClient';
+import { generateReviewsPageMetadata } from '@/lib/seo';
+
+export async function generateMetadata() {
+  return generateReviewsPageMetadata();
+}
 
 export const revalidate = 3600; // Cache for 1 hour
 

@@ -82,6 +82,174 @@ export function generateHomePageMetadata(): Metadata {
   };
 }
 
+export function generateReviewsPageMetadata(): Metadata {
+  return {
+    title: 'Anonymous Employee Reviews & Company Culture Ratings',
+    description:
+      'Read honest, anonymized employee reviews and ratings on work-life balance, management quality, growth opportunities, and culture fit for tech companies.',
+    alternates: { canonical: `${BASE_URL}/reviews` },
+    openGraph: {
+      title: 'Anonymous Employee Reviews & Company Culture Ratings | TalentDash',
+      description:
+        'Read honest, anonymized employee reviews and ratings on work-life balance, management, and culture.',
+      url: `${BASE_URL}/reviews`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
+export function generateCompanyReviewsPageMetadata(
+  company: { name: string; slug: string },
+  stats: { count: number }
+): Metadata {
+  return {
+    title: `${company.name} Employee Reviews & Ratings`,
+    description: `Read ${stats.count} anonymous reviews, culture scores, and work-life balance ratings for ${company.name} on TalentDash.`,
+    alternates: { canonical: `${BASE_URL}/reviews/${company.slug}` },
+    openGraph: {
+      title: `${company.name} Reviews | TalentDash`,
+      description: `Read anonymous reviews and culture ratings for ${company.name}.`,
+      url: `${BASE_URL}/reviews/${company.slug}`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
+export function generateCompanyRoleReviewsPageMetadata(
+  company: { name: string; slug: string },
+  role: string,
+  stats: { count: number }
+): Metadata {
+  return {
+    title: `${company.name} ${role} Reviews & Work Environment`,
+    description: `Explore reviews from ${role}s working at ${company.name}. Learn about role-specific work-life balance and growth.`,
+    alternates: { canonical: `${BASE_URL}/reviews/${company.slug}/${encodeURIComponent(role)}` },
+    openGraph: {
+      title: `${company.name} ${role} Reviews | TalentDash`,
+      description: `Explore reviews from ${role}s working at ${company.name}.`,
+      url: `${BASE_URL}/reviews/${company.slug}/${encodeURIComponent(role)}`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
+export function generateInterviewsPageMetadata(): Metadata {
+  return {
+    title: 'Tech Interview Questions & Experiences',
+    description:
+      'Explore interview questions, rounds count, difficulty ratings, and outcomes for tech companies. Prepare for your next interview.',
+    alternates: { canonical: `${BASE_URL}/interviews` },
+    openGraph: {
+      title: 'Tech Interview Questions & Experiences | TalentDash',
+      description:
+        'Explore interview questions, rounds count, difficulty ratings, and outcomes for tech companies.',
+      url: `${BASE_URL}/interviews`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
+export function generateCompanyInterviewsPageMetadata(
+  company: { name: string; slug: string },
+  stats: { count: number }
+): Metadata {
+  return {
+    title: `${company.name} Interview Questions & Difficulty`,
+    description: `Read interview difficulty, typical rounds count, questions asked, and candidate outcome rates at ${company.name}.`,
+    alternates: { canonical: `${BASE_URL}/interviews/${company.slug}` },
+    openGraph: {
+      title: `${company.name} Interviews | TalentDash`,
+      description: `Read interview difficulty, typical rounds count, questions asked, and candidate outcome rates at ${company.name}.`,
+      url: `${BASE_URL}/interviews/${company.slug}`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
+export function generateCompanyRoleInterviewsPageMetadata(
+  company: { name: string; slug: string },
+  role: string,
+  stats: { count: number }
+): Metadata {
+  return {
+    title: `${company.name} ${role} Interview Questions`,
+    description: `Learn about the interview process, rounds, questions, and difficulty for a ${role} role at ${company.name}.`,
+    alternates: { canonical: `${BASE_URL}/interviews/${company.slug}/${encodeURIComponent(role)}` },
+    openGraph: {
+      title: `${company.name} ${role} Interviews | TalentDash`,
+      description: `Learn about the interview process, rounds, questions, and difficulty for a ${role} role at ${company.name}.`,
+      url: `${BASE_URL}/interviews/${company.slug}/${encodeURIComponent(role)}`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
+export function generateRoleInterviewQuestionsPageMetadata(role: string): Metadata {
+  return {
+    title: `Real Tech Interview Questions for ${role} Roles`,
+    description: `Prepare with real technical interview questions asked for ${role} roles across top tech companies.`,
+    alternates: { canonical: `${BASE_URL}/profiles/${encodeURIComponent(role)}/interview-questions` },
+    openGraph: {
+      title: `${role} Interview Questions | TalentDash`,
+      description: `Prepare with real technical interview questions asked for ${role} roles across top tech companies.`,
+      url: `${BASE_URL}/profiles/${encodeURIComponent(role)}/interview-questions`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
+export function generateToolsPageMetadata(): Metadata {
+  return {
+    title: 'Developer Career Tools & Calculators | TalentDash',
+    description:
+      'Free tools for tech professionals: calculate tax & take-home pay, hike increments, ESOP vesting valuations, and compare side-by-side offer packages.',
+    alternates: { canonical: `${BASE_URL}/tools` },
+    openGraph: {
+      title: 'Developer Career Tools & Calculators | TalentDash',
+      description:
+        'Free tools for tech professionals: calculate tax & take-home pay, hike increments, ESOP vesting valuations, and compare side-by-side offer packages.',
+      url: `${BASE_URL}/tools`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
+export function generateToolPageMetadata(
+  toolSlug: string,
+  title: string,
+  description: string
+): Metadata {
+  return {
+    title: `${title} | TalentDash`,
+    description,
+    alternates: { canonical: `${BASE_URL}/tools/${toolSlug}` },
+    openGraph: {
+      title: `${title} | TalentDash`,
+      description,
+      url: `${BASE_URL}/tools/${toolSlug}`,
+      siteName: 'TalentDash',
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
 // ─── JSON-LD Structured Data ─────────────────────────────
 
 export function buildDatasetJsonLd() {

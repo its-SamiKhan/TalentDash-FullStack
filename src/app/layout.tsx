@@ -33,6 +33,12 @@ export default function RootLayout({
               </Link>
               <nav className="hidden md:flex items-center gap-6">
                 <Link
+                  href="/"
+                  className="text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
+                >
+                  Home
+                </Link>
+                <Link
                   href="/salaries"
                   className="text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
                 >
@@ -65,6 +71,12 @@ export default function RootLayout({
               </nav>
             </div>
             <div className="flex items-center gap-4">
+              <Link
+                href="/"
+                className="md:hidden text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
+              >
+                Home
+              </Link>
               <Link
                 href="/compare"
                 className="md:hidden text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
@@ -121,6 +133,9 @@ export default function RootLayout({
                 </span>
               </div>
               <div className="flex gap-6">
+                <Link href="/" className="text-xs text-[#717171] hover:text-[#484848]">
+                  Home
+                </Link>
                 <Link href="/salaries" className="text-xs text-[#717171] hover:text-[#484848]">
                   Salary Search
                 </Link>
