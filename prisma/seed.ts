@@ -369,7 +369,126 @@ const rawReviewsData = [
     cultureFit: 3,
     title: 'Stable career path with basic learning',
     pros: 'Good work security and brand value. Work hours are mostly fixed (9 to 6) with decent leaves.',
-    cons: 'Highly process-heavy bureaucracy. Low starting packages and long wait times for offshore/onsite shifts.',
+    },
+];
+
+const rawInterviewsData = [
+  {
+    companySlug: 'google',
+    role: 'Software Engineer',
+    difficulty: 4,
+    rounds: 5,
+    outcome: 'OFFER',
+    experience: 'Great overall experience. The hiring committee took about 2 weeks to give feedback. The focus was heavily on algorithmic coding and system scalability.',
+    questions: '1. Given a binary tree, find the maximum path sum.\n2. Design a rate limiter for an API endpoint.\n3. Implement a thread-safe circular buffer.',
+  },
+  {
+    companySlug: 'google',
+    role: 'SDE II',
+    difficulty: 5,
+    rounds: 6,
+    outcome: 'REJECT',
+    experience: 'Excellent interviews but very tough. Reached the team matching round but ultimately got rejected because of one weak feedback on behavioral/googlyness rounds.',
+    questions: '1. Design Google Autocomplete feature.\n2. Word ladder transformation problem.\n3. Detailed system design for real-time multiplayer gaming server.',
+  },
+  {
+    companySlug: 'amazon',
+    role: 'SDE II',
+    difficulty: 4,
+    rounds: 5,
+    outcome: 'OFFER',
+    experience: 'Process was fast. 1 Online assessment and 4 loop rounds. Prepare Amazon Leadership Principles thoroughly as they carry 50% weight in every round.',
+    questions: '1. Design a warehouse management system.\n2. LRU cache implementation.\n3. Describe a time when you disagreed with a manager and how you handled it.',
+  },
+  {
+    companySlug: 'amazon',
+    role: 'SDET II',
+    difficulty: 3,
+    rounds: 4,
+    outcome: 'OFFER',
+    experience: 'Focused on automation scripting, coding and testing frameworks. Good interviewers, detailed feedback provided.',
+    questions: '1. Write an automation script to verify checkout flows.\n2. Find all duplicate elements in an array.\n3. Design a test plan for an elevator system.',
+  },
+  {
+    companySlug: 'meta',
+    role: 'SDE II',
+    difficulty: 4,
+    rounds: 4,
+    outcome: 'OFFER',
+    experience: 'Very structured process. 1 phone screen (Leetcode Medium/Hard) and 3 onsite rounds (2 coding, 1 system design, 1 behavioral). Speed of coding is crucial.',
+    questions: '1. Decode String Leetcode problem.\n2. Design Instagram news feed generation.\n3. Behavioral questions on executing fast and handling tight deadlines.',
+  },
+  {
+    companySlug: 'microsoft',
+    role: 'SDE II',
+    difficulty: 3,
+    rounds: 5,
+    outcome: 'OFFER',
+    experience: 'Standard interview loops. Focus on clean code, memory efficiency, and object-oriented design patterns.',
+    questions: '1. Reverse linked list in groups of K.\n2. Design an online parking lot system.\n3. Implement a trie data structure for auto-suggestions.',
+  },
+  {
+    companySlug: 'flipkart',
+    role: 'SDE II',
+    difficulty: 4,
+    rounds: 4,
+    outcome: 'OFFER',
+    experience: 'Machine coding round was the first round, where you have to write fully functional, modular code within 2 hours. Next was system design and algorithmic rounds.',
+    questions: '1. Machine Coding: Design an in-memory queue system (like Kafka) with pub-sub mechanics.\n2. Standard SQL query optimization problems.\n3. Design a flash sale inventory system.',
+  },
+  {
+    companySlug: 'meesho',
+    role: 'SDE II',
+    difficulty: 4,
+    rounds: 4,
+    outcome: 'OFFER',
+    experience: 'Very practical rounds. The system design round focused heavily on cost optimization and scaling databases under high load.',
+    questions: '1. Design an OTP generation and verification system.\n2. Explain sharding vs partitioning and write SQL joins.\n3. Implement a key-value store database wrapper.',
+  },
+  {
+    companySlug: 'nvidia',
+    role: 'Hardware Engineer',
+    difficulty: 5,
+    rounds: 5,
+    outcome: 'OFFER',
+    experience: 'Deep dive into computer architecture, Verilog/VHDL, and digital circuit design. The interviewers were principal engineers with immense depth of knowledge.',
+    questions: '1. Explain cache coherency protocols (MESI).\n2. Write Verilog code for a FIFO queue with async clocks.\n3. Solve setup and hold time violation timing diagrams.',
+  },
+  {
+    companySlug: 'zepto',
+    role: 'SDE III',
+    difficulty: 4,
+    rounds: 4,
+    outcome: 'GHOSTED',
+    experience: 'Cleared all rounds. Tech rounds went very well. However, HR ghosted me after salary negotiation. Extremely disappointing HR coordination.',
+    questions: '1. Design a real-time order tracking map system for delivery riders.\n2. Solve 3 Leetcode Hard DP/Graph problems.\n3. How to achieve sub-second caching for high traffic home feeds.',
+  },
+  {
+    companySlug: 'tcs',
+    role: 'Systems Engineer',
+    difficulty: 2,
+    rounds: 2,
+    outcome: 'OFFER',
+    experience: 'Aptitude test followed by a single combined Technical and HR interview. The interview was basic and touched upon basic Java, SQL, and OOPs concepts.',
+    questions: '1. What is the difference between abstract class and interface in Java?\n2. Write a SQL query to find the second highest salary.\n3. What are normalization rules in DBMS?',
+  },
+  {
+    companySlug: 'infosys',
+    role: 'Technology Analyst',
+    difficulty: 2,
+    rounds: 3,
+    outcome: 'OFFER',
+    experience: 'HackWithInfy coding test followed by technical rounds. Simple algorithm questions and resume review.',
+    questions: '1. Check if a string is a palindrome.\n2. Explain polymorphism with a code sample.\n3. Describe your final year college project.',
+  },
+  {
+    companySlug: 'wipro',
+    role: 'Project Engineer',
+    difficulty: 2,
+    rounds: 2,
+    outcome: 'OFFER',
+    experience: 'Elite national talent hunt test followed by standard technical/HR discussions. Very simple programming checks.',
+    questions: '1. Write a program to reverse a string.\n2. What is inheritance in C++?\n3. Explain the difference between primary key and foreign key.',
   },
 ];
 
@@ -459,6 +578,32 @@ async function main() {
   }
 
   console.log(`Seeded ${reviewCount} review records.`);
+
+  // Create interviews
+  let interviewCount = 0;
+  for (const iData of rawInterviewsData) {
+    const companyId = companySlugToIdMap[iData.companySlug];
+    if (!companyId) {
+      console.warn(`Warning: Company slug ${iData.companySlug} not found for interview.`);
+      continue;
+    }
+
+    await prisma.interview.create({
+      data: {
+        companyId,
+        role: iData.role,
+        difficulty: iData.difficulty,
+        rounds: iData.rounds,
+        outcome: iData.outcome,
+        experience: iData.experience,
+        questions: iData.questions,
+        isAnonymous: true,
+      },
+    });
+    interviewCount++;
+  }
+
+  console.log(`Seeded ${interviewCount} interview records.`);
   console.log('Seed completed successfully.');
 }
 

@@ -121,8 +121,12 @@ model Interview {
   rounds       Int?
   outcome      String?
   experience   String?
+  questions    String?
+  isAnonymous  Boolean  @default(true) @map("is_anonymous")
   createdAt    DateTime @default(now()) @map("created_at")
 
+  @@index([companyId])
+  @@index([createdAt])
   @@map("interviews")
 }
 

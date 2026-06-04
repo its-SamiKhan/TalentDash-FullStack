@@ -18,3 +18,5 @@ export { SalaryCard } from './SalaryCard';
 export { Pagination } from './Pagination';
 export { StarRatingDisplay } from './StarRatingDisplay';
 export { StarRatingInput } from './StarRatingInput';
+export { InterviewCard } from './InterviewCard';
+

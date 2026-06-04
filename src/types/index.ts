@@ -203,3 +203,45 @@ export interface CompanyReviewStats {
   count: number;
 }
 
+// ─── Interview Types ─────────────────────────────────────
+
+export interface InterviewForDisplay {
+  id: string;
+  companyName: string;
+  companySlug: string;
+  companyLogoUrl: string | null;
+  role: string | null;
+  difficulty: number | null;
+  rounds: number | null;
+  outcome: string | null;
+  experience: string | null;
+  questions: string | null;
+  isAnonymous: boolean;
+  createdAt: string;
+}
+
+export interface InterviewFilters {
+  company?: string;
+  role?: string;
+}
+
+export interface InterviewIngestPayload {
+  company: string;
+  role: string;
+  difficulty: number;
+  rounds: number;
+  outcome: string; // OFFER, REJECT, GHOSTED
+  experience: string;
+  questions: string;
+}
+
+export interface CompanyInterviewStats {
+  average_difficulty: number;
+  average_rounds: number;
+  offer_rate: number;
+  reject_rate: number;
+  ghosted_rate: number;
+  count: number;
+}
+
+

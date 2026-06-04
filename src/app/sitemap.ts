@@ -23,6 +23,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  const companyInterviewsUrls = companies.map((c) => ({
+    url: `${BASE_URL}/interviews/${c.slug}`,
+    lastModified: c.updatedAt,
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
+
   return [
     {
       url: BASE_URL,
@@ -43,6 +50,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
+      url: `${BASE_URL}/interviews`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.8,
+    },
+    {
       url: `${BASE_URL}/compare`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
@@ -50,5 +63,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...companyUrls,
     ...companyReviewsUrls,
+    ...companyInterviewsUrls,
   ];
 }
+

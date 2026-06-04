@@ -259,3 +259,78 @@ export function validateReviewPayload(body: unknown): ValidationResult {
   };
 }
 
+/**
+ * Validate an ingest interview payload.
+ */
+export function validateInterviewPayload(body: unknown): ValidationResult {
+  const errors: string[] = [];
+
+  // 1. Body must be an object
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return { valid: false, errors: ['Request body must be a JSON object'] };
+  }
+
+  const data = body as Record<string, unknown>;
+
+  // 2. Required fields
+  const requiredFields = [
+    'company', 'role', 'difficulty', 'rounds', 'outcome', 'experience', 'questions'
+  ];
+  for (const field of requiredFields) {
+    if (data[field] === undefined || data[field] === null || data[field] === '') {
+      errors.push(`${field} is required`);
+    }
+  }
+  if (errors.length > 0) return { valid: false, errors };
+
+  // 3. Type checking
+  for (const field of ['company', 'role', 'outcome', 'experience', 'questions']) {
+    if (typeof data[field] !== 'string') {
+      errors.push(`${field} must be a string`);
+    }
+  }
+  for (const field of ['difficulty', 'rounds']) {
+    if (typeof data[field] !== 'number') {
+      errors.push(`${field} must be a number`);
+    }
+  }
+  if (errors.length > 0) return { valid: false, errors };
+
+  // 4. Difficulty range: 1-5
+  const diff = data.difficulty as number;
+  if (!Number.isInteger(diff) || diff < 1 || diff > 5) {
+    errors.push('difficulty must be an integer between 1 and 5');
+  }
+
+  // 5. Rounds range: 1-10
+  const rnds = data.rounds as number;
+  if (!Number.isInteger(rnds) || rnds < 1 || rnds > 10) {
+    errors.push('rounds must be an integer between 1 and 10');
+  }
+
+  // 6. Outcome enum: OFFER, REJECT, GHOSTED
+  const VALID_OUTCOMES = ['OFFER', 'REJECT', 'GHOSTED'];
+  if (!VALID_OUTCOMES.includes(data.outcome as string)) {
+    errors.push('Invalid outcome. Must be one of: OFFER, REJECT, GHOSTED');
+  }
+
+  // 7. Experience length
+  const exp = data.experience as string;
+  if (exp.length < 20) {
+    errors.push('experience must be at least 20 characters long');
+  }
+
+  // 8. Questions length
+  const qns = data.questions as string;
+  if (qns.length < 10) {
+    errors.push('questions must be at least 10 characters long');
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+    data: errors.length === 0 ? data : undefined,
+  };
+}
+
+

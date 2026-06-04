@@ -1,0 +1,80 @@
+import React, { Suspense } from 'react';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { getCompanyBySlug, getAllCompanySlugs } from '@/services/company.service';
+import { getCompanyInterviewStats, getInterviews } from '@/services/interview.service';
+import { getDistinctValues } from '@/services/salary.service';
+import { CompanyInterviewsPageClient } from '../CompanyInterviewsPageClient';
+
+export const revalidate = 3600; // Cache for 1 hour
+
+interface PageProps {
+  params: Promise<{ companySlug: string; role: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { companySlug, role } = await params;
+  const decodedRole = decodeURIComponent(role);
+  const companyData = await getCompanyBySlug(companySlug);
+  if (!companyData) {
+    return {
+      title: `${decodedRole} Interviews`,
+    };
+  }
+  return {
+    title: `${companyData.company.name} ${decodedRole} Interview Questions & Difficulty`,
+    description: `Explore interview difficulty, rounds count, questions asked, and outcomes for ${decodedRole} roles at ${companyData.company.name}.`,
+  };
+}
+
+
+export async function generateStaticParams() {
+  const slugs = await getAllCompanySlugs();
+  const distinctRoles = await getDistinctValues('role');
+  const paths: { companySlug: string; role: string }[] = [];
+
+  for (const slug of slugs) {
+    for (const role of distinctRoles) {
+      paths.push({ companySlug: slug, role: encodeURIComponent(role) });
+    }
+  }
+
+  return paths;
+}
+
+export default async function CompanyRoleInterviewsPage({ params }: PageProps) {
+  const { companySlug, role } = await params;
+  const decodedRole = decodeURIComponent(role);
+  const companyData = await getCompanyBySlug(companySlug);
+
+  if (!companyData) {
+    notFound();
+  }
+
+  const { company } = companyData;
+  const stats = await getCompanyInterviewStats(company.id);
+
+  // Fetch interviews for this company AND specific role
+  const interviewsData = await getInterviews(
+    { company: companySlug, role: decodedRole },
+    { page: 1, limit: 100 }
+  );
+
+  return (
+    <Suspense fallback={
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-slate-200 rounded w-1/4"></div>
+          <div className="h-4 bg-slate-200 rounded w-1/3"></div>
+          <div className="h-48 bg-slate-200 rounded-lg"></div>
+        </div>
+      </div>
+    }>
+      <CompanyInterviewsPageClient
+        company={company}
+        stats={stats}
+        initialInterviews={interviewsData.data}
+      />
+    </Suspense>
+  );
+}

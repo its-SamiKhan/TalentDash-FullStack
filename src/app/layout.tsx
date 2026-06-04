@@ -45,6 +45,12 @@ export default function RootLayout({
                   Reviews
                 </Link>
                 <Link
+                  href="/interviews"
+                  className="text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
+                >
+                  Interviews
+                </Link>
+                <Link
                   href="/compare"
                   className="text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
                 >
@@ -58,6 +64,12 @@ export default function RootLayout({
                 className="md:hidden text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
               >
                 Compare
+              </Link>
+              <Link
+                href="/interviews"
+                className="md:hidden text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
+              >
+                Interviews
               </Link>
               <Link
                 href="/reviews"
@@ -99,6 +111,9 @@ export default function RootLayout({
               <div className="flex gap-6">
                 <Link href="/salaries" className="text-xs text-[#717171] hover:text-[#484848]">
                   Salary Search
+                </Link>
+                <Link href="/interviews" className="text-xs text-[#717171] hover:text-[#484848]">
+                  Interviews
                 </Link>
                 <Link href="/compare" className="text-xs text-[#717171] hover:text-[#484848]">
                   Comparison Tool
