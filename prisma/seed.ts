@@ -336,7 +336,7 @@ async function main() {
     const role = getRandomElement(ROLES);
     const location = getRandomElement(LOCATIONS);
 
-    let currency = Currency.INR;
+    let currency: Currency = Currency.INR;
     if (['Mountain View', 'Seattle', 'San Francisco'].includes(location)) {
       currency = Currency.USD;
     } else if (location === 'London') {

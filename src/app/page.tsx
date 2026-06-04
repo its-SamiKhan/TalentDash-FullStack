@@ -24,9 +24,18 @@ export default async function HomePage() {
   });
 
   // Fetch quick database counters
-  const [totalSalaries, totalCompanies] = await Promise.all([
+  const [
+    totalSalaries,
+    totalCompanies,
+    totalReviews,
+    totalInterviews,
+    totalPosts,
+  ] = await Promise.all([
     prisma.salary.count(),
     prisma.company.count(),
+    prisma.review.count(),
+    prisma.interview.count(),
+    prisma.communityPost.count(),
   ]);
 
   return (
@@ -82,7 +91,7 @@ export default async function HomePage() {
               </div>
               <h3 className="text-lg font-bold text-[#222222]">Comparable Format</h3>
               <p className="text-sm text-[#484848] leading-relaxed">
-                By standardizing levels (e.g. SDE-I to Staff) and currencies, we let you compare packages side-by-side with clear mathematical deltas.
+                By standardizing levels (e.g. SDE-I to Staff) and currencies, we let you compare packages side-by-side with clean mathematical deltas.
               </p>
             </div>
             <div className="bg-white border border-[#EBEBEB] rounded-lg p-6 shadow-xs flex flex-col gap-3">
@@ -142,13 +151,13 @@ export default async function HomePage() {
 
       {/* Summary counters section */}
       <section className="py-16 bg-[#F7F7F7]">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 gap-8">
+        <div className="mx-auto max-w-6xl px-4 text-center sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-8">
             <div className="flex flex-col items-center">
               <span className="text-4xl sm:text-5xl font-extrabold text-[#222222] tracking-tight">
                 {totalSalaries}
               </span>
-              <span className="text-xs font-bold text-[#717171] uppercase tracking-widest mt-2">
+              <span className="text-[10px] font-extrabold text-[#717171] uppercase tracking-widest mt-2">
                 Salary Submissions
               </span>
             </div>
@@ -156,8 +165,32 @@ export default async function HomePage() {
               <span className="text-4xl sm:text-5xl font-extrabold text-[#222222] tracking-tight">
                 {totalCompanies}
               </span>
-              <span className="text-xs font-bold text-[#717171] uppercase tracking-widest mt-2">
+              <span className="text-[10px] font-extrabold text-[#717171] uppercase tracking-widest mt-2">
                 Active Tech Employers
+              </span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-4xl sm:text-5xl font-extrabold text-[#222222] tracking-tight">
+                {totalReviews}
+              </span>
+              <span className="text-[10px] font-extrabold text-[#717171] uppercase tracking-widest mt-2">
+                Verified Reviews
+              </span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-4xl sm:text-5xl font-extrabold text-[#222222] tracking-tight">
+                {totalInterviews}
+              </span>
+              <span className="text-[10px] font-extrabold text-[#717171] uppercase tracking-widest mt-2">
+                Candidate Logs
+              </span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-4xl sm:text-5xl font-extrabold text-[#222222] tracking-tight">
+                {totalPosts}
+              </span>
+              <span className="text-[10px] font-extrabold text-[#717171] uppercase tracking-widest mt-2">
+                Discussion Threads
               </span>
             </div>
           </div>
