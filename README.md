@@ -92,18 +92,18 @@ erDiagram
 
 ```mermaid
 graph TD
-    subgraph SSG/ISR Cache (Revalidate 1 hour)
+    subgraph ssg_isr ["SSG/ISR Cache (Revalidate 1 hour)"]
         A["/companies/[slug] (Company Profiles)"]
         B["/reviews/[companySlug] (Company Reviews)"]
         C["/interviews/[companySlug] (Company Interviews)"]
         D["/profiles/[role]/interview-questions (Role Questions)"]
     end
-    subgraph Dynamic Pages (SSR / Client Sync)
+    subgraph dynamic ["Dynamic Pages (SSR / Client Sync)"]
         E["/salaries (Salary Grid & Modal)"]
         F["/reviews (Reviews Hub)"]
         G["/interviews (Interviews Hub)"]
     end
-    subgraph Dynamic API Handlers
+    subgraph api ["Dynamic API Handlers"]
         H["/api/ingest-salary (POST)"]
         I["/api/ingest-review (POST)"]
         J["/api/ingest-interview (POST)"]
