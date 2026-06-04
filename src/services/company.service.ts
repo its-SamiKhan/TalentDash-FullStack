@@ -166,3 +166,20 @@ export async function getOrCreateCompany(name: string): Promise<Company> {
     },
   });
 }
+
+/**
+ * Get all companies in the database, ordered alphabetically by name.
+ */
+export async function getAllCompanies() {
+  return prisma.company.findMany({
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+    },
+    orderBy: {
+      name: 'asc',
+    },
+  });
+}
+

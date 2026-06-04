@@ -2,8 +2,8 @@ import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { getInterviews } from '@/services/interview.service';
 import { getDistinctValues } from '@/services/salary.service';
+import { getAllCompanies } from '@/services/company.service';
 import { InterviewsPageClient } from './InterviewsPageClient';
-
 
 export const revalidate = 3600; // Cache for 1 hour
 
@@ -13,7 +13,6 @@ export async function generateMetadata(): Promise<Metadata> {
     description: 'Explore interview questions, rounds count, difficulty ratings, and outcomes for tech companies. Prepare for your next interview.',
   };
 }
-
 
 interface SearchParams {
   company?: string;
@@ -44,6 +43,7 @@ export default async function InterviewsPage({
 
   // Fetch unique roles for filters
   const distinctRoles = await getDistinctValues('role');
+  const companiesList = await getAllCompanies();
 
   return (
     <Suspense fallback={
@@ -58,6 +58,7 @@ export default async function InterviewsPage({
       <InterviewsPageClient
         initialData={result}
         distinctRoles={distinctRoles}
+        companiesList={companiesList}
         initialFilters={{ company, role }}
         initialPage={page}
         isSubmitOpenInitial={isSubmitOpen}
@@ -65,3 +66,4 @@ export default async function InterviewsPage({
     </Suspense>
   );
 }
+

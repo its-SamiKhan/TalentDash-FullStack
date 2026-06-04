@@ -25,6 +25,7 @@ interface SalaryPageClientProps {
   distinctRoles: string[];
   distinctLocations: string[];
   distinctLevels: string[];
+  companiesList: { id: string; name: string; slug: string }[];
   initialFilters: SalaryFilters;
   initialSort: SortOption;
   initialPage: number;
@@ -36,6 +37,7 @@ export function SalaryPageClient({
   distinctRoles,
   distinctLocations,
   distinctLevels,
+  companiesList,
   initialFilters,
   initialSort,
   initialPage,
@@ -552,12 +554,15 @@ export function SalaryPageClient({
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="col-span-2">
-                    <Input
+                    <Select
                       label="Company Name"
                       name="company"
-                      placeholder="e.g. Google, Amazon"
                       value={formValues.company}
                       onChange={handleFormChange}
+                      options={[
+                        { value: '', label: 'Select a company...' },
+                        ...companiesList.map((c) => ({ value: c.name, label: c.name })),
+                      ]}
                       required
                     />
                   </div>

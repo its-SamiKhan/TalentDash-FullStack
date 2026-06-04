@@ -19,6 +19,7 @@ import type { ReviewForDisplay, PaginatedResponse, ReviewFilters } from '@/types
 interface ReviewsPageClientProps {
   initialData: PaginatedResponse<ReviewForDisplay>;
   distinctRoles: string[];
+  companiesList: { id: string; name: string; slug: string }[];
   initialFilters: ReviewFilters;
   initialPage: number;
   isSubmitOpenInitial: boolean;
@@ -27,6 +28,7 @@ interface ReviewsPageClientProps {
 export function ReviewsPageClient({
   initialData,
   distinctRoles,
+  companiesList,
   initialFilters,
   initialPage,
   isSubmitOpenInitial,
@@ -401,12 +403,15 @@ export function ReviewsPageClient({
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="col-span-2">
-                    <Input
+                    <Select
                       label="Company Name"
                       name="company"
-                      placeholder="e.g. Google, Amazon"
                       value={formValues.company}
                       onChange={handleFormChange}
+                      options={[
+                        { value: '', label: 'Select a company...' },
+                        ...companiesList.map((c) => ({ value: c.name, label: c.name })),
+                      ]}
                       required
                     />
                   </div>

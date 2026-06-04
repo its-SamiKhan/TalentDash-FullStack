@@ -1,4 +1,5 @@
 import { getSalaries, getDistinctValues } from '@/services/salary.service';
+import { getAllCompanies } from '@/services/company.service';
 import { generateSalaryPageMetadata, buildDatasetJsonLd, renderJsonLd } from '@/lib/seo';
 import { SalaryPageClient } from './SalaryPageClient';
 import type { SortOption, Level } from '@/types';
@@ -56,6 +57,7 @@ export default async function SalariesPage({
   const distinctRoles = await getDistinctValues('role');
   const distinctLocations = await getDistinctValues('location');
   const distinctLevels = await getDistinctValues('level');
+  const companiesList = await getAllCompanies();
 
   const jsonLd = buildDatasetJsonLd();
 
@@ -70,6 +72,7 @@ export default async function SalariesPage({
         distinctRoles={distinctRoles}
         distinctLocations={distinctLocations}
         distinctLevels={distinctLevels}
+        companiesList={companiesList}
         initialFilters={{
           company,
           role,
@@ -84,3 +87,4 @@ export default async function SalariesPage({
     </>
   );
 }
+

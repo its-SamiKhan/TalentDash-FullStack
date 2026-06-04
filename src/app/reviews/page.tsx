@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { getReviews } from '@/services/review.service';
 import { getDistinctValues } from '@/services/salary.service';
+import { getAllCompanies } from '@/services/company.service';
 import { ReviewsPageClient } from './ReviewsPageClient';
 
 export const revalidate = 3600; // Cache for 1 hour
@@ -34,6 +35,7 @@ export default async function ReviewsPage({
 
   // Fetch unique roles for filters
   const distinctRoles = await getDistinctValues('role');
+  const companiesList = await getAllCompanies();
 
   return (
     <Suspense fallback={
@@ -48,6 +50,7 @@ export default async function ReviewsPage({
       <ReviewsPageClient
         initialData={result}
         distinctRoles={distinctRoles}
+        companiesList={companiesList}
         initialFilters={{ company, role }}
         initialPage={page}
         isSubmitOpenInitial={isSubmitOpen}
@@ -55,3 +58,4 @@ export default async function ReviewsPage({
     </Suspense>
   );
 }
+
