@@ -369,3 +369,10 @@ To meet programmatic SEO efficiency:
 - **Authentication**: No sign-in/sign-up forms. Submissions are anonymous but validation filters and deduplication parameters are aggressive to guarantee data cleanliness.
 - **Complex Charts**: Avoided heavy charting libraries (e.g. Chart.js, Recharts) to maximize page loading speeds. Data is represented using pure Tailwind CSS utility bars.
 - **Dark Mode**: Omitted prefers-color-scheme styles to enforce a clean, single visual palette.
+
+---
+
+## 👤 Author
+
+Developed with 💻 & ☕ by **[Sami Khan (its-SamiKhan)](https://github.com/its-SamiKhan)**.
+
