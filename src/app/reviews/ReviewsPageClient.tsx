@@ -417,12 +417,15 @@ export function ReviewsPageClient({
                   </div>
 
                   <div className="col-span-2">
-                    <Input
+                    <Select
                       label="Job Role / Title (Optional)"
                       name="role"
-                      placeholder="e.g. Software Engineer"
                       value={formValues.role}
                       onChange={handleFormChange}
+                      options={[
+                        { value: '', label: 'Select a role (optional)...' },
+                        ...distinctRoles.map((r) => ({ value: r, label: r })),
+                      ]}
                     />
                   </div>
 

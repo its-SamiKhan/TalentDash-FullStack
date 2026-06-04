@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Button,
-  Input,
   SearchInput,
   Select,
   EmptyState,
@@ -329,12 +328,15 @@ export function InterviewsPageClient({
                   </div>
 
                   <div className="col-span-2">
-                    <Input
+                    <Select
                       label="Job Role / Title"
                       name="role"
-                      placeholder="e.g. SDE-II, Software Engineer"
                       value={formValues.role}
                       onChange={handleFormChange}
+                      options={[
+                        { value: '', label: 'Select a role...' },
+                        ...distinctRoles.map((r) => ({ value: r, label: r })),
+                      ]}
                       required
                     />
                   </div>

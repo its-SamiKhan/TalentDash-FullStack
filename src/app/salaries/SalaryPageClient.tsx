@@ -568,12 +568,15 @@ export function SalaryPageClient({
                   </div>
 
                   <div className="col-span-2 sm:col-span-1">
-                    <Input
+                    <Select
                       label="Job Role / Title"
                       name="role"
-                      placeholder="e.g. Software Engineer"
                       value={formValues.role}
                       onChange={handleFormChange}
+                      options={[
+                        { value: '', label: 'Select a role...' },
+                        ...distinctRoles.map((r) => ({ value: r, label: r })),
+                      ]}
                       required
                     />
                   </div>
