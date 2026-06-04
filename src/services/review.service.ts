@@ -62,9 +62,21 @@ export async function getReviews(
   const where: Prisma.ReviewWhereInput = {};
 
   if (filters.company) {
-    where.company = {
-      slug: filters.company,
-    };
+    const companyExists = await prisma.company.findUnique({
+      where: { slug: filters.company },
+    });
+
+    if (companyExists) {
+      where.company = { slug: filters.company };
+    } else {
+      where.company = {
+        OR: [
+          { name: { contains: filters.company, mode: 'insensitive' } },
+          { normalizedName: { contains: filters.company.toLowerCase() } },
+          { slug: { contains: filters.company.toLowerCase() } },
+        ],
+      };
+    }
   }
 
   if (filters.role) {
