@@ -88,27 +88,6 @@ erDiagram
     Company ||--o{ Interview : "has many"
 ```
 
-### Ingestion & Validation Pipeline Flow
-
-```mermaid
-graph TD
-    A[Contributor or Scraper Submission] --> B{JSON Object Validation}
-    B -- Invalid --> C[Reject & Return 400 Errors]
-    B -- Valid --> D{Required Fields & Type Check}
-    D -- Mismatch --> C
-    D -- Valid --> E{Data Clean & Normalize}
-    E --> F[Convert Co Suffixes / Make Slug]
-    F --> G[City-Only Location Check]
-    G -- Has Comma --> C
-    G -- Valid City --> H[Calculate Total Comp]
-    H --> I[Base + Bonus + Stock Computation]
-    I --> J{Deduplication Check <br> within 48 Hours & 10% Margin}
-    J -- Duplicate --> C
-    J -- Unique --> K[Create / Link Company in DB]
-    K --> L[Prisma Insert Record]
-    L --> M[Purge & Revalidate Cache paths]
-```
-
 ### Rendering & Caching Flow (Next.js 16 App Router)
 
 ```mermaid
