@@ -14,7 +14,41 @@ TalentDash is built as a programmatic SEO platform. It is designed to scale orga
 
 ---
 
-## 2. Non-Negotiable Technology Stack
+## 2. Setup and Local Development
+
+### Prerequisites
+- Node.js 18+
+- Neon PostgreSQL Database
+
+### Installation & Run
+
+1. Clone and install dependencies:
+   ```bash
+   npm install
+   ```
+2. Populate your `.env` file in the root using Neon credentials:
+   ```env
+   DATABASE_URL="postgresql://[user]:[pass]@[endpoint]-pooler.region.aws.neon.tech/[dbname]?sslmode=require"
+   DIRECT_URL="postgresql://[user]:[pass]@[endpoint].region.aws.neon.tech/[dbname]?sslmode=require"
+   NEXT_PUBLIC_BASE_URL="http://localhost:3000"
+   ```
+3. Generate the Prisma Client:
+   ```bash
+   npx prisma generate
+   ```
+4. Push database tables and run the seed script:
+   ```bash
+   npm run db:push
+   ```
+   *Note: This command will automatically run the TypeScript seeding command to populate tech employers, salaries, reviews, interviews, community posts, and comments.*
+5. Run the dev server:
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## 3. Non-Negotiable Technology Stack
 
 - **Frontend**: Next.js 16 App Router, TypeScript (Strict Mode), Tailwind CSS v4, React Server Components (RSC)
 - **Backend Services**: Next.js Route Handlers, service-oriented business logic layers
@@ -22,7 +56,7 @@ TalentDash is built as a programmatic SEO platform. It is designed to scale orga
 
 ---
 
-## 3. System Architecture & Diagrams
+## 4. System Architecture & Diagrams
 
 ### Database Entity Relationship Diagram (ERD)
 
@@ -149,7 +183,7 @@ graph TD
 
 ---
 
-## 4. Design System Color Tokens
+## 5. Design System Color Tokens
 
 All design tokens are defined in `src/app/globals.css` using Tailwind v4 theme configurations:
 
@@ -169,7 +203,7 @@ All design tokens are defined in `src/app/globals.css` using Tailwind v4 theme c
 
 ---
 
-## 5. Platform Structure (Product Areas)
+## 6. Platform Structure (Product Areas)
 
 The platform currently implements 8 fully functional product areas:
 
@@ -184,7 +218,7 @@ The platform currently implements 8 fully functional product areas:
 
 ---
 
-## 6. Core Data Contracts
+## 7. Core Data Contracts
 
 Every layer of the application (Prisma schema, TypeScript interfaces, validation middleware) enforces these strict schema contracts:
 
@@ -290,7 +324,7 @@ type WorkplaceScoreRecord = {
 
 ---
 
-## 7. Rendering & Caching Strategy
+## 8. Rendering & Caching Strategy
 
 To balance fast loading speeds (LCP < 2s) and database query costs, the platform utilizes Next.js App Router caching layers:
 
@@ -301,40 +335,6 @@ To balance fast loading speeds (LCP < 2s) and database query costs, the platform
 - **Workplace Index (`/workplace-index`, `/workplace-index/rankings`)**: Static rendering with cache regeneration hourly (`revalidate = 3600`) for high performance.
 - **Workplace Industry Indices (`/workplace-index/[industry]`)**: Static Site Generation (SSG) with path compilation via `generateStaticParams()` to optimize SEO indexing for target industries.
 - **Company Specific Pages (`/companies/[slug]`, `/reviews/[companySlug]`, `/interviews/[companySlug]`)**: Static Site Generation (SSG) using `generateStaticParams()` to pre-render pages. Fallback is set to compile new companies dynamically. Purged and revalidated on cache paths whenever new data is ingested.
-
----
-
-## 8. Setup and Local Development
-
-### Prerequisites
-- Node.js 18+
-- Neon PostgreSQL Database
-
-### Installation & Run
-
-1. Clone and install dependencies:
-   ```bash
-   npm install
-   ```
-2. Populate your `.env` file in the root using Neon credentials:
-   ```env
-   DATABASE_URL="postgresql://[user]:[pass]@[endpoint]-pooler.region.aws.neon.tech/[dbname]?sslmode=require"
-   DIRECT_URL="postgresql://[user]:[pass]@[endpoint].region.aws.neon.tech/[dbname]?sslmode=require"
-   NEXT_PUBLIC_BASE_URL="http://localhost:3000"
-   ```
-3. Generate the Prisma Client:
-   ```bash
-   npx prisma generate
-   ```
-4. Push database tables and run the seed script:
-   ```bash
-   npm run db:push
-   ```
-   *Note: This command will automatically run the TypeScript seeding command to populate tech employers, salaries, reviews, interviews, community posts, and comments.*
-5. Run the dev server:
-   ```bash
-   npm run dev
-   ```
 
 ---
 
