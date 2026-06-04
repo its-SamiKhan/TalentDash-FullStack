@@ -83,9 +83,25 @@ erDiagram
         boolean isAnonymous
         datetime createdAt
     }
+    CommunityPost {
+        string id PK
+        string companyId FK
+        string topic
+        string title
+        string body
+        datetime createdAt
+    }
+    CommunityComment {
+        string id PK
+        string postId FK
+        string body
+        datetime createdAt
+    }
     Company ||--o{ Salary : "has many"
     Company ||--o{ Review : "has many"
     Company ||--o{ Interview : "has many"
+    Company ||--o{ CommunityPost : "has many (optional)"
+    CommunityPost ||--o{ CommunityComment : "has many"
 ```
 
 ### Rendering & Caching Flow (Next.js 16 App Router)
@@ -102,11 +118,16 @@ graph TD
         E["/salaries (Salary Grid & Modal)"]
         F["/reviews (Reviews Hub)"]
         G["/interviews (Interviews Hub)"]
+        K["/community (Community Hub)"]
+        L["/community/[slug] (Company/Topic Feed)"]
+        M["/community/post/[id] (Thread Feed)"]
     end
     subgraph api ["Dynamic API Handlers"]
         H["/api/ingest-salary (POST)"]
         I["/api/ingest-review (POST)"]
         J["/api/ingest-interview (POST)"]
+        N["/api/community (GET/POST)"]
+        O["/api/community/comments (POST)"]
     end
     H -- Triggers Revalidate --> A
     I -- Triggers Revalidate --> B
@@ -137,15 +158,15 @@ All design tokens are defined in `src/app/globals.css` using Tailwind v4 theme c
 
 ## 5. Platform Structure (Product Areas)
 
-The platform currently implements 5 fully functional product areas (with future stubs for the remaining 3):
+The platform currently implements 7 fully functional product areas (with future stubs for the remaining 1):
 
 1. **Salaries** (✅ Completed): Dynamic search, sorting, and pagination list at `/salaries`.
 2. **Companies** (✅ Completed): SEO-optimized company profiles at `/companies/[slug]`.
 3. **Compare** (✅ Completed): Interactive side-by-side analysis at `/compare`.
 4. **Reviews** (✅ Completed): Anonymous employer reviews, rating metrics breakdown, and dynamic submission modal at `/reviews`.
 5. **Interviews** (✅ Completed): Interview preparation dashboard with difficulty ratings, typical rounds counts, outcome rate statistics (offer/rejection/ghosted), questions asked, and dynamic submission modal at `/interviews`. Role-specific questions profiles under `/profiles/[role]/interview-questions`.
-6. **Tools** (Future Stub): Career calculators and cost of living maps.
-7. **Community** (Future Stub): Negotiation forums and offer evaluations.
+6. **Tools** (✅ Completed): Interactive career calculators (salary, hike, equity/ESOP) and side-by-side offer comparison tools at `/tools`.
+7. **Community** (✅ Completed): Anonymous professional discussion forums featuring company boards, topic feeds, and comment threads at `/community`.
 8. **Workplace Index** (Future Stub): Performance ratings across key workplace markers.
 
 ---
@@ -213,6 +234,30 @@ type InterviewRecord = {
 };
 ```
 
+### Community Post Record
+
+```typescript
+type CommunityPostRecord = {
+  id: string;
+  companyId: string | null;
+  topic: string | null;
+  title: string;
+  body: string;
+  createdAt: Date;
+};
+```
+
+### Community Comment Record
+
+```typescript
+type CommunityCommentRecord = {
+  id: string;
+  postId: string;
+  body: string;
+  createdAt: Date;
+};
+```
+
 ---
 
 ## 7. Rendering & Caching Strategy
@@ -222,6 +267,7 @@ To balance fast loading speeds (LCP < 2s) and database query costs, the platform
 - **Homepage (`/`)**: Incremental Static Regeneration (ISR) with `revalidate = 3600` (1 hour) to keep employer counters fresh.
 - **Salaries Page (`/salaries`)**: Dynamic server-side rendering combined with client-side query string synchronization to support infinite filter variations.
 - **Reviews & Interviews Hubs**: Dynamic SSR with caching configured as `s-maxage=300, stale-while-revalidate=3600`.
+- **Community Forums (`/community`, `/community/[slug]`, `/community/post/[id]`)**: Dynamic SSR routes (caching: `s-maxage=60, stale-while-revalidate=600`) for real-time discussion updates and thread replies.
 - **Company Specific Pages (`/companies/[slug]`, `/reviews/[companySlug]`, `/interviews/[companySlug]`)**: Static Site Generation (SSG) using `generateStaticParams()` to pre-render pages. Fallback is set to compile new companies dynamically. Purged and revalidated on cache paths whenever new data is ingested.
 
 ---
@@ -252,7 +298,7 @@ To balance fast loading speeds (LCP < 2s) and database query costs, the platform
    ```bash
    npm run db:push
    ```
-   *Note: This command will automatically run the TypeScript seeding command to populate tech employers, salaries, reviews, and interviews.*
+   *Note: This command will automatically run the TypeScript seeding command to populate tech employers, salaries, reviews, interviews, community posts, and comments.*
 5. Run the dev server:
    ```bash
    npm run dev
@@ -279,9 +325,9 @@ Each follows a strict validation pipeline:
 
 If given another day of development, the following features would be implemented:
 - **Secure Ingestion Tokens**: Add JWT-based API key authentication to API ingest routes to verify crawlers and prevent spam.
-- **Salary Calculator Tools**: Build calculators for standardizing stock grants (double trigger RSUs, options models) and cost-of-living adjustments across locations.
+- **Rich Text / Code Editor**: Add Markdown rendering or syntax highlight supports inside community boards.
 - **Search Auto-Suggestions**: Add full-text search capability that provides instant company auto-completions as users type.
-- **Community Forums**: Connect community post tables to interactive discussion forums for offer evaluations.
+- **Workplace Index Charts**: Fully connect reviews metrics to Workplace Indexes and render dynamic performance radar charts.
 
 ---
 
