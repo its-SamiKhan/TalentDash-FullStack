@@ -92,17 +92,23 @@ model Salary {
 // Full implementation in future iterations.
 
 model Review {
-  id          String   @id @default(cuid())
-  companyId   String   @map("company_id")
-  company     Company  @relation(fields: [companyId], references: [id])
-  role        String?
-  rating      Int?
-  title       String?
-  pros        String?
-  cons        String?
-  isAnonymous Boolean  @default(true) @map("is_anonymous")
-  createdAt   DateTime @default(now()) @map("created_at")
+  id                  String   @id @default(cuid())
+  companyId           String   @map("company_id")
+  company             Company  @relation(fields: [companyId], references: [id])
+  role                String?
+  rating              Int?                    // Overall rating (1-5)
+  workLifeBalance     Int?     @map("work_life_balance")
+  managementQuality   Int?     @map("management_quality")
+  growthOpportunities Int?     @map("growth_opportunities")
+  cultureFit          Int?     @map("culture_fit")
+  title               String?
+  pros                String?
+  cons                String?
+  isAnonymous         Boolean  @default(true) @map("is_anonymous")
+  createdAt           DateTime @default(now()) @map("created_at")
 
+  @@index([companyId])
+  @@index([createdAt])
   @@map("reviews")
 }
 

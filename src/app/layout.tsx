@@ -39,6 +39,12 @@ export default function RootLayout({
                   Salaries
                 </Link>
                 <Link
+                  href="/reviews"
+                  className="text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
+                >
+                  Reviews
+                </Link>
+                <Link
                   href="/compare"
                   className="text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
                 >
@@ -52,6 +58,12 @@ export default function RootLayout({
                 className="md:hidden text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
               >
                 Compare
+              </Link>
+              <Link
+                href="/reviews"
+                className="md:hidden text-sm font-medium text-[#484848] hover:text-[#222222] transition-colors"
+              >
+                Reviews
               </Link>
               <Link
                 href="/salaries"

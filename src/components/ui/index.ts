@@ -16,3 +16,5 @@ export { FilterBar } from './FilterBar';
 export { DataTable } from './DataTable';
 export { SalaryCard } from './SalaryCard';
 export { Pagination } from './Pagination';
+export { StarRatingDisplay } from './StarRatingDisplay';
+export { StarRatingInput } from './StarRatingInput';

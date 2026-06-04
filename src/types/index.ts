@@ -149,3 +149,57 @@ export interface CompanyPageData {
   stats: CompanyStats;
   level_distribution: LevelDistributionItem[];
 }
+
+// ─── Review Types ────────────────────────────────────────
+
+export interface ReviewForDisplay {
+  id: string;
+  companyName: string;
+  companySlug: string;
+  companyLogoUrl: string | null;
+  role: string | null;
+  rating: number | null;
+  workLifeBalance: number | null;
+  managementQuality: number | null;
+  growthOpportunities: number | null;
+  cultureFit: number | null;
+  title: string | null;
+  pros: string | null;
+  cons: string | null;
+  isAnonymous: boolean;
+  createdAt: string;
+}
+
+export interface ReviewFilters {
+  company?: string;
+  role?: string;
+}
+
+export interface ReviewIngestPayload {
+  company: string;
+  role?: string;
+  rating: number;
+  workLifeBalance: number;
+  managementQuality: number;
+  growthOpportunities: number;
+  cultureFit: number;
+  title: string;
+  pros: string;
+  cons: string;
+}
+
+export interface ReviewValidationResult {
+  valid: boolean;
+  errors: string[];
+  data?: ReviewIngestPayload;
+}
+
+export interface CompanyReviewStats {
+  average_overall: number;
+  average_wlb: number;
+  average_management: number;
+  average_growth: number;
+  average_culture: number;
+  count: number;
+}
+

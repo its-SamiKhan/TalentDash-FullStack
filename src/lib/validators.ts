@@ -191,3 +191,71 @@ export function validateLocation(location: string): boolean {
   if (location.includes(',')) return false;
   return true;
 }
+
+/**
+ * Validate an ingest review payload.
+ */
+export function validateReviewPayload(body: unknown): ValidationResult {
+  const errors: string[] = [];
+
+  // 1. Body must be an object
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return { valid: false, errors: ['Request body must be a JSON object'] };
+  }
+
+  const data = body as Record<string, unknown>;
+
+  // 2. Required fields
+  const requiredFields = [
+    'company', 'rating', 'workLifeBalance', 'managementQuality',
+    'growthOpportunities', 'cultureFit', 'title', 'pros', 'cons'
+  ];
+  for (const field of requiredFields) {
+    if (data[field] === undefined || data[field] === null || data[field] === '') {
+      errors.push(`${field} is required`);
+    }
+  }
+  if (errors.length > 0) return { valid: false, errors };
+
+  // 3. Type checking
+  for (const field of ['company', 'title', 'pros', 'cons']) {
+    if (typeof data[field] !== 'string') {
+      errors.push(`${field} must be a string`);
+    }
+  }
+  if (data.role !== undefined && data.role !== null && typeof data.role !== 'string') {
+    errors.push('role must be a string');
+  }
+  for (const field of ['rating', 'workLifeBalance', 'managementQuality', 'growthOpportunities', 'cultureFit']) {
+    if (typeof data[field] !== 'number') {
+      errors.push(`${field} must be a number`);
+    }
+  }
+  if (errors.length > 0) return { valid: false, errors };
+
+  // 4. Ratings range: must be integers 1-5
+  const ratingsFields = ['rating', 'workLifeBalance', 'managementQuality', 'growthOpportunities', 'cultureFit'];
+  for (const field of ratingsFields) {
+    const val = data[field] as number;
+    if (!Number.isInteger(val) || val < 1 || val > 5) {
+      errors.push(`${field} must be an integer between 1 and 5`);
+    }
+  }
+
+  // 5. Pros/Cons min length: 20 characters
+  const pros = data.pros as string;
+  const cons = data.cons as string;
+  if (pros.length < 20) {
+    errors.push('pros must be at least 20 characters long');
+  }
+  if (cons.length < 20) {
+    errors.push('cons must be at least 20 characters long');
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+    data: errors.length === 0 ? data : undefined,
+  };
+}
+

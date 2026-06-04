@@ -214,6 +214,165 @@ const rawSalariesData = [
   { companySlug: 'wipro', role: 'Technical Specialist', level: Level.SDE_III, location: 'Chennai', currency: Currency.INR, experienceYears: 6, base: BigInt(1100000), bonus: BigInt(70000), stock: BigInt(0) },
 ];
 
+const rawReviewsData = [
+  {
+    companySlug: 'google',
+    role: 'Software Engineer',
+    rating: 4,
+    workLifeBalance: 4,
+    managementQuality: 4,
+    growthOpportunities: 3,
+    cultureFit: 5,
+    title: 'Excellent benefits and culture but slow promotions',
+    pros: 'The food, medical benefits, and office perks are top-notch. You get to work with incredibly smart people on very large scale systems.',
+    cons: 'Promotion processes are notoriously slow and political. Getting approvals for new projects involves a lot of red tape.',
+  },
+  {
+    companySlug: 'google',
+    role: 'SDE II',
+    rating: 5,
+    workLifeBalance: 5,
+    managementQuality: 5,
+    growthOpportunities: 4,
+    cultureFit: 5,
+    title: 'Amazing work-life balance and learning curve',
+    pros: 'Work-life balance is extremely respected here. High standard of engineering excellence, code reviews are very educational.',
+    cons: 'Siloed teams sometimes lead to duplicate work. Compensation has standard increments unless you jump levels.',
+  },
+  {
+    companySlug: 'amazon',
+    role: 'SDE II',
+    rating: 3,
+    workLifeBalance: 2,
+    managementQuality: 3,
+    growthOpportunities: 4,
+    cultureFit: 3,
+    title: 'High pressure but great career acceleration',
+    pros: 'The scale of operations is massive. You take extreme ownership of services, which boosts your career growth very quickly.',
+    cons: 'On-call shifts are highly stressful. PIP culture is real, and work-life balance is often sacrificed for deadlines.',
+  },
+  {
+    companySlug: 'amazon',
+    role: 'Software Engineer I',
+    rating: 4,
+    workLifeBalance: 3,
+    managementQuality: 4,
+    growthOpportunities: 5,
+    cultureFit: 4,
+    title: 'Brilliant technical learning for freshers',
+    pros: 'You learn a ton of system design patterns. The onboarding process is structured and peers are very supportive in teaching you.',
+    cons: 'Frugality mindset means office perks are basic. Stock vesting schedule is heavily back-loaded (5/15/40/40).',
+  },
+  {
+    companySlug: 'meta',
+    role: 'SDE II',
+    rating: 5,
+    workLifeBalance: 4,
+    managementQuality: 5,
+    growthOpportunities: 5,
+    cultureFit: 4,
+    title: 'Fast moving execution-oriented culture',
+    pros: 'Excellent compensation packages, high equity upside. The impact you can make on billions of users is extremely satisfying.',
+    cons: 'Move fast culture can lead to tech debt. Stack ranking performance reviews make the environment slightly competitive.',
+  },
+  {
+    companySlug: 'microsoft',
+    role: 'SDE II',
+    rating: 4,
+    workLifeBalance: 4,
+    managementQuality: 4,
+    growthOpportunities: 4,
+    cultureFit: 4,
+    title: 'Solid company with great stability',
+    pros: 'Very stable job security, good work-life balance. Highly collaborative workspace, remote work options are quite flexible.',
+    cons: 'Tech stack varies widely by org. Some teams use older systems, making the learning curve slightly dated.',
+  },
+  {
+    companySlug: 'flipkart',
+    role: 'SDE I',
+    rating: 4,
+    workLifeBalance: 3,
+    managementQuality: 4,
+    growthOpportunities: 4,
+    cultureFit: 4,
+    title: 'Best e-commerce learning in India',
+    pros: 'Engineering challenges are very similar to Amazon. The scale during Big Billion Days is massive and exciting to handle.',
+    cons: 'Work hours can get long during sales events. Promotions are highly dependent on manager support.',
+  },
+  {
+    companySlug: 'meesho',
+    role: 'SDE II',
+    rating: 4,
+    workLifeBalance: 3,
+    managementQuality: 4,
+    growthOpportunities: 5,
+    cultureFit: 4,
+    title: 'High ownership and fast execution',
+    pros: 'Very smart peer group, high degree of ownership. Flat hierarchy, you can pitch ideas directly to directors.',
+    cons: 'Fast-paced growth means processes are still being established. Office building can get quite crowded.',
+  },
+  {
+    companySlug: 'nvidia',
+    role: 'Hardware Engineer',
+    rating: 5,
+    workLifeBalance: 4,
+    managementQuality: 5,
+    growthOpportunities: 5,
+    cultureFit: 5,
+    title: 'Semiconductor giant with unbeatable stock performance',
+    pros: 'The ESPP and stock grants have made many employees wealthy. Exceptional technological leadership in the AI space.',
+    cons: 'High expectations of technical depth. Working across global timezone differences requires late evening syncs.',
+  },
+  {
+    companySlug: 'zepto',
+    role: 'SDE II',
+    rating: 3,
+    workLifeBalance: 2,
+    managementQuality: 3,
+    growthOpportunities: 5,
+    cultureFit: 3,
+    title: 'Extremely fast quick commerce hyper-growth',
+    pros: 'Learn a lot about logistics and high-speed features. Massive scaling challenges, quick release cycles.',
+    cons: 'Work-life balance is almost non-existent. Late-night deployments and weekend escalations are normal.',
+  },
+  {
+    companySlug: 'tcs',
+    role: 'Systems Engineer',
+    rating: 3,
+    workLifeBalance: 5,
+    managementQuality: 3,
+    growthOpportunities: 2,
+    cultureFit: 4,
+    title: 'Good job security and relaxed pace',
+    pros: 'Excellent job stability, low stress levels. Good policies for leaves and health insurance for family.',
+    cons: 'Starting packages are very low. Career growth and technical skills can stagnate if you are on bench.',
+  },
+  {
+    companySlug: 'infosys',
+    role: 'Technology Analyst',
+    rating: 3,
+    workLifeBalance: 4,
+    managementQuality: 3,
+    growthOpportunities: 2,
+    cultureFit: 3,
+    title: 'Good starting place but slow pay hikes',
+    pros: 'Beautiful campuses (especially Mysore), stable work environments. Good training programs for fresh graduates.',
+    cons: 'Annual appraisal increments are low. Heavy reliance on manual timesheets and micro-management in some teams.',
+  },
+  {
+    companySlug: 'wipro',
+    role: 'Project Engineer',
+    rating: 3,
+    workLifeBalance: 4,
+    managementQuality: 3,
+    growthOpportunities: 2,
+    cultureFit: 3,
+    title: 'Stable career path with basic learning',
+    pros: 'Good work security and brand value. Work hours are mostly fixed (9 to 6) with decent leaves.',
+    cons: 'Highly process-heavy bureaucracy. Low starting packages and long wait times for offshore/onsite shifts.',
+  },
+];
+
 async function main() {
   console.log('Starting seed...');
 
@@ -240,7 +399,7 @@ async function main() {
   console.log(`Seeded ${companiesData.length} companies.`);
 
   // Create salaries
-  let count = 0;
+  let salaryCount = 0;
   for (const sData of rawSalariesData) {
     const companyId = companySlugToIdMap[sData.companySlug];
     if (!companyId) {
@@ -267,10 +426,39 @@ async function main() {
         isVerified: Math.random() > 0.3,
       },
     });
-    count++;
+    salaryCount++;
   }
 
-  console.log(`Seeded ${count} salary records.`);
+  console.log(`Seeded ${salaryCount} salary records.`);
+
+  // Create reviews
+  let reviewCount = 0;
+  for (const rData of rawReviewsData) {
+    const companyId = companySlugToIdMap[rData.companySlug];
+    if (!companyId) {
+      console.warn(`Warning: Company slug ${rData.companySlug} not found for review.`);
+      continue;
+    }
+
+    await prisma.review.create({
+      data: {
+        companyId,
+        role: rData.role,
+        rating: rData.rating,
+        workLifeBalance: rData.workLifeBalance,
+        managementQuality: rData.managementQuality,
+        growthOpportunities: rData.growthOpportunities,
+        cultureFit: rData.cultureFit,
+        title: rData.title,
+        pros: rData.pros,
+        cons: rData.cons,
+        isAnonymous: true,
+      },
+    });
+    reviewCount++;
+  }
+
+  console.log(`Seeded ${reviewCount} review records.`);
   console.log('Seed completed successfully.');
 }
 

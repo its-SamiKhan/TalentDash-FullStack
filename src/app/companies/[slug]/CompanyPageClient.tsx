@@ -171,29 +171,39 @@ export function CompanyPageClient({
           </div>
         </div>
 
-        {/* Floating Compare trigger bar */}
-        {compareList.length > 0 && (
-          <div className="flex items-center gap-3 bg-[#FF5A5F]/5 border border-[#FF5A5F]/20 rounded-md p-3">
-            <span className="text-xs font-semibold text-[#484848]">
-              Comparing <span className="text-[#FF5A5F] font-bold">{compareList.length}</span> of 2 records
-            </span>
-            <Button
-              variant="primary"
-              size="sm"
-              disabled={compareList.length < 2}
-              onClick={handleGoCompare}
-              className="text-xs"
-            >
-              Compare Side-by-Side
-            </Button>
-            <button
-              onClick={() => setCompareList([])}
-              className="text-xs text-[#717171] hover:text-[#222222] font-semibold underline ml-1"
-            >
-              Clear
-            </button>
-          </div>
-        )}
+        <div className="flex flex-wrap items-center gap-3">
+          <Button
+            variant="secondary"
+            onClick={() => router.push(`/reviews/${company.slug}`)}
+            className="text-xs shrink-0"
+          >
+            ★ Read Reviews
+          </Button>
+
+          {/* Floating Compare trigger bar */}
+          {compareList.length > 0 && (
+            <div className="flex items-center gap-3 bg-[#FF5A5F]/5 border border-[#FF5A5F]/20 rounded-md p-3">
+              <span className="text-xs font-semibold text-[#484848]">
+                Comparing <span className="text-[#FF5A5F] font-bold">{compareList.length}</span> of 2 records
+              </span>
+              <Button
+                variant="primary"
+                size="sm"
+                disabled={compareList.length < 2}
+                onClick={handleGoCompare}
+                className="text-xs"
+              >
+                Compare Side-by-Side
+              </Button>
+              <button
+                onClick={() => setCompareList([])}
+                className="text-xs text-[#717171] hover:text-[#222222] font-semibold underline ml-1"
+              >
+                Clear
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Stats Summary cards */}
