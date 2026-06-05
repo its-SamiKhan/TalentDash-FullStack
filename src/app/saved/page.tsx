@@ -46,7 +46,7 @@ export default async function SavedPage() {
     industry: c.industry || 'Technology',
     headquarters: c.headquarters || 'Unknown',
     logoUrl: c.logoUrl,
-    averageRating: c.reviews.length > 0 ? parseFloat((c.reviews.reduce((sum, r) => sum + r.rating, 0) / c.reviews.length).toFixed(1)) : 0,
+    averageRating: c.reviews.length > 0 ? parseFloat((c.reviews.reduce((sum, r) => sum + (r.rating ?? 0), 0) / c.reviews.length).toFixed(1)) : 0,
     salariesCount: c.salaries.length,
     reviewsCount: c.reviews.length,
     interviewsCount: c.interviews.length,
