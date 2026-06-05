@@ -789,62 +789,108 @@ export default async function HomePage() {
           <div className="flex flex-col gap-2">
             <h3 className="text-base font-extrabold text-[#222222]">Compensation Heatmap</h3>
             <p className="text-xs text-[#717171] leading-relaxed">
-              Explore salary levels across locations.
+              Explore salary levels across locations
             </p>
             
-            {/* Geo SVG Graph */}
-            <div className="mt-3 relative w-full h-40 bg-rose-50/20 rounded-xl border border-rose-100/50 p-4 overflow-hidden flex items-center justify-center">
-              <svg className="w-full h-full text-rose-100" fill="currentColor" viewBox="0 0 200 100">
-                <path d="M20,30 Q40,32 50,45 T90,30 T120,40 T150,20 T180,35 L190,50 L170,80 L140,70 L110,80 L70,75 L30,80 Z" opacity="0.1" />
-                <path d="M60,20 Q80,25 90,35 T130,20 T160,30 L170,45 L150,55 L120,45 L90,55 L70,45 Z" opacity="0.08" />
+            {/* World Map with SVG overlay lines & dots */}
+            <div className="mt-3 relative w-full h-48 bg-white rounded-xl overflow-hidden flex items-center justify-center">
+              <svg className="h-full w-full" viewBox="70 0 660 400" fill="none" preserveAspectRatio="xMidYMid slice">
+                {/* User's exact pink world map as backdrop */}
+                <image href="/images/heatmap-world.png" x="0" y="-10" width="800" height="420" />
+
+                {/* Connection arcs between tech hubs */}
+                <path
+                  d="M 160 155 Q 300 80 395 120"
+                  stroke="#FF5A5F"
+                  strokeWidth="1.2"
+                  strokeDasharray="4,4"
+                  fill="none"
+                  opacity="0.6"
+                />
+                <path
+                  d="M 160 155 Q 370 100 555 225"
+                  stroke="#FF5A5F"
+                  strokeWidth="1.2"
+                  strokeDasharray="4,4"
+                  fill="none"
+                  opacity="0.6"
+                />
+                <path
+                  d="M 395 120 Q 480 150 555 225"
+                  stroke="#FF5A5F"
+                  strokeWidth="1.2"
+                  strokeDasharray="4,4"
+                  fill="none"
+                  opacity="0.6"
+                />
+                <path
+                  d="M 555 225 Q 620 240 680 165"
+                  stroke="#FF5A5F"
+                  strokeWidth="1.2"
+                  strokeDasharray="4,4"
+                  fill="none"
+                  opacity="0.5"
+                />
+
+                {/* Hotspot nodes */}
+                {[
+                  { city: 'San Francisco', cx: 160, cy: 155, dx: 0, dy: -14 },
+                  { city: 'London', cx: 395, cy: 120, dx: 0, dy: -14 },
+                  { city: 'Bengaluru', cx: 555, cy: 225, dx: 14, dy: 4 },
+                  { city: 'Tokyo', cx: 680, cy: 165, dx: 0, dy: -14 },
+                  { city: 'Sydney', cx: 710, cy: 320, dx: 0, dy: -14 },
+                ].map((node, nIdx) => (
+                  <g key={nIdx}>
+                    {/* Pulsing ring */}
+                    <circle
+                      cx={node.cx}
+                      cy={node.cy}
+                      r="8"
+                      fill="#FF5A5F"
+                      className="animate-ping"
+                      opacity="0.15"
+                    />
+                    {/* Outer white ring */}
+                    <circle
+                      cx={node.cx}
+                      cy={node.cy}
+                      r="5"
+                      fill="white"
+                      stroke="#FF5A5F"
+                      strokeWidth="1.5"
+                    />
+                    {/* Center dot */}
+                    <circle
+                      cx={node.cx}
+                      cy={node.cy}
+                      r="2.5"
+                      fill="#FF5A5F"
+                    />
+                    {/* City label */}
+                    <text
+                      x={node.cx + node.dx}
+                      y={node.cy + node.dy}
+                      textAnchor={node.dx > 0 ? 'start' : 'middle'}
+                      fill="#222222"
+                      fontSize="8"
+                      fontWeight="800"
+                      className="select-none pointer-events-none"
+                    >
+                      {node.city}
+                    </text>
+                  </g>
+                ))}
               </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <svg className="w-full h-full" viewBox="0 0 200 100">
-                  {/* Dotted lines from Bengaluru (hub) to other locations */}
-                  {locationPoints.map((loc, idx) => {
-                    if (loc.name === 'Bengaluru') return null;
-                    return (
-                      <path
-                        key={`line-${idx}`}
-                        d={`M 120 65 Q ${(120 + loc.cx) / 2} ${(65 + loc.cy) / 2 - 10}, ${loc.cx} ${loc.cy}`}
-                        stroke="#FF5A5F"
-                        strokeWidth="0.75"
-                        strokeDasharray="2,3"
-                        fill="none"
-                        opacity="0.35"
-                      />
-                    );
-                  })}
-                  {/* Dynamic pulser dots */}
-                  {locationPoints.map((loc, idx) => (
-                    <g key={`point-${idx}`} className="group/loc">
-                      {loc.name === 'Bengaluru' && (
-                        <circle
-                          cx={loc.cx}
-                          cy={loc.cy}
-                          r={loc.r + 3}
-                          fill="#FF5A5F"
-                          opacity="0.25"
-                          className="animate-ping"
-                        />
-                      )}
-                      <circle
-                        cx={loc.cx}
-                        cy={loc.cy}
-                        r={loc.r}
-                        fill="#FF5A5F"
-                        className="opacity-75 transition-all hover:opacity-100 cursor-pointer"
-                      />
-                      <title>{`${loc.name}: Median ${loc.formatted}`}</title>
-                    </g>
-                  ))}
-                </svg>
-              </div>
             </div>
           </div>
-          <Link href="/salaries" className="text-xs font-bold text-[#FF5A5F] hover:text-[#ff4449] flex items-center gap-1 mt-6">
-            View heatmap →
-          </Link>
+          <a
+            href="https://www.levels.fyi/heatmap/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-bold text-[#FF5A5F] hover:text-[#ff4449] flex items-center gap-1 mt-6"
+          >
+            Explore heatmaps →
+          </a>
         </div>
 
         {/* Right: Salary by Role */}
