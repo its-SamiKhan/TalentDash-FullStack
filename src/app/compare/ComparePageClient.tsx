@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import {
   Select,
   WinnerBadge,
@@ -139,9 +140,19 @@ export function ComparePageClient({ salariesList }: ComparePageClientProps) {
   return (
     <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6">
       {/* Title */}
-      <div>
-        <h1 className="text-3xl font-extrabold text-[#222222] tracking-tight">Compare Salaries</h1>
-        <p className="text-sm text-[#717171] mt-1">Side-by-side comparison of specific tech compensation records.</p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-extrabold text-[#222222] tracking-tight">Compare Salaries</h1>
+          <p className="text-sm text-[#717171] mt-1">Side-by-side comparison of specific tech compensation records.</p>
+        </div>
+        <div>
+          <Link
+            href="/salaries"
+            className="inline-flex h-10 items-center justify-center rounded-md bg-[#FF5A5F] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#ff4449] focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/50 cursor-pointer select-none"
+          >
+            Browse Salaries
+          </Link>
+        </div>
       </div>
 
       {/* Selectors Bar */}
@@ -209,8 +220,18 @@ export function ComparePageClient({ salariesList }: ComparePageClientProps) {
             </svg>
           </div>
           <h2 className="text-base font-bold text-[#222222]">Select Two Records</h2>
-          <p className="text-sm text-[#717171] max-w-sm">
+          <p className="text-sm text-[#717171] max-w-sm mb-2">
             Choose two salary records from the dropdowns above to perform a detailed side-by-side delta analysis.
+          </p>
+          <Link
+            href="/salaries"
+            className="inline-flex h-9 items-center justify-center rounded-md border border-[#EBEBEB] bg-white px-4 text-xs font-semibold text-[#484848] transition-colors hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200 cursor-pointer select-none"
+          >
+            Or browse all salaries
+          </Link>
+          <div className="w-full max-w-xs border-t border-[#EBEBEB] mt-2" />
+          <p className="text-xs text-[#717171] max-w-sm px-4 leading-relaxed mt-1">
+            💡 <strong>Tip:</strong> You can also open any company page and select the comparison checkbox next to salary records to compare them immediately.
           </p>
         </div>
       )}
