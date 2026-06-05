@@ -128,7 +128,7 @@ export function Sidebar({ isCollapsed = false, onToggle }: SidebarProps) {
 
   return (
     <aside
-      className={`hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:z-50 bg-white border-r border-[#EBEBEB] justify-between select-none transition-all duration-300 relative ${
+      className={`hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:z-50 bg-white border-r border-[#EBEBEB] justify-between select-none transition-all duration-300 ${
         isCollapsed ? 'lg:w-16 p-4 items-center' : 'lg:w-64 p-6'
       }`}
     >

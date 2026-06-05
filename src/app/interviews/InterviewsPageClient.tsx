@@ -560,11 +560,6 @@ export function InterviewsPageClient({
         </div>
 
         <div className="relative flex items-center">
-          {/* Left Arrow */}
-          <button className="absolute -left-3.5 z-10 bg-white border border-[#EBEBEB] hover:border-[#FF5A5F] hover:text-[#FF5A5F] shadow-xs w-8 h-8 rounded-full flex items-center justify-center text-slate-400 cursor-pointer select-none transition-colors">
-            <span className="text-sm font-black">‹</span>
-          </button>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 w-full">
             {[
               {
@@ -697,11 +692,6 @@ export function InterviewsPageClient({
               </div>
             ))}
           </div>
-
-          {/* Right Arrow */}
-          <button className="absolute -right-3.5 z-10 bg-white border border-[#EBEBEB] hover:border-[#FF5A5F] hover:text-[#FF5A5F] shadow-xs w-8 h-8 rounded-full flex items-center justify-center text-slate-400 cursor-pointer select-none transition-colors">
-            <span className="text-sm font-black">›</span>
-          </button>
         </div>
       </div>
 

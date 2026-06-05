@@ -665,12 +665,7 @@ export function SalaryPageClient({
             </div>
             
             <div className="relative flex items-center mt-3">
-              {/* Carousel Navigation Left */}
-              <button className="absolute -left-3.5 z-10 bg-white border border-[#EBEBEB] hover:border-[#FF5A5F] hover:text-[#FF5A5F] shadow-xs w-8 h-8 rounded-full flex items-center justify-center text-slate-400 cursor-pointer select-none transition-colors">
-                <span className="text-sm font-black">‹</span>
-              </button>
-              
-              <div className="grid grid-cols-5 gap-2.5 w-full px-4">
+              <div className="grid grid-cols-5 gap-2.5 w-full">
                 {[
                   { name: 'Google', lpa: '$186K', logo: <GoogleLogo />, pct: '19%' },
                   { name: 'Microsoft', lpa: '$167K', logo: <MicrosoftLogo />, pct: '16%' },
@@ -693,11 +688,6 @@ export function SalaryPageClient({
                   </div>
                 ))}
               </div>
-              
-              {/* Carousel Navigation Right */}
-              <button className="absolute -right-3.5 z-10 bg-white border border-[#EBEBEB] hover:border-[#FF5A5F] hover:text-[#FF5A5F] shadow-xs w-8 h-8 rounded-full flex items-center justify-center text-slate-400 cursor-pointer select-none transition-colors">
-                <span className="text-sm font-black">›</span>
-              </button>
             </div>
           </div>
           

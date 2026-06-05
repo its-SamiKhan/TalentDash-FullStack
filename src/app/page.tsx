@@ -2,7 +2,6 @@ import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import SavedButton from '@/app/components/SavedButton';
 import { prisma } from '@/lib/prisma';
 import { generateHomePageMetadata } from '@/lib/seo';
 import { HomeSearchConsole } from '@/components/HomeSearchConsole';
@@ -292,7 +291,6 @@ export default async function HomePage() {
             Discover real salary insights, read reviews, prepare for interviews, and find the right opportunities — all in one place.
           </p>
           <HomeSearchConsole />
-          <SavedButton />
         </div>
         <div className="lg:col-span-5 flex justify-center lg:justify-end">
           <Image
