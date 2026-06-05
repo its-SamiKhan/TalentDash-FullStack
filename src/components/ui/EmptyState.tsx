@@ -5,12 +5,14 @@ interface EmptyStateProps {
   title?: string;
   description?: string;
   onReset?: () => void;
+  actionLabel?: string;
 }
 
 export function EmptyState({
   title = 'No records found',
   description = 'Try adjusting your search terms or filter settings to find what you are looking for.',
   onReset,
+  actionLabel = 'Clear All Filters',
 }: EmptyStateProps) {
   return (
     <div className="w-full flex flex-col items-center justify-center p-12 text-center bg-white border border-[#EBEBEB] rounded-lg">
@@ -24,7 +26,7 @@ export function EmptyState({
       {onReset && (
         <div className="mt-6">
           <Button variant="secondary" onClick={onReset}>
-            Clear All Filters
+            {actionLabel}
           </Button>
         </div>
       )}
