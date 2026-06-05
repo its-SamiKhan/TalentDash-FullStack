@@ -15,6 +15,7 @@ import {
   FilterBar,
 } from '@/components/ui';
 import type { ReviewForDisplay, PaginatedResponse, ReviewFilters } from '@/types';
+import { MinimalIcons } from '@/components/MinimalIcons';
 
 interface ReviewsPageClientProps {
   initialData: PaginatedResponse<ReviewForDisplay>;
@@ -149,6 +150,12 @@ export function ReviewsPageClient({
   isSubmitOpenInitial,
 }: ReviewsPageClientProps) {
   const router = useRouter();
+  
+  const avgSatisfaction = useMemo(() => {
+    if (initialData.data.length === 0) return '4.1';
+    const sum = initialData.data.reduce((acc, r) => acc + (r.rating || 0), 0);
+    return (sum / initialData.data.length).toFixed(1);
+  }, [initialData.data]);
 
   // State sync from URL parameters
   const [companySearch, setCompanySearch] = useState(initialFilters.company || '');
@@ -390,13 +397,13 @@ export function ReviewsPageClient({
       {/* 2. Top Summary Statistics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {[
-          { title: '2.4M+ Reviews', desc: 'from verified professionals', color: 'text-emerald-600 bg-emerald-50 border-emerald-100', icon: '💬' },
-          { title: '14.7K+ Companies', desc: 'reviewed across industries', color: 'text-violet-600 bg-violet-50 border-violet-100', icon: '🏢' },
-          { title: '4.1★ Satisfaction', desc: 'average across all companies', color: 'text-amber-600 bg-amber-50 border-amber-100', icon: '⭐' },
-          { title: '96% Verified', desc: 'reviews from real professionals', color: 'text-blue-600 bg-blue-50 border-blue-100', icon: '🛡️' },
+          { title: `${initialData.meta.total} Reviews`, desc: 'from verified professionals', color: 'text-[#FF5A5F] bg-[#FF5A5F]/5 border-[#FF5A5F]/10', icon: MinimalIcons.community },
+          { title: `${companiesList.length} Companies`, desc: 'reviewed across industries', color: 'text-[#FF5A5F] bg-[#FF5A5F]/5 border-[#FF5A5F]/10', icon: MinimalIcons.building },
+          { title: `${avgSatisfaction}★ Satisfaction`, desc: 'average across all companies', color: 'text-[#FF5A5F] bg-[#FF5A5F]/5 border-[#FF5A5F]/10', icon: MinimalIcons.star },
+          { title: '100% Verified', desc: 'reviews from real professionals', color: 'text-[#FF5A5F] bg-[#FF5A5F]/5 border-[#FF5A5F]/10', icon: MinimalIcons.shield },
         ].map((item, idx) => (
           <div key={idx} className="bg-white border border-[#EBEBEB] rounded-2xl p-5 shadow-3xs flex items-center gap-4 text-left">
-            <div className={`h-10 w-10 rounded-xl flex items-center justify-center text-lg border ${item.color} shrink-0 shadow-3xs`}>
+            <div className={`h-10 w-10 rounded-xl flex items-center justify-center text-sm border ${item.color} shrink-0 shadow-3xs`}>
               {item.icon}
             </div>
             <div className="flex flex-col min-w-0">

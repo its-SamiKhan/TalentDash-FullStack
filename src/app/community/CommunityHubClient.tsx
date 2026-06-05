@@ -288,11 +288,6 @@ export function CommunityHubClient({
 
       {/* 2. Discussions Carousel Card List */}
       <div className="relative flex items-center">
-        {/* Left Navigation Arrow */}
-        <button className="absolute -left-3.5 z-10 bg-white border border-[#EBEBEB] hover:border-[#FF5A5F] hover:text-[#FF5A5F] shadow-xs w-8 h-8 rounded-full flex items-center justify-center text-slate-400 cursor-pointer select-none transition-colors">
-          <span className="text-sm font-black">‹</span>
-        </button>
-        
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-3 w-full px-4">
           {[
             {
@@ -392,7 +387,7 @@ export function CommunityHubClient({
                   <div className="flex -space-x-1 overflow-hidden">
                     {disc.avatars.map((av, avIdx) => (
                       <div key={avIdx} className="inline-block h-4.5 w-4.5 rounded-full ring-1 ring-white bg-slate-100 flex items-center justify-center text-[7px] font-bold text-[#717171] shadow-3xs">
-                        {av}
+                         {av}
                       </div>
                     ))}
                   </div>
@@ -404,11 +399,6 @@ export function CommunityHubClient({
             </div>
           ))}
         </div>
-        
-        {/* Right Navigation Arrow */}
-        <button className="absolute -right-3.5 z-10 bg-white border border-[#EBEBEB] hover:border-[#FF5A5F] hover:text-[#FF5A5F] shadow-xs w-8 h-8 rounded-full flex items-center justify-center text-slate-400 cursor-pointer select-none transition-colors">
-          <span className="text-sm font-black">›</span>
-        </button>
       </div>
 
       {/* 3. Three-Column Dashboard Grid */}
