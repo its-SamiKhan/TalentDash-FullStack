@@ -36,6 +36,9 @@ export default async function SavedPage() {
     bonus: bigintToNumber(s.bonus),
     stock: bigintToNumber(s.stock),
     totalCompensation: bigintToNumber(s.totalCompensation),
+    source: s.source?.toString() ?? null,
+    confidenceScore: s.confidenceScore ?? null,
+    isVerified: s.isVerified,
     submittedAt: s.submittedAt.toISOString(),
   }));
 
