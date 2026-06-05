@@ -20,6 +20,7 @@ import {
 } from '@/components/ui';
 import { formatCurrency, formatExperience } from '@/lib/formatters';
 import type { SalaryForDisplay, PaginatedResponse, SortOption, SalaryFilters } from '@/types';
+import { MinimalIcons } from '@/components/MinimalIcons';
 
 const GoogleLogo = () => (
   <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0">
@@ -576,52 +577,44 @@ export function SalaryPageClient({
       <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-4">
         {/* Card 1 */}
         <div className="bg-white border border-[#EBEBEB] rounded-xl p-4 flex items-center gap-3.5 shadow-2xs">
-          <div className="bg-emerald-50 text-emerald-600 p-2.5 rounded-lg shrink-0">
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
+          <div className="bg-[#FF5A5F]/10 text-[#FF5A5F] p-2.5 rounded-lg shrink-0">
+            {MinimalIcons.briefcase}
           </div>
           <div>
-            <p className="text-base font-black text-[#222222]">12.8M+</p>
-            <p className="text-[10px] text-[#717171] leading-tight font-semibold mt-0.5">Salary data points</p>
-            <p className="text-[9px] font-extrabold text-emerald-600 mt-0.5">Updated daily</p>
+            <p className="text-base font-black text-[#222222]">{initialData.meta.total}</p>
+            <p className="text-[10px] text-[#717171] leading-tight font-semibold mt-0.5">Verified Salaries</p>
+            <p className="text-[9px] font-extrabold text-green-600 mt-0.5">Updated daily</p>
           </div>
         </div>
         
         {/* Card 2 */}
         <div className="bg-white border border-[#EBEBEB] rounded-xl p-4 flex items-center gap-3.5 shadow-2xs">
           <div className="bg-[#FF5A5F]/10 text-[#FF5A5F] p-2.5 rounded-lg shrink-0">
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
+            {MinimalIcons.building}
           </div>
           <div>
-            <p className="text-base font-black text-[#222222]">35K+</p>
-            <p className="text-[10px] text-[#717171] leading-tight font-semibold mt-0.5">Companies</p>
+            <p className="text-base font-black text-[#222222]">{companiesList.length}</p>
+            <p className="text-[10px] text-[#717171] leading-tight font-semibold mt-0.5">Tech Companies</p>
             <p className="text-[9px] font-extrabold text-[#717171] mt-0.5">Across 50+ countries</p>
           </div>
         </div>
         
         {/* Card 3 */}
         <div className="bg-white border border-[#EBEBEB] rounded-xl p-4 flex items-center gap-3.5 shadow-2xs">
-          <div className="bg-blue-50 text-blue-600 p-2.5 rounded-lg shrink-0">
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
+          <div className="bg-[#FF5A5F]/10 text-[#FF5A5F] p-2.5 rounded-lg shrink-0">
+            {MinimalIcons.salary}
           </div>
           <div>
-            <p className="text-base font-black text-[#222222]">900+</p>
-            <p className="text-[10px] text-[#717171] leading-tight font-semibold mt-0.5">Job titles</p>
+            <p className="text-base font-black text-[#222222]">{distinctRoles.length}</p>
+            <p className="text-[10px] text-[#717171] leading-tight font-semibold mt-0.5">Job Titles</p>
             <p className="text-[9px] font-extrabold text-[#717171] mt-0.5">From entry to executive</p>
           </div>
         </div>
         
         {/* Card 4 */}
         <div className="bg-white border border-[#EBEBEB] rounded-xl p-4 flex items-center gap-3.5 shadow-2xs">
-          <div className="bg-orange-50 text-orange-600 p-2.5 rounded-lg shrink-0">
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
+          <div className="bg-[#FF5A5F]/10 text-[#FF5A5F] p-2.5 rounded-lg shrink-0">
+            {MinimalIcons.trendingUp}
           </div>
           <div>
             <p className="text-base font-black text-[#222222]">18%</p>
@@ -632,10 +625,8 @@ export function SalaryPageClient({
         
         {/* Card 5 */}
         <div className="bg-white border border-[#EBEBEB] rounded-xl p-4 flex items-center gap-3.5 shadow-2xs">
-          <div className="bg-green-50 text-green-600 p-2.5 rounded-lg shrink-0">
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
+          <div className="bg-[#FF5A5F]/10 text-[#FF5A5F] p-2.5 rounded-lg shrink-0">
+            {MinimalIcons.shield}
           </div>
           <div>
             <p className="text-base font-black text-[#222222]">100%</p>
