@@ -257,7 +257,7 @@ export function SavedPageClient({ initialSalaries, initialCompanies }: SavedPage
                     </div>
 
                     <div className="flex items-center gap-1 border-t border-b border-[#F7F7F7] py-2">
-                      <StarRatingDisplay rating={company.averageRating} size={14} />
+                      <StarRatingDisplay rating={company.averageRating} size="sm" />
                       <span className="text-[11px] font-black text-[#222222] ml-1">{company.averageRating}★</span>
                       <span className="text-[9px] text-[#717171] font-semibold">({company.reviewsCount} reviews)</span>
                     </div>
