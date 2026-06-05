@@ -2,8 +2,10 @@
 
 TalentDash is a career intelligence platform focused on tech compensation, employer reviews, and interview experiences. It converts crowdsourced and scraped data into decision-ready insights for tech careers in India and worldwide.
 
-🚀 **Live Site**: [https://talentdash-full-stack.vercel.app](https://talentdash-full-stack.vercel.app)
-💻 **GitHub Repository**: [https://github.com/its-SamiKhan/TalentDash-FullStack](https://github.com/its-SamiKhan/TalentDash-FullStack)
+| Platform Link | URL |
+| :--- | :--- |
+| 🚀 **Live Site** | [https://talentdash-full-stack.vercel.app](https://talentdash-full-stack.vercel.app) |
+| 💻 **GitHub Repository** | [https://github.com/its-SamiKhan/TalentDash-FullStack](https://github.com/its-SamiKhan/TalentDash-FullStack) |
 
 ---
 
