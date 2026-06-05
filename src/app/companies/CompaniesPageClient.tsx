@@ -11,6 +11,7 @@ import {
   EmptyState,
 } from '@/components/ui';
 import { formatCompactCurrency } from '@/lib/formatters';
+import { MinimalIcons } from '@/components/MinimalIcons';
 
 interface DisplayCompany {
   id: string;
@@ -167,18 +168,18 @@ export function CompaniesPageClient({
       {/* 2. Top Summary Statistics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {[
-          { title: `${stats.totalCount} Employers`, desc: 'Active corporate profiles', color: 'text-[#FF5A5F] bg-[#FF5A5F]/5 border-[#FF5A5F]/10', icon: '🏢' },
-          { title: `${stats.avgRating}★ Average`, desc: 'Employee cultural feedback', color: 'text-amber-600 bg-amber-50 border-amber-100', icon: '⭐' },
+          { title: `${stats.totalCount} Employers`, desc: 'Active corporate profiles', color: 'text-[#FF5A5F] bg-[#FF5A5F]/5 border-[#FF5A5F]/10', icon: MinimalIcons.building },
+          { title: `${stats.avgRating}★ Average`, desc: 'Employee cultural feedback', color: 'text-[#FF5A5F] bg-[#FF5A5F]/5 border-[#FF5A5F]/10', icon: MinimalIcons.star },
           {
             title: getDisplayMedian(stats.highestMedian),
             desc: 'Peak median total comp',
-            color: 'text-emerald-600 bg-emerald-50 border-emerald-100',
-            icon: '💵',
+            color: 'text-[#FF5A5F] bg-[#FF5A5F]/5 border-[#FF5A5F]/10',
+            icon: MinimalIcons.salary,
           },
-          { title: `${stats.totalDataPoints.toLocaleString()}`, desc: 'Aggregated analytics items', color: 'text-blue-600 bg-blue-50 border-blue-100', icon: '📈' },
+          { title: `${stats.totalDataPoints.toLocaleString()}`, desc: 'Aggregated analytics items', color: 'text-[#FF5A5F] bg-[#FF5A5F]/5 border-[#FF5A5F]/10', icon: MinimalIcons.trendingUp },
         ].map((item, idx) => (
           <div key={idx} className="bg-white border border-[#EBEBEB] rounded-2xl p-5 shadow-3xs flex items-center gap-4 text-left">
-            <div className={`h-10 w-10 rounded-xl flex items-center justify-center text-lg border ${item.color} shrink-0 shadow-3xs`}>
+            <div className={`h-10 w-10 rounded-xl flex items-center justify-center text-sm border ${item.color} shrink-0 shadow-3xs`}>
               {item.icon}
             </div>
             <div className="flex flex-col min-w-0">

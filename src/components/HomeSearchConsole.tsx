@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { MinimalIcons } from '@/components/MinimalIcons';
 
 export function HomeSearchConsole() {
   const router = useRouter();
@@ -28,11 +29,11 @@ export function HomeSearchConsole() {
   const [jobType, setJobType] = useState('');
 
   const tabs = [
-    { id: 'salaries', label: 'Salaries', icon: '💵' },
-    { id: 'reviews', label: 'Reviews', icon: '⭐' },
-    { id: 'interviews', label: 'Interviews', icon: '📝' },
-    { id: 'companies', label: 'Companies', icon: '🏢' },
-    { id: 'jobs', label: 'Jobs', icon: '💼' },
+    { id: 'salaries', label: 'Salaries', icon: MinimalIcons.salary },
+    { id: 'reviews', label: 'Reviews', icon: MinimalIcons.star },
+    { id: 'interviews', label: 'Interviews', icon: MinimalIcons.interview },
+    { id: 'companies', label: 'Companies', icon: MinimalIcons.building },
+    { id: 'jobs', label: 'Jobs', icon: MinimalIcons.briefcase },
   ] as const;
 
   const companySlugMap: Record<string, string> = {
@@ -99,7 +100,7 @@ export function HomeSearchConsole() {
                   : 'border-transparent text-[#717171] hover:text-[#222222]'
               }`}
             >
-              <span>{tab.icon}</span>
+              <span className="w-[18px] h-[18px] flex items-center justify-center shrink-0">{tab.icon}</span>
               <span>{tab.label}</span>
             </button>
           );
@@ -113,7 +114,7 @@ export function HomeSearchConsole() {
       >
         {/* ==================== COLUMN 1 ==================== */}
         <div className="flex-1 flex items-center gap-3 w-full border-b md:border-b-0 md:border-r border-[#EBEBEB] pb-3 md:pb-0 md:pr-4">
-          <span className="text-[#717171] text-base">🔍</span>
+          <span className="text-[#717171] shrink-0">{MinimalIcons.search}</span>
           <div className="flex flex-col w-full">
             <label className="text-[10px] font-extrabold text-[#717171] uppercase tracking-wider">
               {activeTab === 'companies' || activeTab === 'reviews'
@@ -142,7 +143,7 @@ export function HomeSearchConsole() {
         <div className="flex-1 flex items-center gap-3 w-full border-b md:border-b-0 md:border-r border-[#EBEBEB] pb-3 md:pb-0 md:pr-4">
           {activeTab === 'reviews' ? (
             <>
-              <span className="text-[#717171] text-base">⭐</span>
+              <span className="text-[#717171] shrink-0">{MinimalIcons.star}</span>
               <div className="flex flex-col w-full">
                 <label className="text-[10px] font-extrabold text-[#717171] uppercase tracking-wider">
                   Rating
@@ -161,7 +162,7 @@ export function HomeSearchConsole() {
             </>
           ) : activeTab === 'interviews' ? (
             <>
-              <span className="text-[#717171] text-base">📝</span>
+              <span className="text-[#717171] shrink-0">{MinimalIcons.interview}</span>
               <div className="flex flex-col w-full">
                 <label className="text-[10px] font-extrabold text-[#717171] uppercase tracking-wider">
                   Difficulty
@@ -180,7 +181,7 @@ export function HomeSearchConsole() {
             </>
           ) : activeTab === 'companies' ? (
             <>
-              <span className="text-[#717171] text-base">🏷️</span>
+              <span className="text-[#717171] shrink-0">{MinimalIcons.tag}</span>
               <div className="flex flex-col w-full">
                 <label className="text-[10px] font-extrabold text-[#717171] uppercase tracking-wider">
                   Industry
@@ -201,7 +202,7 @@ export function HomeSearchConsole() {
             </>
           ) : (
             <>
-              <span className="text-[#717171] text-base">📍</span>
+              <span className="text-[#717171] shrink-0">{MinimalIcons.location}</span>
               <div className="flex flex-col w-full">
                 <label className="text-[10px] font-extrabold text-[#717171] uppercase tracking-wider">
                   Location
@@ -222,7 +223,7 @@ export function HomeSearchConsole() {
         <div className="flex-1 flex items-center gap-3 w-full border-b md:border-b-0 pb-3 md:pb-0">
           {activeTab === 'reviews' ? (
             <>
-              <span className="text-[#717171] text-base">⚖️</span>
+              <span className="text-[#717171] shrink-0">{MinimalIcons.scale}</span>
               <div className="flex flex-col w-full">
                 <label className="text-[10px] font-extrabold text-[#717171] uppercase tracking-wider">
                   Sort By
@@ -240,7 +241,7 @@ export function HomeSearchConsole() {
             </>
           ) : activeTab === 'interviews' ? (
             <>
-              <span className="text-[#717171] text-base">🎓</span>
+              <span className="text-[#717171] shrink-0">{MinimalIcons.cap}</span>
               <div className="flex flex-col w-full">
                 <label className="text-[10px] font-extrabold text-[#717171] uppercase tracking-wider">
                   Outcome
@@ -259,7 +260,7 @@ export function HomeSearchConsole() {
             </>
           ) : activeTab === 'companies' ? (
             <>
-              <span className="text-[#717171] text-base">👥</span>
+              <span className="text-[#717171] shrink-0">{MinimalIcons.users}</span>
               <div className="flex flex-col w-full">
                 <label className="text-[10px] font-extrabold text-[#717171] uppercase tracking-wider">
                   Company Size
@@ -279,7 +280,7 @@ export function HomeSearchConsole() {
             </>
           ) : activeTab === 'jobs' ? (
             <>
-              <span className="text-[#717171] text-base">💼</span>
+              <span className="text-[#717171] shrink-0">{MinimalIcons.briefcase}</span>
               <div className="flex flex-col w-full">
                 <label className="text-[10px] font-extrabold text-[#717171] uppercase tracking-wider">
                   Job Type
@@ -299,7 +300,7 @@ export function HomeSearchConsole() {
             </>
           ) : (
             <>
-              <span className="text-[#717171] text-base">📅</span>
+              <span className="text-[#717171] shrink-0">{MinimalIcons.calendar}</span>
               <div className="flex flex-col w-full">
                 <label className="text-[10px] font-extrabold text-[#717171] uppercase tracking-wider">
                   Experience

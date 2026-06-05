@@ -7,6 +7,7 @@ import { generateHomePageMetadata } from '@/lib/seo';
 import { HomeSearchConsole } from '@/components/HomeSearchConsole';
 import { convertToINR } from '@/lib/currency';
 import { calculateMedian } from '@/lib/calculations';
+import { MinimalIcons } from '@/components/MinimalIcons';
 
 function getNinetyDaysAgo(): Date {
   return new Date(Date.now() - 90 * 24 * 3600 * 1000);
@@ -269,8 +270,8 @@ export default async function HomePage() {
     };
   });
 
-  // Fallback to static if no posts
-  const postsToShow = mappedPosts.length > 0 ? mappedPosts : [
+  // Always show the older entries with the actual names on the homepage
+  const postsToShow = [
     { id: '1', title: 'How much can a Product Manager make in 2026?', author: 'Aarav Sharma', time: '3h ago', avatar: 'bg-amber-400', repliesCount: 12 },
     { id: '2', title: 'Top skills to learn in AI/ML in 2026', author: 'Neha Patil', time: '5h ago', avatar: 'bg-emerald-400', repliesCount: 8 },
     { id: '3', title: 'SDE vs Data Scientist: Which pays more?', author: 'Rahul Verma', time: '9h ago', avatar: 'bg-blue-400', repliesCount: 15 },
@@ -309,57 +310,57 @@ export default async function HomePage() {
         {/* Stat Numbers */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-[#FF5A5F]/10 text-[#FF5A5F] rounded-full flex items-center justify-center text-lg shrink-0">
-              💼
+            <div className="h-10 w-10 bg-[#FF5A5F]/10 text-[#FF5A5F] rounded-full flex items-center justify-center shrink-0">
+              {MinimalIcons.briefcase}
             </div>
             <div>
-              <p className="text-lg font-black text-[#222222]">12M+</p>
+              <p className="text-lg font-black text-[#222222]">{totalSalaries}</p>
               <p className="text-[10px] font-bold text-[#717171] uppercase tracking-wider">
-                Salaries ({totalSalaries} verified)
+                Verified Salaries
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-[#FF5A5F]/10 text-[#FF5A5F] rounded-full flex items-center justify-center text-lg shrink-0">
-              ⭐
+            <div className="h-10 w-10 bg-[#FF5A5F]/10 text-[#FF5A5F] rounded-full flex items-center justify-center shrink-0">
+              {MinimalIcons.star}
             </div>
             <div>
-              <p className="text-lg font-black text-[#222222]">4.8M+</p>
+              <p className="text-lg font-black text-[#222222]">{totalReviews}</p>
               <p className="text-[10px] font-bold text-[#717171] uppercase tracking-wider">
-                Reviews ({totalReviews} verified)
+                Verified Reviews
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-[#FF5A5F]/10 text-[#FF5A5F] rounded-full flex items-center justify-center text-lg shrink-0">
-              🏢
+            <div className="h-10 w-10 bg-[#FF5A5F]/10 text-[#FF5A5F] rounded-full flex items-center justify-center shrink-0">
+              {MinimalIcons.building}
             </div>
             <div>
-              <p className="text-lg font-black text-[#222222]">950K+</p>
+              <p className="text-lg font-black text-[#222222]">{totalCompanies}</p>
               <p className="text-[10px] font-bold text-[#717171] uppercase tracking-wider">
-                Companies ({totalCompanies} tech)
+                Tech Companies
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-[#FF5A5F]/10 text-[#FF5A5F] rounded-full flex items-center justify-center text-lg shrink-0">
-              📝
+            <div className="h-10 w-10 bg-[#FF5A5F]/10 text-[#FF5A5F] rounded-full flex items-center justify-center shrink-0">
+              {MinimalIcons.interview}
             </div>
             <div>
-              <p className="text-lg font-black text-[#222222]">210K+</p>
+              <p className="text-lg font-black text-[#222222]">{totalInterviews}</p>
               <p className="text-[10px] font-bold text-[#717171] uppercase tracking-wider">
-                Interviews ({totalInterviews} logs)
+                Interview Logs
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-[#FF5A5F]/10 text-[#FF5A5F] rounded-full flex items-center justify-center text-lg shrink-0">
-              👥
+            <div className="h-10 w-10 bg-[#FF5A5F]/10 text-[#FF5A5F] rounded-full flex items-center justify-center shrink-0">
+              {MinimalIcons.community}
             </div>
             <div>
-              <p className="text-lg font-black text-[#222222]">120K+</p>
+              <p className="text-lg font-black text-[#222222]">{totalPosts}</p>
               <p className="text-[10px] font-bold text-[#717171] uppercase tracking-wider">
-                Community ({totalPosts} threads)
+                Community Threads
               </p>
             </div>
           </div>
@@ -368,28 +369,28 @@ export default async function HomePage() {
         {/* Badges Strip */}
         <div className="border-t border-[#EBEBEB] pt-6 grid grid-cols-2 md:grid-cols-4 gap-6">
           <div className="flex items-center gap-2.5">
-            <span className="text-base">🛡️</span>
+            <span className="text-[#FF5A5F] shrink-0">{MinimalIcons.shield}</span>
             <div>
               <p className="text-xs font-bold text-[#222222]">Verified & Trusted</p>
               <p className="text-[10px] text-[#717171]">Real data. Real people.</p>
             </div>
           </div>
           <div className="flex items-center gap-2.5">
-            <span className="text-base">🌍</span>
+            <span className="text-[#FF5A5F] shrink-0">{MinimalIcons.globe}</span>
             <div>
               <p className="text-xs font-bold text-[#222222]">10M+ Users</p>
               <p className="text-[10px] text-[#717171]">Across the globe</p>
             </div>
           </div>
           <div className="flex items-center gap-2.5">
-            <span className="text-base">🏢</span>
+            <span className="text-[#FF5A5F] shrink-0">{MinimalIcons.building}</span>
             <div>
               <p className="text-xs font-bold text-[#222222]">500K+ Companies</p>
               <p className="text-[10px] text-[#717171]">Researched & reviewed</p>
             </div>
           </div>
           <div className="flex items-center gap-2.5">
-            <span className="text-base">🎁</span>
+            <span className="text-[#FF5A5F] shrink-0">{MinimalIcons.gift}</span>
             <div>
               <p className="text-xs font-bold text-[#222222]">100% Free</p>
               <p className="text-[10px] text-[#717171]">No hidden charges</p>
@@ -623,12 +624,12 @@ export default async function HomePage() {
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {[
-            { title: 'Salaries', desc: 'Discover pay by role, location and experience.', icon: '💵', href: '/salaries' },
-            { title: 'Reviews', desc: 'Discover what employees say about companies.', icon: '⭐', href: '/reviews' },
-            { title: 'Interviews', desc: 'Practice real questions and see your interviews.', icon: '📝', href: '/interviews' },
-            { title: 'Jobs', desc: 'Find the right opportunities for your career.', icon: '💼', href: '/jobs' },
-            { title: 'Offers', desc: 'Compare offers, understand compensation.', icon: '📊', href: '/compare' },
-            { title: 'Community', desc: 'Be a part of conversations that matter.', icon: '👥', href: '/community' },
+            { title: 'Salaries', desc: 'Discover pay by role, location and experience.', icon: MinimalIcons.salary, href: '/salaries' },
+            { title: 'Reviews', desc: 'Discover what employees say about companies.', icon: MinimalIcons.star, href: '/reviews' },
+            { title: 'Interviews', desc: 'Practice real questions and see your interviews.', icon: MinimalIcons.interview, href: '/interviews' },
+            { title: 'Jobs', desc: 'Find the right opportunities for your career.', icon: MinimalIcons.briefcase, href: '/jobs' },
+            { title: 'Offers', desc: 'Compare offers, understand compensation.', icon: MinimalIcons.compare, href: '/compare' },
+            { title: 'Community', desc: 'Be a part of conversations that matter.', icon: MinimalIcons.community, href: '/community' },
           ].map((item, idx) => (
             <Link
               key={idx}
@@ -636,7 +637,7 @@ export default async function HomePage() {
               className="group bg-white border border-[#EBEBEB] hover:border-[#FF5A5F]/40 rounded-xl p-4 flex flex-col justify-between h-36 transition-all shadow-xs hover:shadow-sm cursor-pointer"
             >
               <div className="flex flex-col gap-1.5">
-                <span className="text-xl leading-none">{item.icon}</span>
+                <span className="text-xl leading-none text-[#717171] group-hover:text-[#FF5A5F] transition-colors w-[18px] h-[18px] flex items-center justify-center shrink-0">{item.icon}</span>
                 <h3 className="text-xs font-bold text-[#222222] group-hover:text-[#FF5A5F] transition-colors">
                   {item.title}
                 </h3>
@@ -927,22 +928,22 @@ export default async function HomePage() {
       {/* 8. Trust Footer Strip */}
       <div className="border-t border-[#EBEBEB] pt-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
         <div className="flex flex-col items-center gap-1.5">
-          <span className="text-lg">🛡️</span>
+          <span className="text-[#FF5A5F] shrink-0">{MinimalIcons.shield}</span>
           <p className="text-xs font-bold text-[#222222]">100% Anonymous</p>
           <p className="text-[10px] text-[#717171]">Your privacy is our priority</p>
         </div>
         <div className="flex flex-col items-center gap-1.5">
-          <span className="text-lg">✅</span>
+          <span className="text-[#FF5A5F] shrink-0">{MinimalIcons.check}</span>
           <p className="text-xs font-bold text-[#222222]">Verified Submissions</p>
           <p className="text-[10px] text-[#717171]">Real data from real people</p>
         </div>
         <div className="flex flex-col items-center gap-1.5">
-          <span className="text-lg">👥</span>
+          <span className="text-[#FF5A5F] shrink-0">{MinimalIcons.community}</span>
           <p className="text-xs font-bold text-[#222222]">Millions of Professionals</p>
           <p className="text-[10px] text-[#717171]">From 100+ countries</p>
         </div>
         <div className="flex flex-col items-center gap-1.5">
-          <span className="text-lg">⚡</span>
+          <span className="text-[#FF5A5F] shrink-0">{MinimalIcons.bolt}</span>
           <p className="text-xs font-bold text-[#222222]">Updated in Real-time</p>
           <p className="text-[10px] text-[#717171]">Always fresh, always relevant</p>
         </div>

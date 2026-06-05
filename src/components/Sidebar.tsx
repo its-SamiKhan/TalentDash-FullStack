@@ -122,7 +122,7 @@ export function Sidebar({ isCollapsed = false, onToggle }: SidebarProps) {
     { label: 'Jobs', href: '/jobs', icon: Icons.briefcase },
     { label: 'Community', href: '/community', icon: Icons.community },
     { label: 'Tools', href: '/tools', icon: Icons.tools },
-    { label: 'Offer evaluation', href: '/tools/offer-evaluation', icon: Icons.gift, badge: 'New' },
+    { label: 'Offer evaluation', href: '/tools/offer-evaluation', icon: Icons.gift },
     { label: 'Workplace index', href: '/workplace-index', icon: Icons.trendingUp },
   ];
 
