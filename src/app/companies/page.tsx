@@ -8,6 +8,13 @@ export const revalidate = 3600; // Cache for 1 hour
 export default async function CompaniesPage() {
   // Query all companies with their associated salaries and reviews
   const companies = await prisma.company.findMany({
+    where: {
+      NOT: {
+        name: {
+          startsWith: 'TestCorp',
+        },
+      },
+    },
     include: {
       salaries: {
         select: {

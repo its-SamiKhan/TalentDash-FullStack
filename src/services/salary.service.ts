@@ -67,11 +67,20 @@ function salaryToDisplay(
 function buildWhereClause(filters: SalaryFilters): Prisma.SalaryWhereInput {
   const where: Prisma.SalaryWhereInput = {};
 
+  const companyConditions: Prisma.CompanyWhereInput = {
+    NOT: {
+      name: {
+        startsWith: 'TestCorp',
+      },
+    },
+  };
+
   if (filters.company) {
-    where.company = {
-      normalizedName: { contains: filters.company.toLowerCase() },
-    };
+    companyConditions.normalizedName = { contains: filters.company.toLowerCase() };
   }
+
+  where.company = companyConditions;
+
   if (filters.role) {
     where.role = { contains: filters.role, mode: 'insensitive' };
   }
@@ -288,6 +297,15 @@ export async function getDistinctValues(
 ): Promise<string[]> {
   if (field === 'level') {
     const results = await prisma.salary.findMany({
+      where: {
+        company: {
+          NOT: {
+            name: {
+              startsWith: 'TestCorp',
+            },
+          },
+        },
+      },
       select: { level: true },
       distinct: ['level'],
       orderBy: { level: 'asc' },
@@ -296,6 +314,15 @@ export async function getDistinctValues(
   }
 
   const results = await prisma.salary.findMany({
+    where: {
+      company: {
+        NOT: {
+          name: {
+            startsWith: 'TestCorp',
+          },
+        },
+      },
+    },
     select: { [field]: true },
     distinct: [field],
     orderBy: { [field]: 'asc' },
@@ -318,6 +345,15 @@ export async function getAllSalariesForCompare(): Promise<
   }>
 > {
   const salaries = await prisma.salary.findMany({
+    where: {
+      company: {
+        NOT: {
+          name: {
+            startsWith: 'TestCorp',
+          },
+        },
+      },
+    },
     select: {
       id: true,
       role: true,

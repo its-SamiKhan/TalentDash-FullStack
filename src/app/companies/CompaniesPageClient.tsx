@@ -446,10 +446,10 @@ export function CompaniesPageClient({
             >
               <div>
                 {/* Logo & Header info */}
-                <div className="flex justify-between items-start gap-4 border-b border-[#F7F7F7] pb-4">
-                  <div className="flex items-center gap-3">
+                <div className="flex justify-between items-start gap-4 border-b border-[#F7F7F7] pb-4 min-w-0 w-full">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
                     <CompanyLogo name={company.name} logoUrl={company.logoUrl} size={48} />
-                    <div className="min-w-0 leading-tight">
+                    <div className="min-w-0 leading-tight flex-1">
                       <h4 className="font-extrabold text-[#222222] group-hover:text-[#FF5A5F] transition-colors truncate">
                         {company.name}
                       </h4>
@@ -458,7 +458,7 @@ export function CompaniesPageClient({
                       </p>
                     </div>
                   </div>
-                  <div className="flex flex-col items-end shrink-0 gap-1">
+                  <div className="flex flex-col items-end shrink-0 gap-1 ml-auto">
                     <StarRatingDisplay rating={company.averageRating} size="sm" />
                     <span className="text-[9px] text-[#717171] font-bold">
                       {company.averageRating > 0 ? `${company.averageRating}★ (${company.reviewsCount})` : 'No reviews'}

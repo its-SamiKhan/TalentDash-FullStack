@@ -139,6 +139,13 @@ export async function getLevelDistribution(companyId: string): Promise<LevelDist
  */
 export async function getAllCompanySlugs(): Promise<string[]> {
   const companies = await prisma.company.findMany({
+    where: {
+      NOT: {
+        name: {
+          startsWith: 'TestCorp',
+        },
+      },
+    },
     select: { slug: true },
   });
   return companies.map((c) => c.slug);
@@ -172,6 +179,13 @@ export async function getOrCreateCompany(name: string): Promise<Company> {
  */
 export async function getAllCompanies() {
   return prisma.company.findMany({
+    where: {
+      NOT: {
+        name: {
+          startsWith: 'TestCorp',
+        },
+      },
+    },
     select: {
       id: true,
       name: true,

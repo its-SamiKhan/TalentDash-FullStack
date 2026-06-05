@@ -43,12 +43,69 @@ export default async function HomePage() {
     totalPosts,
     workplaceScoresAvg,
   ] = await Promise.all([
-    prisma.salary.count(),
-    prisma.company.count(),
-    prisma.review.count(),
-    prisma.interview.count(),
-    prisma.communityPost.count(),
+    prisma.salary.count({
+      where: {
+        company: {
+          NOT: {
+            name: {
+              startsWith: 'TestCorp',
+            },
+          },
+        },
+      },
+    }),
+    prisma.company.count({
+      where: {
+        NOT: {
+          name: {
+            startsWith: 'TestCorp',
+          },
+        },
+      },
+    }),
+    prisma.review.count({
+      where: {
+        company: {
+          NOT: {
+            name: {
+              startsWith: 'TestCorp',
+            },
+          },
+        },
+      },
+    }),
+    prisma.interview.count({
+      where: {
+        company: {
+          NOT: {
+            name: {
+              startsWith: 'TestCorp',
+            },
+          },
+        },
+      },
+    }),
+    prisma.communityPost.count({
+      where: {
+        company: {
+          NOT: {
+            name: {
+              startsWith: 'TestCorp',
+            },
+          },
+        },
+      },
+    }),
     prisma.workplaceScore.aggregate({
+      where: {
+        company: {
+          NOT: {
+            name: {
+              startsWith: 'TestCorp',
+            },
+          },
+        },
+      },
       _avg: {
         overallScore: true,
         cultureScore: true,
@@ -72,7 +129,14 @@ export default async function HomePage() {
     where: {
       location: {
         in: ['Bengaluru', 'Hyderabad', 'Pune', 'Mumbai', 'Noida', 'Gurugram', 'Chennai']
-      }
+      },
+      company: {
+        NOT: {
+          name: {
+            startsWith: 'TestCorp',
+          },
+        },
+      },
     },
     select: {
       totalCompensation: true,
@@ -120,6 +184,15 @@ export default async function HomePage() {
 
   // Fetch reviews metrics
   const allReviews = await prisma.review.findMany({
+    where: {
+      company: {
+        NOT: {
+          name: {
+            startsWith: 'TestCorp',
+          },
+        },
+      },
+    },
     select: { rating: true }
   });
   const avgRating = allReviews.length > 0
@@ -131,6 +204,15 @@ export default async function HomePage() {
 
   // Fetch max offer & negotiations metrics
   const maxSalaryRecord = await prisma.salary.findFirst({
+    where: {
+      company: {
+        NOT: {
+          name: {
+            startsWith: 'TestCorp',
+          },
+        },
+      },
+    },
     orderBy: { totalCompensation: 'desc' },
     select: { totalCompensation: true, currency: true }
   });
@@ -142,9 +224,26 @@ export default async function HomePage() {
     ? `₹${(maxOffer / 10000000).toFixed(1)} Cr`
     : `₹${Math.round(maxOffer / 100000)} LPA`;
 
-  const totalSalariesCount = await prisma.salary.count();
+  const totalSalariesCount = await prisma.salary.count({
+    where: {
+      company: {
+        NOT: {
+          name: {
+            startsWith: 'TestCorp',
+          },
+        },
+      },
+    },
+  });
   const salariesWithStockOrBonus = await prisma.salary.count({
     where: {
+      company: {
+        NOT: {
+          name: {
+            startsWith: 'TestCorp',
+          },
+        },
+      },
       OR: [
         { bonus: { gt: 0 } },
         { stock: { gt: 0 } }
@@ -169,7 +268,14 @@ export default async function HomePage() {
         role: {
           contains: r.search,
           mode: 'insensitive'
-        }
+        },
+        company: {
+          NOT: {
+            name: {
+              startsWith: 'TestCorp',
+            },
+          },
+        },
       },
       select: {
         totalCompensation: true,
@@ -213,7 +319,14 @@ export default async function HomePage() {
         location: {
           equals: loc.name,
           mode: 'insensitive'
-        }
+        },
+        company: {
+          NOT: {
+            name: {
+              startsWith: 'TestCorp',
+            },
+          },
+        },
       },
       select: {
         totalCompensation: true,
@@ -699,8 +812,8 @@ export default async function HomePage() {
         {/* Right: Tools & Resources */}
         <div className="bg-white border border-[#EBEBEB] rounded-2xl p-6 shadow-sm flex flex-col justify-between group hover:border-[#FF5A5F]/40 transition-colors">
           <div className="flex flex-col gap-2">
-            <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 text-lg">
-              🛠️
+            <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center text-[#FF5A5F] text-lg shrink-0">
+              {MinimalIcons.tools}
             </div>
             <h3 className="text-base font-extrabold text-[#222222]">Tools & Resources</h3>
             <p className="text-xs text-[#717171] leading-relaxed">
@@ -709,26 +822,26 @@ export default async function HomePage() {
             
             <div className="grid grid-cols-4 gap-2 mt-4 text-center">
               <Link href="/tools/salary-calculator" className="flex flex-col items-center gap-1.5 group/t">
-                <div className="h-10 w-10 rounded-full bg-slate-50 border border-[#EBEBEB] group-hover/t:bg-[#FF5A5F]/5 group-hover/t:border-[#FF5A5F]/20 flex items-center justify-center text-lg transition-colors">
-                  💵
+                <div className="h-10 w-10 rounded-full bg-slate-50 border border-[#EBEBEB] group-hover/t:bg-[#FF5A5F]/5 group-hover/t:border-[#FF5A5F]/20 flex items-center justify-center text-[#FF5A5F] transition-colors shrink-0">
+                  {MinimalIcons.salary}
                 </div>
                 <span className="text-[9px] font-bold text-[#484848] leading-tight block h-6 flex items-center justify-center px-1">Salary Calc</span>
               </Link>
               <Link href="/tools/resume-analyzer" className="flex flex-col items-center gap-1.5 group/t">
-                <div className="h-10 w-10 rounded-full bg-slate-50 border border-[#EBEBEB] group-hover/t:bg-[#FF5A5F]/5 group-hover/t:border-[#FF5A5F]/20 flex items-center justify-center text-lg transition-colors">
-                  📝
+                <div className="h-10 w-10 rounded-full bg-slate-50 border border-[#EBEBEB] group-hover/t:bg-[#FF5A5F]/5 group-hover/t:border-[#FF5A5F]/20 flex items-center justify-center text-[#FF5A5F] transition-colors shrink-0">
+                  {MinimalIcons.interview}
                 </div>
                 <span className="text-[9px] font-bold text-[#484848] leading-tight block h-6 flex items-center justify-center px-1">Resume Review</span>
               </Link>
               <Link href="/tools/offer-comparison" className="flex flex-col items-center gap-1.5 group/t">
-                <div className="h-10 w-10 rounded-full bg-slate-50 border border-[#EBEBEB] group-hover/t:bg-[#FF5A5F]/5 group-hover/t:border-[#FF5A5F]/20 flex items-center justify-center text-lg transition-colors">
-                  ⚖️
+                <div className="h-10 w-10 rounded-full bg-slate-50 border border-[#EBEBEB] group-hover/t:bg-[#FF5A5F]/5 group-hover/t:border-[#FF5A5F]/20 flex items-center justify-center text-[#FF5A5F] transition-colors shrink-0">
+                  {MinimalIcons.scale}
                 </div>
                 <span className="text-[9px] font-bold text-[#484848] leading-tight block h-6 flex items-center justify-center px-1">Offer Compare</span>
               </Link>
               <Link href="/tools/hike-calculator" className="flex flex-col items-center gap-1.5 group/t">
-                <div className="h-10 w-10 rounded-full bg-slate-50 border border-[#EBEBEB] group-hover/t:bg-[#FF5A5F]/5 group-hover/t:border-[#FF5A5F]/20 flex items-center justify-center text-lg transition-colors">
-                  📈
+                <div className="h-10 w-10 rounded-full bg-slate-50 border border-[#EBEBEB] group-hover/t:bg-[#FF5A5F]/5 group-hover/t:border-[#FF5A5F]/20 flex items-center justify-center text-[#FF5A5F] transition-colors shrink-0">
+                  {MinimalIcons.trendingUp}
                 </div>
                 <span className="text-[9px] font-bold text-[#484848] leading-tight block h-6 flex items-center justify-center px-1">Hike Calc</span>
               </Link>

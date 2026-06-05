@@ -80,6 +80,8 @@ const AmazonLogo = () => (
   </svg>
 );
 
+import { prisma } from '@/lib/prisma';
+
 export const revalidate = 3600; // Cache for 1 hour
 
 export async function generateMetadata() {
@@ -87,8 +89,89 @@ export async function generateMetadata() {
 }
 
 export default async function WorkplaceIndexHubPage() {
-  const industries = await getIndustriesWithScores();
-  const topRanked = (await getWorkplaceRankings()).slice(0, 3);
+  const [
+    totalCompaniesRanked,
+    salariesCount,
+    reviewsCount,
+    interviewsCount,
+    distinctHeadquarters,
+    distinctIndustries,
+    industries,
+    topRanked
+  ] = await Promise.all([
+    prisma.company.count({
+      where: {
+        NOT: {
+          name: {
+            startsWith: 'TestCorp',
+          },
+        },
+      },
+    }),
+    prisma.salary.count({
+      where: {
+        company: {
+          NOT: {
+            name: {
+              startsWith: 'TestCorp',
+            },
+          },
+        },
+      },
+    }),
+    prisma.review.count({
+      where: {
+        company: {
+          NOT: {
+            name: {
+              startsWith: 'TestCorp',
+            },
+          },
+        },
+      },
+    }),
+    prisma.interview.count({
+      where: {
+        company: {
+          NOT: {
+            name: {
+              startsWith: 'TestCorp',
+            },
+          },
+        },
+      },
+    }),
+    prisma.company.findMany({
+      select: { headquarters: true },
+      distinct: ['headquarters'],
+      where: {
+        NOT: {
+          name: {
+            startsWith: 'TestCorp',
+          },
+        },
+        headquarters: { not: null, notIn: ['Unknown', ''] }
+      }
+    }),
+    prisma.company.findMany({
+      select: { industry: true },
+      distinct: ['industry'],
+      where: {
+        NOT: {
+          name: {
+            startsWith: 'TestCorp',
+          },
+        },
+        industry: { not: null, notIn: ['Unknown', ''] }
+      }
+    }),
+    getIndustriesWithScores(),
+    getWorkplaceRankings().then(list => list.slice(0, 3))
+  ]);
+
+  const totalDataPoints = salariesCount + reviewsCount + interviewsCount;
+  const locationsCount = distinctHeadquarters.length;
+  const industriesCount = distinctIndustries.length;
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-10">
@@ -136,9 +219,9 @@ export default async function WorkplaceIndexHubPage() {
             </svg>
           </div>
           <div>
-            <p className="text-base font-black text-[#222222]">500+</p>
+            <p className="text-base font-black text-[#222222]">{totalCompaniesRanked}</p>
             <p className="text-[10px] text-[#717171] leading-tight font-semibold mt-0.5">Companies ranked</p>
-            <p className="text-[9px] font-extrabold text-[#717171] mt-0.5">Across 50+ countries</p>
+            <p className="text-[9px] font-extrabold text-[#717171] mt-0.5">Across {locationsCount} locations</p>
           </div>
         </div>
         
@@ -150,7 +233,7 @@ export default async function WorkplaceIndexHubPage() {
             </svg>
           </div>
           <div>
-            <p className="text-base font-black text-[#222222]">15M+</p>
+            <p className="text-base font-black text-[#222222]">{totalDataPoints.toLocaleString()}</p>
             <p className="text-[10px] text-[#717171] leading-tight font-semibold mt-0.5">Verified data points</p>
             <p className="text-[9px] font-extrabold text-emerald-600 mt-0.5">From real professionals</p>
           </div>
@@ -164,7 +247,7 @@ export default async function WorkplaceIndexHubPage() {
             </svg>
           </div>
           <div>
-            <p className="text-base font-black text-[#222222]">30+</p>
+            <p className="text-base font-black text-[#222222]">{industriesCount}</p>
             <p className="text-[10px] text-[#717171] leading-tight font-semibold mt-0.5">Ranking categories</p>
             <p className="text-[9px] font-extrabold text-orange-600 mt-0.5">Updated monthly</p>
           </div>
@@ -194,13 +277,8 @@ export default async function WorkplaceIndexHubPage() {
           </Link>
         </div>
         
-        <div className="relative flex items-center">
-          {/* Left Navigation Arrow */}
-          <button className="absolute -left-3.5 z-10 bg-white border border-[#EBEBEB] hover:border-[#FF5A5F] hover:text-[#FF5A5F] shadow-xs w-8 h-8 rounded-full flex items-center justify-center text-slate-400 cursor-pointer select-none transition-colors">
-            <span className="text-sm font-black">‹</span>
-          </button>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-3.5 w-full px-4">
+        <div className="flex items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-3.5 w-full">
             {[
               {
                 title: 'Top 100 Companies',
@@ -303,11 +381,6 @@ export default async function WorkplaceIndexHubPage() {
               </div>
             ))}
           </div>
-          
-          {/* Right Navigation Arrow */}
-          <button className="absolute -right-3.5 z-10 bg-white border border-[#EBEBEB] hover:border-[#FF5A5F] hover:text-[#FF5A5F] shadow-xs w-8 h-8 rounded-full flex items-center justify-center text-slate-400 cursor-pointer select-none transition-colors">
-            <span className="text-sm font-black">›</span>
-          </button>
         </div>
       </div>
 
@@ -320,13 +393,8 @@ export default async function WorkplaceIndexHubPage() {
           </Link>
         </div>
         
-        <div className="relative flex items-center">
-          {/* Left Navigation Arrow */}
-          <button className="absolute -left-3.5 z-10 bg-white border border-[#EBEBEB] hover:border-[#FF5A5F] hover:text-[#FF5A5F] shadow-xs w-8 h-8 rounded-full flex items-center justify-center text-slate-400 cursor-pointer select-none transition-colors">
-            <span className="text-sm font-black">‹</span>
-          </button>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-8 gap-2.5 w-full px-4">
+        <div className="flex items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-8 gap-2.5 w-full">
             {[
               {
                 name: 'IT Services',
@@ -416,11 +484,6 @@ export default async function WorkplaceIndexHubPage() {
               </div>
             ))}
           </div>
-          
-          {/* Right Navigation Arrow */}
-          <button className="absolute -right-3.5 z-10 bg-white border border-[#EBEBEB] hover:border-[#FF5A5F] hover:text-[#FF5A5F] shadow-xs w-8 h-8 rounded-full flex items-center justify-center text-slate-400 cursor-pointer select-none transition-colors">
-            <span className="text-sm font-black">›</span>
-          </button>
         </div>
       </div>
 

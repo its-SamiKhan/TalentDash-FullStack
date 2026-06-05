@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -42,6 +42,15 @@ export function ComparePageClient({ salariesList }: ComparePageClientProps) {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ComparisonResult | null>(null);
 
+  // Dynamic simulation slider states
+  const [simBase1, setSimBase1] = useState(0);
+  const [simStock1, setSimStock1] = useState(0);
+  const [simBonus1, setSimBonus1] = useState(0);
+
+  const [simBase2, setSimBase2] = useState(0);
+  const [simStock2, setSimStock2] = useState(0);
+  const [simBonus2, setSimBonus2] = useState(0);
+
   // Sync state with URL params during render
   if (initialS1 !== prevInitialS1 || initialS2 !== prevInitialS2) {
     setPrevInitialS1(initialS1);
@@ -78,6 +87,14 @@ export function ComparePageClient({ salariesList }: ComparePageClientProps) {
           setResult(null);
         } else {
           setResult(data);
+          // Sync simulation sliders to database baseline values
+          setSimBase1(data.record1.baseSalary);
+          setSimStock1(data.record1.stock);
+          setSimBonus1(data.record1.bonus);
+
+          setSimBase2(data.record2.baseSalary);
+          setSimStock2(data.record2.stock);
+          setSimBonus2(data.record2.bonus);
         }
       } catch (err) {
         console.error(err);
@@ -137,18 +154,43 @@ export function ComparePageClient({ salariesList }: ComparePageClientProps) {
     return `${prefix}${formatCurrency(delta, currency)}`;
   };
 
+  // Simulated computations
+  const simTotal1 = useMemo(() => simBase1 + simStock1 + simBonus1, [simBase1, simStock1, simBonus1]);
+  const simTotal2 = useMemo(() => simBase2 + simStock2 + simBonus2, [simBase2, simStock2, simBonus2]);
+  
+  const simWinner = useMemo(() => {
+    if (simTotal1 > simTotal2) return 'record1';
+    if (simTotal2 > simTotal1) return 'record2';
+    return 'tie';
+  }, [simTotal1, simTotal2]);
+
+  // Determine dynamic slider ranges
+  const sliderRanges = useMemo(() => {
+    if (!result) return { max1: 1000000, step1: 10000, max2: 1000000, step2: 10000 };
+    
+    const maxVal1 = Math.max(result.record1.totalCompensation * 1.5, 100000);
+    const maxVal2 = Math.max(result.record2.totalCompensation * 1.5, 100000);
+
+    const step1 = result.record1.currency === 'INR' ? 50000 : 2000;
+    const step2 = result.record2.currency === 'INR' ? 50000 : 2000;
+
+    return { max1: maxVal1, step1, max2: maxVal2, step2 };
+  }, [result]);
+
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6 bg-white border border-[#EBEBEB] rounded-2xl p-6 shadow-sm">
+    <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6">
       {/* Title */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-extrabold text-[#222222] tracking-tight">Compare Salaries</h1>
-          <p className="text-sm text-[#717171] mt-1">Side-by-side comparison of specific tech compensation records.</p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#F7F7F7] pb-6">
+        <div className="text-left">
+          <h1 className="text-3xl font-black text-[#222222] tracking-tight">Offer Comparisons & Simulator</h1>
+          <p className="text-sm text-[#717171] mt-1 font-semibold">
+            Compare compensation components side-by-side and simulate negotiation scenarios.
+          </p>
         </div>
         <div>
           <Link
             href="/salaries"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-[#FF5A5F] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#ff4449] focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/50 cursor-pointer select-none"
+            className="inline-flex h-10 items-center justify-center rounded-xl bg-[#FF5A5F] px-5 text-xs font-black text-white hover:bg-[#ff4449] transition-all shadow-3xs cursor-pointer select-none"
           >
             Browse Salaries
           </Link>
@@ -156,7 +198,7 @@ export function ComparePageClient({ salariesList }: ComparePageClientProps) {
       </div>
 
       {/* Selectors Bar */}
-      <div className="bg-white border border-[#EBEBEB] rounded-lg p-5 shadow-sm flex flex-col md:flex-row items-center gap-4">
+      <div className="bg-white border border-[#EBEBEB] rounded-2xl p-6 shadow-3xs flex flex-col md:flex-row items-center gap-4 text-left">
         <div className="flex-1 w-full">
           <Select
             label="Record 1 (Baseline)"
@@ -170,7 +212,7 @@ export function ComparePageClient({ salariesList }: ComparePageClientProps) {
           type="button"
           onClick={handleSwap}
           disabled={!s1 && !s2}
-          className="text-xs font-bold uppercase tracking-wider text-[#FF5A5F] hover:text-[#ff4449] disabled:text-[#717171] mt-5 px-3 py-2 border border-[#EBEBEB] rounded bg-slate-50 transition-colors cursor-pointer select-none"
+          className="text-xs font-black uppercase tracking-wider text-[#FF5A5F] hover:text-[#ff4449] disabled:text-[#717171] mt-5 px-4 py-2.5 border border-[#EBEBEB] rounded-xl bg-slate-50 transition-all cursor-pointer select-none shrink-0"
           title="Swap baseline and comparison"
         >
           ⇄ Swap
@@ -189,7 +231,7 @@ export function ComparePageClient({ salariesList }: ComparePageClientProps) {
           <button
             type="button"
             onClick={handleClear}
-            className="text-xs text-[#717171] hover:text-[#222222] font-semibold underline mt-5 cursor-pointer"
+            className="text-xs text-[#717171] hover:text-[#222222] font-black underline mt-5 cursor-pointer shrink-0"
           >
             Clear Both
           </button>
@@ -198,93 +240,375 @@ export function ComparePageClient({ salariesList }: ComparePageClientProps) {
 
       {/* Error state */}
       {error && (
-        <div className="bg-[#D93025]/10 border border-[#D93025]/20 rounded-md p-4 text-sm text-[#D93025] font-semibold">
-          {error}
+        <div className="bg-[#D93025]/10 border border-[#D93025]/20 rounded-xl p-4 text-sm text-[#D93025] font-extrabold text-left">
+          ⚠️ {error}
         </div>
       )}
 
       {/* Loading state skeleton */}
       {isLoading && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-          <Skeleton className="h-64" />
-          <Skeleton className="h-64" />
+          <Skeleton className="h-72 rounded-2xl" />
+          <Skeleton className="h-72 rounded-2xl" />
         </div>
       )}
 
       {/* Empty / Instruction State */}
       {!isLoading && !error && !result && (
-        <div className="text-center py-16 bg-white border border-[#EBEBEB] rounded-lg flex flex-col items-center gap-3">
-          <div className="h-12 w-12 text-[#717171] flex items-center justify-center bg-slate-50 border border-[#EBEBEB] rounded-full">
+        <div className="text-center py-20 bg-white border border-[#EBEBEB] rounded-3xl flex flex-col items-center gap-4 shadow-3xs">
+          <div className="h-14 w-14 text-[#FF5A5F] flex items-center justify-center bg-[#FF5A5F]/5 border border-[#FF5A5F]/15 rounded-full shadow-3xs">
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
             </svg>
           </div>
-          <h2 className="text-base font-bold text-[#222222]">Select Two Records</h2>
-          <p className="text-sm text-[#717171] max-w-sm mb-2">
-            Choose two salary records from the dropdowns above to perform a detailed side-by-side delta analysis.
+          <h2 className="text-lg font-black text-[#222222]">Select Two Records to Compare</h2>
+          <p className="text-xs sm:text-sm text-[#717171] max-w-sm font-semibold leading-relaxed">
+            Choose two salary records from the dropdowns above to perform a detailed stacked component analysis and run negotiations.
           </p>
           <Link
             href="/salaries"
-            className="inline-flex h-9 items-center justify-center rounded-md border border-[#EBEBEB] bg-white px-4 text-xs font-semibold text-[#484848] transition-colors hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200 cursor-pointer select-none"
+            className="inline-flex h-10 items-center justify-center rounded-xl border border-[#EBEBEB] bg-white px-5 text-xs font-extrabold text-[#484848] transition-all hover:bg-slate-50 shadow-3xs cursor-pointer select-none"
           >
             Or browse all salaries
           </Link>
-          <div className="w-full max-w-xs border-t border-[#EBEBEB] mt-2" />
-          <p className="text-xs text-[#717171] max-w-sm px-4 leading-relaxed mt-1">
-            💡 <strong>Tip:</strong> You can also open any company page and select the comparison checkbox next to salary records to compare them immediately.
-          </p>
+          <div className="w-full max-w-xs border-t border-[#F2F2F2] mt-4 pt-4 text-center mx-auto px-4">
+            <p className="text-[10px] text-[#717171] leading-relaxed font-semibold text-center">
+              💡 <strong>Tip:</strong> You can open any company profile page and use the comparison tools directly to analyze specific records side-by-side.
+            </p>
+          </div>
         </div>
       )}
 
-      {/* Comparison Results Card */}
+      {/* Comparison Results Area */}
       {!isLoading && !error && result && (
-        <div className="flex flex-col gap-6 mt-4">
-          {/* Summary Winner Panel */}
-          <div className="bg-white border border-[#EBEBEB] rounded-lg p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-              {/* Record 1 Header */}
-              <div className="flex items-center gap-3">
-                <CompanyLogo name={result.record1.companyName} logoUrl={result.record1.companyLogoUrl} size={40} />
-                <div>
-                  <p className="text-xs text-[#717171]">Baseline</p>
-                  <p className="text-sm font-bold text-[#222222]">{result.record1.companyName}</p>
-                  <p className="text-[11px] text-[#717171]">{result.record1.role} • {result.record1.level}</p>
-                </div>
+        <div className="flex flex-col gap-6">
+          
+          {/* Summary Panel & Stacked bar chart */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            {/* Left side: Quick stats comparing Baseline vs Comparison */}
+            <div className="lg:col-span-2 bg-white border border-[#EBEBEB] rounded-3xl p-6 shadow-sm flex flex-col gap-6 text-left">
+              <div className="flex justify-between items-center border-b border-[#F7F7F7] pb-4">
+                <h3 className="text-sm font-black uppercase text-[#717171] tracking-wider">
+                  📊 Stacked Pay Component Ratio
+                </h3>
+                <span className="text-[10px] font-black text-[#FF5A5F] bg-[#FF5A5F]/10 px-2 py-0.5 rounded-md">
+                  Original Data
+                </span>
               </div>
 
-              <div className="text-xl text-[#717171] font-light hidden sm:block">vs</div>
+              {/* Stacked bar visualization */}
+              <div className="flex flex-col gap-5">
+                {[
+                  { rec: result.record1, title: 'Baseline', color: 'bg-violet-500' },
+                  { rec: result.record2, title: 'Comparison', color: 'bg-emerald-500' }
+                ].map((item, idx) => {
+                  const basePct = item.rec.totalCompensation > 0 ? (item.rec.baseSalary / item.rec.totalCompensation) * 100 : 100;
+                  const stockPct = item.rec.totalCompensation > 0 ? (item.rec.stock / item.rec.totalCompensation) * 100 : 0;
+                  const bonusPct = item.rec.totalCompensation > 0 ? (item.rec.bonus / item.rec.totalCompensation) * 100 : 0;
 
-              {/* Record 2 Header */}
-              <div className="flex items-center gap-3">
-                <CompanyLogo name={result.record2.companyName} logoUrl={result.record2.companyLogoUrl} size={40} />
-                <div>
-                  <p className="text-xs text-[#717171]">Comparison</p>
-                  <p className="text-sm font-bold text-[#222222]">{result.record2.companyName}</p>
-                  <p className="text-[11px] text-[#717171]">{result.record2.role} • {result.record2.level}</p>
+                  return (
+                    <div key={idx} className="flex flex-col gap-2 w-full">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <CompanyLogo name={item.rec.companyName} logoUrl={item.rec.companyLogoUrl} size={24} />
+                          <span className="text-xs font-black text-[#222222]">{item.rec.companyName}</span>
+                          <span className="text-[10px] text-[#717171] font-semibold">({item.title})</span>
+                        </div>
+                        <span className="text-xs font-black text-[#222222]">
+                          {formatCurrency(item.rec.totalCompensation, item.rec.currency)}
+                        </span>
+                      </div>
+                      
+                      {/* Bar Stack */}
+                      <div className="w-full h-4.5 rounded-full overflow-hidden flex bg-slate-100 border border-slate-200">
+                        {basePct > 0 && (
+                          <div 
+                            style={{ width: `${basePct}%` }}
+                            className="bg-violet-500 h-full flex items-center justify-center text-[9px] font-black text-white"
+                            title={`Base: ${basePct.toFixed(0)}%`}
+                          >
+                            {basePct > 15 && 'Base'}
+                          </div>
+                        )}
+                        {stockPct > 0 && (
+                          <div 
+                            style={{ width: `${stockPct}%` }}
+                            className="bg-emerald-500 h-full flex items-center justify-center text-[9px] font-black text-white"
+                            title={`Stock: ${stockPct.toFixed(0)}%`}
+                          >
+                            {stockPct > 15 && 'Stock'}
+                          </div>
+                        )}
+                        {bonusPct > 0 && (
+                          <div 
+                            style={{ width: `${bonusPct}%` }}
+                            className="bg-amber-500 h-full flex items-center justify-center text-[9px] font-black text-white"
+                            title={`Bonus: ${bonusPct.toFixed(0)}%`}
+                          >
+                            {bonusPct > 15 && 'Bonus'}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Chart Legend */}
+              <div className="flex justify-center items-center gap-6 border-t border-[#F7F7F7] pt-4 mt-2">
+                <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#484848]">
+                  <span className="h-2.5 w-2.5 rounded-full bg-violet-500 shrink-0" />
+                  <span>Base Salary</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#484848]">
+                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 shrink-0" />
+                  <span>Stock & Equity</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#484848]">
+                  <span className="h-2.5 w-2.5 rounded-full bg-amber-500 shrink-0" />
+                  <span>Annual Bonus</span>
                 </div>
               </div>
             </div>
 
-            {/* Winner Announcement Box */}
-            <div className="bg-[#008A05]/5 border border-[#008A05]/20 rounded-md p-4 flex flex-col gap-1 items-end text-right">
-              <span className="text-xs uppercase font-bold text-[#717171]">Compensation Winner</span>
-              {result.winner.overall === 'tie' ? (
-                <span className="text-lg font-extrabold text-[#222222]">It&apos;s a Tie!</span>
-              ) : (
-                <div className="flex flex-col items-end">
-                  <span className="text-lg font-extrabold text-[#008A05]">
-                    {result.winner.overall === 'record1' ? result.record1.companyName : result.record2.companyName} wins!
-                  </span>
-                  <span className="text-xs text-[#717171] mt-0.5">
-                    By {formatCurrency(Math.abs(result.delta.tc_delta), result.record1.currency)} in TC
+            {/* Right side: Winner announce card */}
+            <div className="bg-white border border-[#EBEBEB] rounded-3xl p-6 shadow-sm flex flex-col justify-between text-left h-full">
+              <div className="flex flex-col gap-2">
+                <span className="text-[9px] font-black uppercase tracking-wider text-[#717171] border-b border-[#F7F7F7] pb-3">
+                  🏆 Overall Compensation Winner
+                </span>
+                
+                {result.winner.overall === 'tie' ? (
+                  <div className="flex flex-col gap-2 mt-4">
+                    <span className="text-2xl font-black text-[#222222]">It&apos;s a Tie!</span>
+                    <p className="text-xs text-[#717171] font-semibold leading-relaxed">
+                      Both packages offer identical total compensation indexes.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-3 mt-4">
+                    <div className="flex items-center gap-3">
+                      <CompanyLogo 
+                        name={result.winner.overall === 'record1' ? result.record1.companyName : result.record2.companyName} 
+                        logoUrl={result.winner.overall === 'record1' ? result.record1.companyLogoUrl : result.record2.companyLogoUrl} 
+                        size={48} 
+                      />
+                      <div className="flex flex-col leading-tight">
+                        <span className="text-2xl font-black text-[#008A05]">
+                          {result.winner.overall === 'record1' ? result.record1.companyName : result.record2.companyName}
+                        </span>
+                        <span className="text-[10px] text-[#717171] font-bold">
+                          {result.winner.overall === 'record1' ? result.record1.role : result.record2.role}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="bg-[#008A05]/5 border border-[#008A05]/15 p-4 rounded-2xl flex flex-col mt-2">
+                      <span className="text-[10px] font-black uppercase text-[#008A05] tracking-wider">
+                        Baseline Delta advantage
+                      </span>
+                      <span className="text-xl font-black text-[#008A05] mt-1.5">
+                        +{formatCurrency(Math.abs(result.delta.tc_delta), result.record1.currency)}
+                      </span>
+                      <span className="text-[9px] font-semibold text-[#717171] mt-0.5">
+                        Higher total package value
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              <div className="text-[9px] text-[#717171] leading-relaxed font-semibold mt-4">
+                * Real comparisons represent calculated totals adjusted to standard currencies. Simulate dynamic negotiations below.
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive Counter-Offer Negotiations Simulator */}
+          <div className="bg-white border border-[#EBEBEB] rounded-3xl p-6 shadow-sm text-left">
+            <div className="flex justify-between items-center border-b border-[#F7F7F7] pb-4 mb-6">
+              <div className="flex flex-col gap-0.5">
+                <h3 className="text-base font-black text-[#222222] tracking-tight">
+                  ⚖️ Interactive Offer Simulator & Slider
+                </h3>
+                <p className="text-[11px] text-[#717171] font-semibold">
+                  Slide base salary, stock allocations, or signing bonuses to simulate ideal counter-offer negotiations.
+                </p>
+              </div>
+              
+              {/* Simulated Winner Badge */}
+              <div className="flex items-center gap-2 bg-[#FF5A5F]/5 border border-[#FF5A5F]/15 px-3 py-1.5 rounded-xl shrink-0">
+                <span className="text-[10px] font-black text-[#FF5A5F]">Simulated Winner:</span>
+                <span className="text-xs font-black text-[#222222]">
+                  {simWinner === 'tie' ? 'Tie' : simWinner === 'record1' ? result.record1.companyName : result.record2.companyName}
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Simulator Card 1 */}
+              <div className="bg-slate-50/50 border border-[#EBEBEB] rounded-2xl p-5 flex flex-col gap-5">
+                <div className="flex items-center justify-between border-b border-[#EBEBEB] pb-3">
+                  <div className="flex items-center gap-2">
+                    <CompanyLogo name={result.record1.companyName} logoUrl={result.record1.companyLogoUrl} size={28} />
+                    <div className="flex flex-col leading-tight">
+                      <span className="text-xs font-black text-[#222222]">{result.record1.companyName}</span>
+                      <span className="text-[9px] text-[#717171] font-bold">Offer 1 Simulator</span>
+                    </div>
+                  </div>
+                  <span className="text-lg font-black text-violet-600">
+                    {formatCurrency(simTotal1, result.record1.currency)}
                   </span>
                 </div>
-              )}
+
+                {/* Base Salary Slider */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex justify-between items-center text-xs font-bold text-[#484848]">
+                    <span>Base Salary</span>
+                    <span className="text-[#FF5A5F]">{formatCurrency(simBase1, result.record1.currency)}</span>
+                  </div>
+                  <input 
+                    type="range"
+                    min="0"
+                    max={sliderRanges.max1}
+                    step={sliderRanges.step1}
+                    value={simBase1}
+                    onChange={(e) => setSimBase1(Number(e.target.value))}
+                    className="w-full accent-violet-600 h-1.5 bg-[#EBEBEB] rounded-lg cursor-pointer"
+                  />
+                </div>
+
+                {/* Stock Slider */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex justify-between items-center text-xs font-bold text-[#484848]">
+                    <span>Stock & Equity</span>
+                    <span className="text-[#FF5A5F]">{formatCurrency(simStock1, result.record1.currency)}</span>
+                  </div>
+                  <input 
+                    type="range"
+                    min="0"
+                    max={sliderRanges.max1}
+                    step={sliderRanges.step1}
+                    value={simStock1}
+                    onChange={(e) => setSimStock1(Number(e.target.value))}
+                    className="w-full accent-emerald-500 h-1.5 bg-[#EBEBEB] rounded-lg cursor-pointer"
+                  />
+                </div>
+
+                {/* Bonus Slider */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex justify-between items-center text-xs font-bold text-[#484848]">
+                    <span>Annual Bonus</span>
+                    <span className="text-[#FF5A5F]">{formatCurrency(simBonus1, result.record1.currency)}</span>
+                  </div>
+                  <input 
+                    type="range"
+                    min="0"
+                    max={sliderRanges.max1}
+                    step={sliderRanges.step1}
+                    value={simBonus1}
+                    onChange={(e) => setSimBonus1(Number(e.target.value))}
+                    className="w-full accent-amber-500 h-1.5 bg-[#EBEBEB] rounded-lg cursor-pointer"
+                  />
+                </div>
+
+                {/* Reset button for Card 1 */}
+                <button
+                  onClick={() => {
+                    setSimBase1(result.record1.baseSalary);
+                    setSimStock1(result.record1.stock);
+                    setSimBonus1(result.record1.bonus);
+                  }}
+                  className="text-[10px] font-black uppercase tracking-wider text-[#717171] hover:text-[#222222] border border-[#EBEBEB] rounded-lg py-1.5 bg-white text-center cursor-pointer"
+                >
+                  Reset Offer 1 to Baseline
+                </button>
+              </div>
+
+              {/* Simulator Card 2 */}
+              <div className="bg-slate-50/50 border border-[#EBEBEB] rounded-2xl p-5 flex flex-col gap-5">
+                <div className="flex items-center justify-between border-b border-[#EBEBEB] pb-3">
+                  <div className="flex items-center gap-2">
+                    <CompanyLogo name={result.record2.companyName} logoUrl={result.record2.companyLogoUrl} size={28} />
+                    <div className="flex flex-col leading-tight">
+                      <span className="text-xs font-black text-[#222222]">{result.record2.companyName}</span>
+                      <span className="text-[9px] text-[#717171] font-bold">Offer 2 Simulator</span>
+                    </div>
+                  </div>
+                  <span className="text-lg font-black text-emerald-600">
+                    {formatCurrency(simTotal2, result.record2.currency)}
+                  </span>
+                </div>
+
+                {/* Base Salary Slider */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex justify-between items-center text-xs font-bold text-[#484848]">
+                    <span>Base Salary</span>
+                    <span className="text-[#FF5A5F]">{formatCurrency(simBase2, result.record2.currency)}</span>
+                  </div>
+                  <input 
+                    type="range"
+                    min="0"
+                    max={sliderRanges.max2}
+                    step={sliderRanges.step2}
+                    value={simBase2}
+                    onChange={(e) => setSimBase2(Number(e.target.value))}
+                    className="w-full accent-violet-600 h-1.5 bg-[#EBEBEB] rounded-lg cursor-pointer"
+                  />
+                </div>
+
+                {/* Stock Slider */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex justify-between items-center text-xs font-bold text-[#484848]">
+                    <span>Stock & Equity</span>
+                    <span className="text-[#FF5A5F]">{formatCurrency(simStock2, result.record2.currency)}</span>
+                  </div>
+                  <input 
+                    type="range"
+                    min="0"
+                    max={sliderRanges.max2}
+                    step={sliderRanges.step2}
+                    value={simStock2}
+                    onChange={(e) => setSimStock2(Number(e.target.value))}
+                    className="w-full accent-emerald-500 h-1.5 bg-[#EBEBEB] rounded-lg cursor-pointer"
+                  />
+                </div>
+
+                {/* Bonus Slider */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex justify-between items-center text-xs font-bold text-[#484848]">
+                    <span>Annual Bonus</span>
+                    <span className="text-[#FF5A5F]">{formatCurrency(simBonus2, result.record2.currency)}</span>
+                  </div>
+                  <input 
+                    type="range"
+                    min="0"
+                    max={sliderRanges.max2}
+                    step={sliderRanges.step2}
+                    value={simBonus2}
+                    onChange={(e) => setSimBonus2(Number(e.target.value))}
+                    className="w-full accent-amber-500 h-1.5 bg-[#EBEBEB] rounded-lg cursor-pointer"
+                  />
+                </div>
+
+                {/* Reset button for Card 2 */}
+                <button
+                  onClick={() => {
+                    setSimBase2(result.record2.baseSalary);
+                    setSimStock2(result.record2.stock);
+                    setSimBonus2(result.record2.bonus);
+                  }}
+                  className="text-[10px] font-black uppercase tracking-wider text-[#717171] hover:text-[#222222] border border-[#EBEBEB] rounded-lg py-1.5 bg-white text-center cursor-pointer"
+                >
+                  Reset Offer 2 to Baseline
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Breakdown Grid Table */}
-          <div className="bg-white border border-[#EBEBEB] rounded-lg overflow-hidden shadow-sm">
+          <div className="bg-white border border-[#EBEBEB] rounded-3xl overflow-hidden shadow-sm">
             {/* Desktop Side-by-Side Table */}
             <div className="hidden md:block">
               <table className="w-full text-left text-sm text-[#484848] border-collapse">
