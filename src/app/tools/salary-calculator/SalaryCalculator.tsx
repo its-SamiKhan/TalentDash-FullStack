@@ -55,33 +55,69 @@ export function SalaryCalculator() {
             ]}
           />
 
-          <Input
-            label="Base Salary (Annual)"
-            name="base"
-            type="number"
-            min="0"
-            value={formValues.base}
-            onChange={handleInputChange}
-            required
-          />
+          <div className="flex flex-col gap-2">
+            <Input
+              label="Base Salary (Annual)"
+              name="base"
+              type="number"
+              min="0"
+              value={formValues.base}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="range"
+              name="base"
+              min="100000"
+              max="15000000"
+              step="50000"
+              value={formValues.base}
+              onChange={handleInputChange}
+              className="w-full h-1.5 bg-[#EBEBEB] rounded-lg appearance-none cursor-pointer accent-[#FF5A5F]"
+            />
+          </div>
 
-          <Input
-            label="Variable / Performance Bonus (Annual)"
-            name="bonus"
-            type="number"
-            min="0"
-            value={formValues.bonus}
-            onChange={handleInputChange}
-          />
+          <div className="flex flex-col gap-2">
+            <Input
+              label="Variable / Performance Bonus (Annual)"
+              name="bonus"
+              type="number"
+              min="0"
+              value={formValues.bonus}
+              onChange={handleInputChange}
+            />
+            <input
+              type="range"
+              name="bonus"
+              min="0"
+              max="5000000"
+              step="25000"
+              value={formValues.bonus}
+              onChange={handleInputChange}
+              className="w-full h-1.5 bg-[#EBEBEB] rounded-lg appearance-none cursor-pointer accent-[#FF5A5F]"
+            />
+          </div>
 
-          <Input
-            label="Stock / Equity Value (Per Year)"
-            name="stock"
-            type="number"
-            min="0"
-            value={formValues.stock}
-            onChange={handleInputChange}
-          />
+          <div className="flex flex-col gap-2">
+            <Input
+              label="Stock / Equity Value (Per Year)"
+              name="stock"
+              type="number"
+              min="0"
+              value={formValues.stock}
+              onChange={handleInputChange}
+            />
+            <input
+              type="range"
+              name="stock"
+              min="0"
+              max="10000000"
+              step="50000"
+              value={formValues.stock}
+              onChange={handleInputChange}
+              className="w-full h-1.5 bg-[#EBEBEB] rounded-lg appearance-none cursor-pointer accent-[#FF5A5F]"
+            />
+          </div>
 
           <Select
             label="Tax Estimation Model"

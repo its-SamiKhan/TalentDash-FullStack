@@ -10,9 +10,11 @@ export function Header() {
 
   const navLinks = [
     { href: '/', label: 'Home' },
+    { href: '/companies', label: 'Companies' },
     { href: '/salaries', label: 'Salaries' },
     { href: '/reviews', label: 'Reviews' },
     { href: '/interviews', label: 'Interviews' },
+    { href: '/jobs', label: 'Jobs' },
     { href: '/community', label: 'Community' },
     { href: '/workplace-index', label: 'Workplace Index' },
     { href: '/tools', label: 'Tools' },

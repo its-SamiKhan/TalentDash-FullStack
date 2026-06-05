@@ -20,6 +20,15 @@ type SortField =
   | 'diversityInclusion'
   | 'wfhScore';
 
+function getScoreColorClass(score: number | null | undefined): string {
+  if (!score) return 'text-[#717171]';
+  if (score >= 4.5) return 'text-emerald-600 font-extrabold';
+  if (score >= 4.0) return 'text-emerald-500 font-bold';
+  if (score >= 3.5) return 'text-blue-600 font-bold';
+  if (score >= 3.0) return 'text-amber-500 font-bold';
+  return 'text-rose-500 font-bold';
+}
+
 export function RankingsClient({
   initialRankings,
   industries,
@@ -216,32 +225,32 @@ export function RankingsClient({
                     </td>
 
                     {/* Culture Score */}
-                    <td className="py-4 px-4 text-center font-bold text-[#222222]">
+                    <td className={`py-4 px-4 text-center font-bold ${getScoreColorClass(item.cultureScore)}`}>
                       {item.cultureScore?.toFixed(1) || '-'}
                     </td>
 
                     {/* Comp Fairness */}
-                    <td className="py-4 px-4 text-center font-bold text-[#222222]">
+                    <td className={`py-4 px-4 text-center font-bold ${getScoreColorClass(item.compensationFairness)}`}>
                       {item.compensationFairness?.toFixed(1) || '-'}
                     </td>
 
                     {/* Growth */}
-                    <td className="py-4 px-4 text-center font-bold text-[#222222]">
+                    <td className={`py-4 px-4 text-center font-bold ${getScoreColorClass(item.careerGrowth)}`}>
                       {item.careerGrowth?.toFixed(1) || '-'}
                     </td>
 
                     {/* WLB */}
-                    <td className="py-4 px-4 text-center font-bold text-[#222222]">
+                    <td className={`py-4 px-4 text-center font-bold ${getScoreColorClass(item.workLifeBalance)}`}>
                       {item.workLifeBalance?.toFixed(1) || '-'}
                     </td>
 
                     {/* D&I */}
-                    <td className="py-4 px-4 text-center font-bold text-[#222222]">
+                    <td className={`py-4 px-4 text-center font-bold ${getScoreColorClass(item.diversityInclusion)}`}>
                       {item.diversityInclusion?.toFixed(1) || '-'}
                     </td>
 
                     {/* WFH Policy */}
-                    <td className="py-4 px-4 text-center font-bold text-[#222222]">
+                    <td className={`py-4 px-4 text-center font-bold ${getScoreColorClass(item.wfhScore)}`}>
                       {item.wfhScore?.toFixed(1) || '-'}
                     </td>
                   </tr>

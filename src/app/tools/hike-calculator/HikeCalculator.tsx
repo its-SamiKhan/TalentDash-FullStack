@@ -75,30 +75,66 @@ export function HikeCalculator() {
               TC: {formatCurrency(results.current.totalComp, formValues.currency)}
             </span>
           </h2>
-          <Input
-            label="Annual Base Salary"
-            name="currentBase"
-            type="number"
-            min="0"
-            value={formValues.currentBase}
-            onChange={handleInputChange}
-          />
-          <Input
-            label="Annual Bonus / Variable"
-            name="currentBonus"
-            type="number"
-            min="0"
-            value={formValues.currentBonus}
-            onChange={handleInputChange}
-          />
-          <Input
-            label="Stock Value (Per Year)"
-            name="currentStock"
-            type="number"
-            min="0"
-            value={formValues.currentStock}
-            onChange={handleInputChange}
-          />
+          <div className="flex flex-col gap-2">
+            <Input
+              label="Annual Base Salary"
+              name="currentBase"
+              type="number"
+              min="0"
+              value={formValues.currentBase}
+              onChange={handleInputChange}
+            />
+            <input
+              type="range"
+              name="currentBase"
+              min="100000"
+              max="15000000"
+              step="50000"
+              value={formValues.currentBase}
+              onChange={handleInputChange}
+              className="w-full h-1.5 bg-[#EBEBEB] rounded-lg appearance-none cursor-pointer accent-[#FF5A5F]"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Input
+              label="Annual Bonus / Variable"
+              name="currentBonus"
+              type="number"
+              min="0"
+              value={formValues.currentBonus}
+              onChange={handleInputChange}
+            />
+            <input
+              type="range"
+              name="currentBonus"
+              min="0"
+              max="5000000"
+              step="25000"
+              value={formValues.currentBonus}
+              onChange={handleInputChange}
+              className="w-full h-1.5 bg-[#EBEBEB] rounded-lg appearance-none cursor-pointer accent-[#FF5A5F]"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Input
+              label="Stock Value (Per Year)"
+              name="currentStock"
+              type="number"
+              min="0"
+              value={formValues.currentStock}
+              onChange={handleInputChange}
+            />
+            <input
+              type="range"
+              name="currentStock"
+              min="0"
+              max="10000000"
+              step="50000"
+              value={formValues.currentStock}
+              onChange={handleInputChange}
+              className="w-full h-1.5 bg-[#EBEBEB] rounded-lg appearance-none cursor-pointer accent-[#FF5A5F]"
+            />
+          </div>
         </div>
 
         {/* Proposed Package */}
@@ -109,30 +145,66 @@ export function HikeCalculator() {
               TC: {formatCurrency(results.proposed.totalComp, formValues.currency)}
             </span>
           </h2>
-          <Input
-            label="Annual Base Salary"
-            name="proposedBase"
-            type="number"
-            min="0"
-            value={formValues.proposedBase}
-            onChange={handleInputChange}
-          />
-          <Input
-            label="Annual Bonus / Variable"
-            name="proposedBonus"
-            type="number"
-            min="0"
-            value={formValues.proposedBonus}
-            onChange={handleInputChange}
-          />
-          <Input
-            label="Stock Value (Per Year)"
-            name="proposedStock"
-            type="number"
-            min="0"
-            value={formValues.proposedStock}
-            onChange={handleInputChange}
-          />
+          <div className="flex flex-col gap-2">
+            <Input
+              label="Annual Base Salary"
+              name="proposedBase"
+              type="number"
+              min="0"
+              value={formValues.proposedBase}
+              onChange={handleInputChange}
+            />
+            <input
+              type="range"
+              name="proposedBase"
+              min="100000"
+              max="15000000"
+              step="50000"
+              value={formValues.proposedBase}
+              onChange={handleInputChange}
+              className="w-full h-1.5 bg-[#EBEBEB] rounded-lg appearance-none cursor-pointer accent-[#FF5A5F]"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Input
+              label="Annual Bonus / Variable"
+              name="proposedBonus"
+              type="number"
+              min="0"
+              value={formValues.proposedBonus}
+              onChange={handleInputChange}
+            />
+            <input
+              type="range"
+              name="proposedBonus"
+              min="0"
+              max="5000000"
+              step="25000"
+              value={formValues.proposedBonus}
+              onChange={handleInputChange}
+              className="w-full h-1.5 bg-[#EBEBEB] rounded-lg appearance-none cursor-pointer accent-[#FF5A5F]"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Input
+              label="Stock Value (Per Year)"
+              name="proposedStock"
+              type="number"
+              min="0"
+              value={formValues.proposedStock}
+              onChange={handleInputChange}
+            />
+            <input
+              type="range"
+              name="proposedStock"
+              min="0"
+              max="10000000"
+              step="50000"
+              value={formValues.proposedStock}
+              onChange={handleInputChange}
+              className="w-full h-1.5 bg-[#EBEBEB] rounded-lg appearance-none cursor-pointer accent-[#FF5A5F]"
+            />
+          </div>
         </div>
       </div>
 

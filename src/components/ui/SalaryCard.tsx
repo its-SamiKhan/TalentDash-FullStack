@@ -9,9 +9,11 @@ import Link from 'next/link';
 
 interface SalaryCardProps {
   salary: SalaryForDisplay;
+  isSaved?: boolean;
+  onToggleSave?: () => void;
 }
 
-export function SalaryCard({ salary }: SalaryCardProps) {
+export function SalaryCard({ salary, isSaved = false, onToggleSave }: SalaryCardProps) {
   return (
     <div className="bg-white border border-[#EBEBEB] rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-4">
       <div className="flex items-start justify-between gap-3">
@@ -27,7 +29,24 @@ export function SalaryCard({ salary }: SalaryCardProps) {
             <p className="text-xs text-[#717171]">{salary.location}</p>
           </div>
         </div>
-        <LevelBadge level={salary.level} />
+        <div className="flex items-center gap-2">
+          <LevelBadge level={salary.level} />
+          {onToggleSave && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onToggleSave();
+              }}
+              className={`text-base cursor-pointer hover:scale-110 transition-transform ${
+                isSaved ? 'text-[#FF5A5F]' : 'text-slate-300 hover:text-[#FF5A5F]'
+              }`}
+              title={isSaved ? 'Unsave salary' : 'Save salary'}
+            >
+              {isSaved ? '❤️' : '🤍'}
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="border-t border-b border-[#EBEBEB] py-3 flex justify-between text-center">

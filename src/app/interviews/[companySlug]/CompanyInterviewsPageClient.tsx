@@ -255,62 +255,80 @@ export function CompanyInterviewsPageClient({
         </div>
       </div>
 
-      {/* Submission Dialog/Modal */}
-      {isSubmitOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 overflow-y-auto backdrop-blur-xs">
-          <div className="relative w-full max-w-lg bg-white rounded-lg shadow-xl border border-[#EBEBEB] p-6 max-h-[95vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-4 border-b border-[#EBEBEB]">
-              <h2 className="text-lg font-bold text-[#222222]">Share {company.name} Interview</h2>
-              <button
-                type="button"
-                onClick={handleCloseSubmit}
-                className="text-[#717171] hover:text-[#222222] text-xl font-bold p-1 focus:outline-none"
-              >
-                ×
-              </button>
-            </div>
+      {/* Slide-out Contribution Drawer */}
+      {/* Backdrop */}
+      <div 
+        onClick={handleCloseSubmit}
+        className={`fixed inset-0 bg-black/45 backdrop-blur-xs transition-opacity duration-300 z-50 ${
+          isSubmitOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`} 
+      />
 
-            {submitSuccess ? (
-              <div className="py-8 text-center flex flex-col items-center gap-3">
-                <div className="h-12 w-12 rounded-full bg-[#008A05]/10 border border-[#008A05]/20 flex items-center justify-center text-[#008A05] text-xl font-bold">
-                  ✓
-                </div>
-                <h3 className="text-base font-bold text-[#222222]">Interview Submitted!</h3>
-                <p className="text-sm text-[#717171]">Thank you for supporting transparency.</p>
+      {/* Drawer Panel */}
+      <div 
+        className={`fixed top-0 right-0 bottom-0 w-full max-w-md bg-white shadow-2xl border-l border-[#EBEBEB] z-50 flex flex-col h-full transform transition-transform duration-300 ease-in-out ${
+          isSubmitOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex items-center justify-between p-6 border-b border-[#EBEBEB]">
+          <div className="flex flex-col">
+            <h2 className="text-base font-extrabold text-[#222222] tracking-tight">Share {company.name} Interview</h2>
+            <p className="text-[10px] text-[#717171] font-semibold mt-0.5">Help others prepare by sharing your experience</p>
+          </div>
+          <button
+            type="button"
+            onClick={handleCloseSubmit}
+            className="text-[#717171] hover:text-[#222222] text-2xl font-light p-1 focus:outline-none cursor-pointer"
+          >
+            &times;
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-6">
+          {submitSuccess ? (
+            <div className="py-12 text-center flex flex-col items-center gap-3">
+              <div className="h-14 w-14 rounded-full bg-[#008A05]/10 border border-[#008A05]/20 flex items-center justify-center text-[#008A05] text-2xl font-bold">
+                ✓
               </div>
-            ) : (
-              <form onSubmit={handleFormSubmit} className="mt-4 flex flex-col gap-4">
-                {formErrors.length > 0 && (
-                  <div className="bg-[#D93025]/10 border border-[#D93025]/20 rounded-md p-3 text-xs text-[#D93025] font-semibold flex flex-col gap-1">
-                    {formErrors.map((err, i) => (
-                      <p key={i}>• {err}</p>
-                    ))}
-                  </div>
-                )}
+              <h3 className="text-base font-extrabold text-[#222222] mt-2">Experience Submitted!</h3>
+              <p className="text-xs text-[#717171] font-medium max-w-[240px]">
+                Thank you for contributing. The interviews index will refresh shortly.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleFormSubmit} className="flex flex-col gap-5 pb-6">
+              {formErrors.length > 0 && (
+                <div className="bg-[#D93025]/10 border border-[#D93025]/20 rounded-md p-3.5 text-xs text-[#D93025] font-semibold flex flex-col gap-1">
+                  {formErrors.map((err, i) => (
+                    <p key={i}>• {err}</p>
+                  ))}
+                </div>
+              )}
+
+              <div className="flex flex-col gap-4">
+                <div>
+                  <Input
+                    label="Company Name"
+                    name="company"
+                    value={formValues.company}
+                    disabled
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Input
+                    label="Job Role / Title"
+                    name="role"
+                    placeholder="e.g. SDE-II, Software Engineer"
+                    value={formValues.role}
+                    onChange={handleFormChange}
+                    required
+                  />
+                </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
-                    <Input
-                      label="Company Name"
-                      name="company"
-                      value={formValues.company}
-                      disabled
-                      required
-                    />
-                  </div>
-
-                  <div className="col-span-2">
-                    <Input
-                      label="Job Role / Title"
-                      name="role"
-                      placeholder="e.g. SDE-II, Software Engineer"
-                      value={formValues.role}
-                      onChange={handleFormChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="col-span-1">
+                  <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-[#717171] mb-1.5">
                       Rounds Count
                     </label>
@@ -329,7 +347,7 @@ export function CompanyInterviewsPageClient({
                     </select>
                   </div>
 
-                  <div className="col-span-1">
+                  <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-[#717171] mb-1.5">
                       Outcome
                     </label>
@@ -345,68 +363,68 @@ export function CompanyInterviewsPageClient({
                       <option value="GHOSTED">Ghosted</option>
                     </select>
                   </div>
-
-                  <div className="col-span-2 border-y border-[#EBEBEB] py-4">
-                    <StarRatingInput
-                      label="Difficulty Rating"
-                      rating={formValues.difficulty}
-                      onChange={(val) => handleRatingChange('difficulty', val)}
-                    />
-                    <span className="text-[10px] text-[#717171] mt-1 block">
-                      1-2: Easy | 3: Medium | 4-5: Hard
-                    </span>
-                  </div>
-
-                  <div className="col-span-2 flex flex-col gap-1">
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#717171]">
-                      Interview Process Description
-                    </label>
-                    <textarea
-                      name="experience"
-                      rows={3}
-                      placeholder="Describe the rounds, interview process, and overall vibe of the candidate experience (Min 20 characters)"
-                      value={formValues.experience}
-                      onChange={handleFormChange}
-                      className="w-full p-3 border border-[#EBEBEB] rounded-md text-sm text-[#222222] bg-white transition-shadow focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/50 focus:border-[#FF5A5F]"
-                      required
-                    />
-                    <span className="text-[10px] text-right font-semibold text-[#717171]">
-                      {formValues.experience.length} / 20 characters minimum
-                    </span>
-                  </div>
-
-                  <div className="col-span-2 flex flex-col gap-1">
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#717171]">
-                      Questions Asked
-                    </label>
-                    <textarea
-                      name="questions"
-                      rows={3}
-                      placeholder="What technical or behavioral questions were you asked? (Min 10 characters)"
-                      value={formValues.questions}
-                      onChange={handleFormChange}
-                      className="w-full p-3 border border-[#EBEBEB] rounded-md text-sm text-[#222222] bg-white transition-shadow focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/50 focus:border-[#FF5A5F]"
-                      required
-                    />
-                    <span className="text-[10px] text-right font-semibold text-[#717171]">
-                      {formValues.questions.length} / 10 characters minimum
-                    </span>
-                  </div>
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-[#EBEBEB] flex justify-end gap-3">
-                  <Button variant="secondary" type="button" onClick={handleCloseSubmit}>
-                    Cancel
-                  </Button>
-                  <Button variant="primary" type="submit">
-                    Submit Experience
-                  </Button>
+                <div className="border-y border-[#EBEBEB] py-4 flex flex-col gap-2">
+                  <StarRatingInput
+                    label="Difficulty Rating"
+                    rating={formValues.difficulty}
+                    onChange={(val) => handleRatingChange('difficulty', val)}
+                  />
+                  <span className="text-[10px] text-[#717171] font-semibold mt-0.5">
+                    1-2: Easy | 3: Medium | 4-5: Hard
+                  </span>
                 </div>
-              </form>
-            )}
-          </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#717171]">
+                    Interview Process Description
+                  </label>
+                  <textarea
+                    name="experience"
+                    rows={3}
+                    placeholder="Describe the rounds, interview process, and overall vibe of the candidate experience (Min 20 characters)"
+                    value={formValues.experience}
+                    onChange={handleFormChange}
+                    className="w-full p-3 border border-[#EBEBEB] rounded-md text-sm text-[#222222] bg-white transition-shadow focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/50 focus:border-[#FF5A5F]"
+                    required
+                  />
+                  <span className="text-[9px] text-right font-semibold text-[#717171] mt-0.5">
+                    {formValues.experience.length} / 20 characters minimum
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#717171]">
+                    Questions Asked
+                  </label>
+                  <textarea
+                    name="questions"
+                    rows={3}
+                    placeholder="What technical or behavioral questions were you asked? (Min 10 characters)"
+                    value={formValues.questions}
+                    onChange={handleFormChange}
+                    className="w-full p-3 border border-[#EBEBEB] rounded-md text-sm text-[#222222] bg-white transition-shadow focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/50 focus:border-[#FF5A5F]"
+                    required
+                  />
+                  <span className="text-[9px] text-right font-semibold text-[#717171] mt-0.5">
+                    {formValues.questions.length} / 10 characters minimum
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-4 pt-4 border-t border-[#EBEBEB] flex justify-end gap-3">
+                <Button variant="secondary" type="button" onClick={handleCloseSubmit} className="cursor-pointer text-xs py-2 px-4 font-bold">
+                  Cancel
+                </Button>
+                <Button variant="primary" type="submit" className="cursor-pointer text-xs py-2 px-5 font-bold">
+                  Submit Experience
+                </Button>
+              </div>
+            </form>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

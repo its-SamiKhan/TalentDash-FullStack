@@ -1,10 +1,20 @@
 import { NextResponse } from 'next/server';
-import { getPosts, createPost } from '@/services/community.service';
+import { getPosts, createPost, getPostById } from '@/services/community.service';
 import { validateCommunityPostPayload } from '@/lib/validators';
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (id) {
+      const thread = await getPostById(id);
+      if (!thread) {
+        return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+      }
+      return NextResponse.json(thread);
+    }
+
     const company = searchParams.get('company') || undefined;
     const topic = searchParams.get('topic') || undefined;
     const query = searchParams.get('query') || undefined;

@@ -138,7 +138,7 @@ export function ComparePageClient({ salariesList }: ComparePageClientProps) {
   };
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6">
+    <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6 bg-white border border-[#EBEBEB] rounded-2xl p-6 shadow-sm">
       {/* Title */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>

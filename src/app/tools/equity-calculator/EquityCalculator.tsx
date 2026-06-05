@@ -57,35 +57,71 @@ export function EquityCalculator() {
             ]}
           />
 
-          <Input
-            label="Number of Options / Shares"
-            name="optionsCount"
-            type="number"
-            min="1"
-            value={formValues.optionsCount}
-            onChange={handleInputChange}
-            required
-          />
+          <div className="flex flex-col gap-2">
+            <Input
+              label="Number of Options / Shares"
+              name="optionsCount"
+              type="number"
+              min="1"
+              value={formValues.optionsCount}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="range"
+              name="optionsCount"
+              min="1"
+              max="1000000"
+              step="500"
+              value={formValues.optionsCount}
+              onChange={handleInputChange}
+              className="w-full h-1.5 bg-[#EBEBEB] rounded-lg appearance-none cursor-pointer accent-[#FF5A5F]"
+            />
+          </div>
 
-          <Input
-            label="Strike Price (Grant Price)"
-            name="strikePrice"
-            type="number"
-            min="0"
-            value={formValues.strikePrice}
-            onChange={handleInputChange}
-            required
-          />
+          <div className="flex flex-col gap-2">
+            <Input
+              label="Strike Price (Grant Price)"
+              name="strikePrice"
+              type="number"
+              min="0"
+              value={formValues.strikePrice}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="range"
+              name="strikePrice"
+              min="0"
+              max="10000"
+              step="10"
+              value={formValues.strikePrice}
+              onChange={handleInputChange}
+              className="w-full h-1.5 bg-[#EBEBEB] rounded-lg appearance-none cursor-pointer accent-[#FF5A5F]"
+            />
+          </div>
 
-          <Input
-            label="Current Share Price (FMV)"
-            name="currentPrice"
-            type="number"
-            min="0"
-            value={formValues.currentPrice}
-            onChange={handleInputChange}
-            required
-          />
+          <div className="flex flex-col gap-2">
+            <Input
+              label="Current Share Price (FMV)"
+              name="currentPrice"
+              type="number"
+              min="0"
+              value={formValues.currentPrice}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="range"
+              name="currentPrice"
+              min="0"
+              max="15000"
+              step="10"
+              value={formValues.currentPrice}
+              onChange={handleInputChange}
+              className="w-full h-1.5 bg-[#EBEBEB] rounded-lg appearance-none cursor-pointer accent-[#FF5A5F]"
+            />
+          </div>
 
           <div className="grid grid-cols-2 gap-4">
             <Select
