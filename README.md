@@ -2,6 +2,9 @@
 
 TalentDash is a career intelligence platform focused on tech compensation, employer reviews, and interview experiences. It converts crowdsourced and scraped data into decision-ready insights for tech careers in India and worldwide.
 
+🚀 **Live Site**: [https://talentdash-full-stack.vercel.app](https://talentdash-full-stack.vercel.app)
+💻 **GitHub Repository**: [https://github.com/its-SamiKhan/TalentDash-FullStack](https://github.com/its-SamiKhan/TalentDash-FullStack)
+
 ---
 
 ## 1. Project Goal & Design Philosophy
@@ -218,7 +221,34 @@ The platform currently implements 8 fully functional product areas:
 
 ---
 
-## 7. Core Data Contracts
+## 7. Project Directory Structure
+
+```text
+talentdash/
+├── prisma/                  # Database schema and seed scripts
+│   ├── schema.prisma        # Prisma schema contracts
+│   └── seed.ts              # Programmatic TS database seed engine
+├── public/                  # Static assets and SVG logo files
+├── scripts/                 # Ingestion validation & scraper utility assets
+├── src/                     # Main source code directory
+│   ├── app/                 # Next.js 16 App Router routing tree
+│   │   ├── api/             # REST API routes (salaries, reviews, community, etc.)
+│   │   ├── community/       # Anonymous community boards & discussion feeds
+│   │   ├── companies/       # Company profile page layout
+│   │   ├── compare/         # Side-by-side offer comparison tool
+│   │   ├── interviews/      # Interview preparation feed & company outcome logs
+│   │   ├── reviews/         # Employer reviews & rating dimensions page
+│   │   ├── tools/           # Tax, hike, and ESOP cliff calculators
+│   │   └── workplace-index/ # Michelin ranking matrices & industry board list
+│   ├── components/          # Reusable React components & shared layout views
+│   ├── lib/                 # Shared logic engines (tax rules, currency, formatters)
+│   ├── services/            # ORM service layer querying Neon PostgreSQL
+│   └── types/               # Common type declarations & data definitions
+```
+
+---
+
+## 8. Core Data Contracts
 
 Every layer of the application (Prisma schema, TypeScript interfaces, validation middleware) enforces these strict schema contracts:
 
@@ -324,7 +354,7 @@ type WorkplaceScoreRecord = {
 
 ---
 
-## 8. Rendering & Caching Strategy
+## 9. Rendering & Caching Strategy
 
 To balance fast loading speeds (LCP < 2s) and database query costs, the platform utilizes Next.js App Router caching layers:
 
@@ -338,7 +368,7 @@ To balance fast loading speeds (LCP < 2s) and database query costs, the platform
 
 ---
 
-## 9. Scraper & Ingestion Pipeline
+## 10. Scraper & Ingestion Pipeline
 
 Ingestion endpoints are available at:
 - `POST /api/ingest-salary`
@@ -353,7 +383,7 @@ Each follows a strict validation pipeline:
 
 ---
 
-## 10. "With Another Day" (Future Scope)
+## 11. "With Another Day" (Future Scope)
 
 If given another day of development, the following features would be implemented:
 - **Secure Ingestion Tokens**: Add JWT-based API key authentication to API ingest routes to verify crawlers and prevent spam.
@@ -363,7 +393,7 @@ If given another day of development, the following features would be implemented
 
 ---
 
-## 11. Intentionally Cut
+## 12. Intentionally Cut
 
 To meet programmatic SEO efficiency:
 - **Authentication**: No sign-in/sign-up forms. Submissions are anonymous but validation filters and deduplication parameters are aggressive to guarantee data cleanliness.
@@ -375,4 +405,5 @@ To meet programmatic SEO efficiency:
 ## 👤 Author
 
 Developed with 💻 & ☕ by **[Sami Khan (its-SamiKhan)](https://github.com/its-SamiKhan)**.
+
 
